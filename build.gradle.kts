@@ -30,6 +30,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.28")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
 tasks.withType<KotlinCompile> {
