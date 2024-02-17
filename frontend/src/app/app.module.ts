@@ -4,7 +4,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {TransactionModule} from "./transaction/transaction.module";
-import {CoreModule} from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +12,6 @@ import {CoreModule} from "./core/core.module";
   ],
   imports: [
     BrowserModule,
-    CoreModule,
     TransactionModule
   ],
   providers: [],
