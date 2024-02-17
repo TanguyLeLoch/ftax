@@ -1,4 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+}
+
 body {
-  background-color: #141925; /* Light grey background */
+  background: rgb(34, 193, 195);
+  background: linear-gradient(45deg, rgba(34, 193, 195, 1) 9%, rgba(0, 0, 0, 1) 100%);
   color: #fff; /* White text color */
 }
