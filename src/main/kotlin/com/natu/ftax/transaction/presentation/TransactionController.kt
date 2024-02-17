@@ -1,28 +1,17 @@
 package com.natu.ftax.transaction.presentation
 
-import com.natu.ftax.transaction.domain.Transaction
+import com.natu.ftax.transaction.application.TransactionService
+import com.natu.ftax.transaction.domain.DraftTransaction
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 @RestController
 @RequestMapping("transaction")
-class TransactionController {
+class TransactionController(val service: TransactionService) {
 
-    @PostMapping
-    fun createTransaction(): Transaction {
-
-        return Transaction(
-                "1",
-                Transaction.TransactionType.TRANSFER,
-                Date(),
-                "token1",
-                "token2",
-                "tokenFee",
-                100.0,
-                100.0,
-                10.0
-        )
+    @PostMapping("draft")
+    fun createDraftTransaction(): DraftTransaction {
+        return service.createDraftTransaction()
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class TransactionService(val idGenerator: IdGenerator) {
 
     fun createDraftTransaction(): DraftTransaction {
-        return DraftTransaction(idGenerator.generate())
+        return DraftTransaction.create(idGenerator.generate()) { }
     }
 
 
