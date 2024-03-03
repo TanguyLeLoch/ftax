@@ -35,7 +35,7 @@ class Transaction private constructor(
                 id = draftTransaction.id,
                 transactionType = draftTransaction.transactionType.takeUnless { it == TransactionType.NONE }
                     ?: throw IllegalArgumentException("Transaction type cannot be NONE"),
-                date = Date(draftTransaction.date!!),
+                date = draftTransaction.date!!,
                 token1 = draftTransaction.token1!!,
                 token2 = draftTransaction.token2!!,
                 tokenFee = draftTransaction.tokenFee!!,

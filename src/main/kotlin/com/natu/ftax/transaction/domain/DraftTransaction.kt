@@ -1,9 +1,11 @@
 package com.natu.ftax.transaction.domain
 
+import java.util.*
+
 class DraftTransaction private constructor(val id: String) {
     var transactionType = TransactionType.NONE
         private set
-    var date: Long? = null
+    var date: Date? = null
         private set
     var token1: Token? = null
         private set
@@ -34,7 +36,7 @@ class DraftTransaction private constructor(val id: String) {
     }
 
     fun setTransactionType(transactionType: TransactionType) = apply { this.transactionType = transactionType }
-    fun setDate(date: Long?) = apply { this.date = date }
+    fun setDate(date: Date?) = apply { this.date = date }
     fun setToken1(token1: Token?) = apply { this.token1 = token1 }
     fun setToken2(token2: Token?) = apply { this.token2 = token2 }
     fun setTokenFee(tokenFee: Token?) = apply { this.tokenFee = tokenFee }
