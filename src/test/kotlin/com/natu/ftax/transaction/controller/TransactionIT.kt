@@ -24,9 +24,8 @@ class TransactionIT {
         given()
             .`when`()
             .post("/transaction/draft")
-
             .then()
-            .statusCode(200)
+            .statusCode(201)
             .body("id", notNullValue())
     }
 }

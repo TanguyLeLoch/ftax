@@ -34,7 +34,7 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:5.4.0")
 
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools:3.2.2")
+//    developmentOnly("org.springframework.boot:spring-boot-devtools:3.2.2")
 }
 
 tasks.withType<KotlinCompile> {

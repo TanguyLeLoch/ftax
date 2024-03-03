@@ -22,6 +22,12 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
+## update model
+
+Run
+`npm install -g @openapitools/openapi-generator-cli`
+`penapi-generator-cli generate -i path/to/your/openapi.yaml -g typescript-axios -o /path/to/output/directory`
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

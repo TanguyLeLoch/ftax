@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TransactionItemComponent implements OnInit {
 
-  @Input() transaction: any;
+  @Input() transaction: Transaction;
   protected readonly JSON = JSON;
 
   constructor() {
