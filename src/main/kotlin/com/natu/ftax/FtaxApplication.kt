@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class FtaxApplication
 
 fun main(args: Array<String>) {
-	runApplication<FtaxApplication>(*args)
+    runApplication<FtaxApplication>(*args)
 }
