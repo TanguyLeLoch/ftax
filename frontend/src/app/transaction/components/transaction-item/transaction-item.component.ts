@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {DraftTransaction} from "../../../core/model";
 
 @Component({
   selector: 'app-transaction-item',
@@ -7,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TransactionItemComponent implements OnInit {
 
-  @Input() transaction: Transaction;
+  @Input() transaction!: DraftTransaction;
   protected readonly JSON = JSON;
 
   constructor() {

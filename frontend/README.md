@@ -26,7 +26,10 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 Run
 `npm install -g @openapitools/openapi-generator-cli`
-`penapi-generator-cli generate -i path/to/your/openapi.yaml -g typescript-axios -o /path/to/output/directory`
+
+Run
+`openapi-generator-cli generate -i http://localhost:8081/v3/api-docs.yaml
+-g typescript-axios -o frontend/src/app/core/model`
 
 ## Further help
 

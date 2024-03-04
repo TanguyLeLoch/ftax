@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../../core/services/transaction.service";
+import {DraftTransaction} from "../../../core/model";
 
 @Component({
   selector: 'app-transaction-list',
@@ -7,7 +8,7 @@ import {TransactionService} from "../../../core/services/transaction.service";
   styleUrls: ['./transaction-list.component.scss']
 })
 export class TransactionListComponent implements OnInit {
-  transactions: any[] = [];
+  transactions: DraftTransaction[] = [];
 
   constructor(private transactionService: TransactionService) {
   }
@@ -16,7 +17,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   addTransaction() {
-    this.transactionService.createTransactions().subscribe((res: any) => {
+    this.transactionService.createTransactions().subscribe((res: DraftTransaction) => {
       this.transactions.push(res);
     });
   }
