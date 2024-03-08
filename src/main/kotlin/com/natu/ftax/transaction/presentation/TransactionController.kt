@@ -18,8 +18,12 @@ class TransactionController(val service: TransactionService) {
         private val LOGGER = LoggerFactory.getLogger(TransactionController::class.java)
     }
 
+
     @Operation(summary = "Create a draft transaction")
-    @PostMapping("draft")
+    @PostMapping(
+        value = ["draft"],
+        produces = ["application/json"]
+    )
     @ResponseStatus(HttpStatus.CREATED)
     fun createDraftTransaction(): DraftTransaction {
         val draftTransaction = service.createDraftTransaction()

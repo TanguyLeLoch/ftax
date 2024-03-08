@@ -29,7 +29,7 @@ Run
 
 Run
 `openapi-generator-cli generate -i http://localhost:8081/v3/api-docs.yaml
--g typescript-axios -o frontend/src/app/core/model`
+-g typescript-angular -o frontend/src/app/core/model`
 
 ## Further help
 

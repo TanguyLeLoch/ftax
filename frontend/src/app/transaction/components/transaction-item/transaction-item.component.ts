@@ -9,11 +9,11 @@ import {DraftTransaction} from "../../../core/model";
 export class TransactionItemComponent implements OnInit {
 
   @Input() transaction!: DraftTransaction;
-  protected readonly JSON = JSON;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    console.log(this.transaction)
   }
 }

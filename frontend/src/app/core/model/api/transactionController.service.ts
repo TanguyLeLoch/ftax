@@ -65,25 +65,25 @@ export class TransactionControllerService {
    * @param reportProgress flag to report request and response progress.
    */
   public createDraftTransaction(observe?: 'body', reportProgress?: boolean, options?: {
-    httpHeaderAccept?: '*/*',
+    httpHeaderAccept?: 'application/json',
     context?: HttpContext,
     transferCache?: boolean
   }): Observable<DraftTransaction>;
 
   public createDraftTransaction(observe?: 'response', reportProgress?: boolean, options?: {
-    httpHeaderAccept?: '*/*',
+    httpHeaderAccept?: 'application/json',
     context?: HttpContext,
     transferCache?: boolean
   }): Observable<HttpResponse<DraftTransaction>>;
 
   public createDraftTransaction(observe?: 'events', reportProgress?: boolean, options?: {
-    httpHeaderAccept?: '*/*',
+    httpHeaderAccept?: 'application/json',
     context?: HttpContext,
     transferCache?: boolean
   }): Observable<HttpEvent<DraftTransaction>>;
 
   public createDraftTransaction(observe: any = 'body', reportProgress: boolean = false, options?: {
-    httpHeaderAccept?: '*/*',
+    httpHeaderAccept?: 'application/json',
     context?: HttpContext,
     transferCache?: boolean
   }): Observable<any> {
@@ -94,7 +94,7 @@ export class TransactionControllerService {
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
       const httpHeaderAccepts: string[] = [
-        '*/*'
+        'application/json'
       ];
       localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -132,7 +132,6 @@ export class TransactionControllerService {
         withCredentials: this.configuration.withCredentials,
         headers: localVarHeaders,
         observe: observe,
-        // transferCache: localVarTransferCache,
         reportProgress: reportProgress
       }
     );

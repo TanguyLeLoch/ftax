@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../../core/services/transaction.service";
 import {DraftTransaction} from "../../../core/model";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-transaction-list',
@@ -17,8 +18,8 @@ export class TransactionListComponent implements OnInit {
   }
 
   addTransaction() {
-    this.transactionService.createTransactions().subscribe((res: DraftTransaction) => {
-      this.transactions.push(res);
-    });
+    this.transactionService.createTransactions().pipe(
+      tap(transaction => this.transactions.push(transaction))
+    ).subscribe();
   }
 }

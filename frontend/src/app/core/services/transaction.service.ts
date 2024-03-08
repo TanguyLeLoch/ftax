@@ -19,7 +19,7 @@ export class TransactionService {
   // }
 
   createTransactions() {
-    // return this.http.post('http://localhost:8081/transaction/draft', {});
+
     return this.transactionControllerService.createDraftTransaction();
   }
 
