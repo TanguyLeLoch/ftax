@@ -14,7 +14,8 @@ class Transaction private constructor(
     val tokenFee: Token,
     val amount1: Double,
     val amount2: Double,
-    val amountFee: Double
+    val amountFee: Double,
+    val externalId: String?
 ) {
     init {
         require(id.isNotBlank()) { "ID cannot be blank" }
@@ -41,7 +42,8 @@ class Transaction private constructor(
                 tokenFee = draftTransaction.tokenFee!!,
                 amount1 = draftTransaction.amount1,
                 amount2 = draftTransaction.amount2,
-                amountFee = draftTransaction.amountFee
+                amountFee = draftTransaction.amountFee,
+                externalId = draftTransaction.externalId
             )
         }
     }

@@ -1,4 +1,20 @@
+<!--transactionType: DraftTransaction.TransactionTypeEnum;-->
+<!--date?: string;-->
+<!--token1?: string;-->
+<!--token2?: string;-->
+<!--tokenFee?: string;-->
+<!--amount1: number;-->
+<!--amount2: number;-->
+<!--amountFee: number;-->
+
 <div class="container">
-  <span>{{transaction.id}}</span>
+  <span>{{transaction.date}}</span>
   <span>{{transaction.transactionType}}</span>
+  <span>{{transaction.amount1}}</span>
+  <span>{{transaction.token1}}</span>
+  <span>{{transaction.amount2}}</span>
+  <span>{{transaction.token2}}</span>
+  <span>{{transaction.amountFee}}</span>
+  <span>{{transaction.tokenFee}}</span>
+  <span>{{transaction.externalId}}</span>
 </div>

@@ -29,6 +29,10 @@ class DraftTransaction private constructor(val id: String) {
             field = value
         }
 
+    // string or null
+    var externalId: String? = null
+        private set
+
     companion object {
         fun create(id: String, configuration: DraftTransaction.() -> Unit): DraftTransaction {
             return DraftTransaction(id).apply(configuration)
@@ -43,4 +47,5 @@ class DraftTransaction private constructor(val id: String) {
     fun setAmount1(amount1: Double) = apply { this.amount1 = amount1 }
     fun setAmount2(amount2: Double) = apply { this.amount2 = amount2 }
     fun setAmountFee(amountFee: Double) = apply { this.amountFee = amountFee }
+    fun setExternalId(externalId: String) = apply { this.externalId = externalId }
 }

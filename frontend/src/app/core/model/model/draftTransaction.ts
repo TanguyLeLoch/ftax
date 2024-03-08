@@ -21,6 +21,7 @@ export interface DraftTransaction {
     amount1: number;
     amount2: number;
     amountFee: number;
+    externalId?: string;
 }
 export namespace DraftTransaction {
     export type TransactionTypeEnum = 'TRANSFER' | 'SWAP' | 'NONE';

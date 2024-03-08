@@ -38,6 +38,15 @@ class DraftTransactionTest {
         assertEquals(0.0, draftTransaction.amount2)
     }
 
+    @Test
+    fun `should create a draft transaction with an externalId`() {
+        val draftTransaction =
+            DraftTransaction.create("123") {
+                setExternalId("0x123")
+            }
+        assertEquals("0x123", draftTransaction.externalId)
+    }
+
     @ParameterizedTest
     @MethodSource("amountArguments")
     fun `should not be able to create a draft transaction with negative amounts`(
