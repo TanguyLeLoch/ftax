@@ -48,4 +48,25 @@ class DraftTransaction private constructor(val id: String) {
     fun setAmount2(amount2: Double) = apply { this.amount2 = amount2 }
     fun setAmountFee(amountFee: Double) = apply { this.amountFee = amountFee }
     fun setExternalId(externalId: String) = apply { this.externalId = externalId }
+    fun edit(
+        transactionType: TransactionType,
+        date: Date,
+        token1: Token,
+        token2: Token,
+        tokenFee: Token,
+        amount1: Double,
+        amount2: Double,
+        amountFee: Double,
+        externalId: String?
+    ) {
+        this.transactionType = transactionType
+        this.date = date
+        this.token1 = token1
+        this.token2 = token2
+        this.tokenFee = tokenFee
+        this.amount1 = amount1
+        this.amount2 = amount2
+        this.amountFee = amountFee
+        this.externalId = externalId
+    }
 }

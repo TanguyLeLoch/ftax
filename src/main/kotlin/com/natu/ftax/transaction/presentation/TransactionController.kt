@@ -4,6 +4,7 @@ import com.natu.ftax.transaction.application.TransactionService
 import com.natu.ftax.transaction.domain.DraftTransaction
 import com.natu.ftax.transaction.domain.Transaction
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -27,6 +28,16 @@ class TransactionController(val service: TransactionService) {
         val draftTransaction = service.createDraftTransaction()
         LOGGER.info("Creating a draft transaction with id: ${draftTransaction.id}")
         return draftTransaction
+    }
+
+    @Operation(summary = "Submit a draft transaction")
+    @PostMapping(
+        value = ["submit"],
+        consumes = ["application/json"]
+    )
+    fun submitDraftTransaction(@Valid @RequestBody request: EditTransactionRequest) {
+        LOGGER.info("Submitting draft transaction with id: ${request.id}")
+        return service.submitDraftTransaction(request)
     }
 
     @Operation(summary = "Get all transactions")

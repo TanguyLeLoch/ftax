@@ -23,4 +23,5 @@ export class TransactionListComponent implements OnInit {
       tap(transaction => this.transactions.push(transaction))
     ).subscribe();
   }
+
 }

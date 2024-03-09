@@ -8,6 +8,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/draftTransaction.ts
+model/editTransactionRequest.ts
 model/models.ts
 model/transaction.ts
 param.ts
