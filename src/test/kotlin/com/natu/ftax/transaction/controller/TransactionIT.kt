@@ -37,19 +37,18 @@ class TransactionIT {
             .header("Content-Type", "application/json")
             .body(
                 """
-                {
-                    "id": "$txId",
-                    "transactionType": "SWAP",
-                    "date": "2022-01-01T12:00:00.000",
-                    "token1": "BTC",
-                    "token2": "ETH",
-                    "tokenFee": "USD",
-                    "amount1": 1.0,
-                    "amount2": 2.0,
-                    "amountFee": 0.1,
-                    "externalId": "ext-123"
-                }
-                """.trimIndent()
+                    {
+                        "id": "1710002332816-0-1",
+                        "date": "2024-02-09T23:38",
+                        "transactionType": "TRANSFER",
+                        "amount1": 123,
+                        "amount2": 123,
+                        "amountFee": 123,
+                        "token1": "BTC",
+                        "token2": "ETH",
+                        "tokenFee": "BTC",
+                        "externalId": "0x123"
+                    }                """.trimIndent()
             )
             .post("/transaction/submit")
         println(response.body.asString())

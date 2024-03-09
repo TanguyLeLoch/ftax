@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Transaction, TransactionControllerService} from "../model";
-import {tap} from "rxjs";
+import {EditTransactionRequest, Transaction, TransactionControllerService} from "../model";
+import {Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -16,18 +16,17 @@ export class TransactionService {
     return this.transactionControllerService.createDraftTransaction()
   }
 
-
-  // submitDraftTransaction(draftTransaction: DraftTransaction) {
-  //   return this.transactionControllerService.submitDraftTransaction(draftTransaction).pipe(
-  //     tap(() => this.getTransactions().subscribe())
-  //   );
-  // }
-
   getTransactions() {
     return this.transactionControllerService.getAllTransactions().pipe(
       tap((transactions: Transaction[]) => {
         this.transactions = transactions;
       })
+    );
+  }
+
+  submitDraftTransaction(request: EditTransactionRequest): Observable<Transaction> {
+    return this.transactionControllerService.submitDraftTransaction(request).pipe(
+      tap(() => this.getTransactions().subscribe())
     );
   }
 }
