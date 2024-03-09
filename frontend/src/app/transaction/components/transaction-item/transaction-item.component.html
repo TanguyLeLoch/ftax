@@ -1,14 +1,20 @@
-<!--transactionType: DraftTransaction.TransactionTypeEnum;-->
-<!--date?: string;-->
-<!--token1?: string;-->
-<!--token2?: string;-->
-<!--tokenFee?: string;-->
-<!--amount1: number;-->
-<!--amount2: number;-->
-<!--amountFee: number;-->
-
 <div class="container">
   <span>{{transaction.date}}</span>
+  <div>
+
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input [matDatepicker]="picker" matInput>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <mat-select name="transactionType" panelClass="custom-select-width">
+    <mat-option *ngFor="let transactionType of transactionTypes" [value]="transactionType">
+      {{transactionType}}
+    </mat-option>
+  </mat-select>
   <span>{{transaction.transactionType}}</span>
   <span>{{transaction.amount1}}</span>
   <span>{{transaction.token1}}</span>
@@ -17,6 +23,4 @@
   <span>{{transaction.amountFee}}</span>
   <span>{{transaction.tokenFee}}</span>
   <span>{{transaction.externalId}}</span>
-  <mat-slide-toggle>Toggle me!</mat-slide-toggle>
-
 </div>
