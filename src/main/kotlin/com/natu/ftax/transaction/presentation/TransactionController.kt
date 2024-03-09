@@ -2,13 +2,11 @@ package com.natu.ftax.transaction.presentation
 
 import com.natu.ftax.transaction.application.TransactionService
 import com.natu.ftax.transaction.domain.DraftTransaction
+import com.natu.ftax.transaction.domain.Transaction
 import io.swagger.v3.oas.annotations.Operation
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("transaction")
@@ -29,5 +27,15 @@ class TransactionController(val service: TransactionService) {
         val draftTransaction = service.createDraftTransaction()
         LOGGER.info("Creating a draft transaction with id: ${draftTransaction.id}")
         return draftTransaction
+    }
+
+    @Operation(summary = "Get all transactions")
+    @GetMapping(
+        produces = ["application/json"]
+    )
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllTransactions(): Array<Transaction> {
+        LOGGER.info("Getting all transactions")
+        return service.getAllTransactions()
     }
 }

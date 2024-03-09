@@ -9,5 +9,6 @@ git_push.sh
 index.ts
 model/draftTransaction.ts
 model/models.ts
+model/transaction.ts
 param.ts
 variables.ts
