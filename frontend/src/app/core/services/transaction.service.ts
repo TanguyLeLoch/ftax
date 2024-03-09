@@ -6,21 +6,16 @@ import {TransactionControllerService} from "../model";
   providedIn: 'root'
 })
 export class TransactionService {
-  // private transactionControllerApi: TransactionControllerApi;
 
   constructor(private http: HttpClient, private transactionControllerService: TransactionControllerService) {
 
   }
 
-  // transactionControllerApi: TransactionControllerApi) {
-  //   const configuration = new Configuration();
-  //   configuration.basePath = 'http://localhost:8081';
-  //   this.transactionControllerApi = new TransactionControllerApi(configuration);
-  // }
 
   createTransactions() {
 
     return this.transactionControllerService.createDraftTransaction();
   }
+
 
 }

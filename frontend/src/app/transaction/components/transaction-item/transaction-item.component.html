@@ -1,26 +1,15 @@
 <div class="container">
-  <span>{{transaction.date}}</span>
-  <div>
+  <input [(ngModel)]="transaction.date" id="dateTime" name="dateTime" required type="datetime-local">
 
-    <mat-form-field>
-      <mat-label>Choose a date</mat-label>
-      <input [matDatepicker]="picker" matInput>
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <mat-select name="transactionType" panelClass="custom-select-width">
-    <mat-option *ngFor="let transactionType of transactionTypes" [value]="transactionType">
-      {{transactionType}}
-    </mat-option>
-  </mat-select>
-  <span>{{transaction.transactionType}}</span>
-  <span>{{transaction.amount1}}</span>
-  <span>{{transaction.token1}}</span>
-  <span>{{transaction.amount2}}</span>
-  <span>{{transaction.token2}}</span>
-  <span>{{transaction.amountFee}}</span>
-  <span>{{transaction.tokenFee}}</span>
-  <span>{{transaction.externalId}}</span>
+  <select [(ngModel)]="transaction.transactionType" id="transactionType" name="transactionType" required>
+    <option *ngFor="let transactionType of transactionTypes" [value]="transactionType">{{transactionType}}</option>
+  </select>
+  <input [(ngModel)]="transaction.amount1" id="amount1" name="amount1" required type="number">
+  <input [(ngModel)]="transaction.token1" id="token1" name="token1" required type="text">
+  <input [(ngModel)]="transaction.amount2" id="amount2" name="amount2" required type="number">
+  <input [(ngModel)]="transaction.token2" id="token2" name="token2" required type="text">
+  <input [(ngModel)]="transaction.amountFee" id="amountFee" name="amountFee" required type="number">
+  <input [(ngModel)]="transaction.tokenFee" id="tokenFee" name="tokenFee" required type="text">
+  <input [(ngModel)]="transaction.externalId" id="externalId" name="externalId" required type="text">
+  <button (click)="addTransaction()">Add Transaction</button>
 </div>

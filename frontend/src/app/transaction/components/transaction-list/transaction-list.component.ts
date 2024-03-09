@@ -15,6 +15,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.transactions = this.transactionService.getTransactions();
   }
 
   addTransaction() {
