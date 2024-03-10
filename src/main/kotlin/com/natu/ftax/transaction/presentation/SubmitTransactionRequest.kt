@@ -2,6 +2,7 @@ package com.natu.ftax.transaction.presentation
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.natu.ftax.transaction.domain.SubmitTransactionCommand
 import com.natu.ftax.transaction.domain.TransactionType
 import jakarta.validation.constraints.PastOrPresent
 import jakarta.validation.constraints.PositiveOrZero
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.NotNull
 import java.util.*
 
 
-data class EditTransactionRequest(
+class SubmitTransactionRequest(
 
     @field:NotNull(value = "Id cannot be null")
     val id: String,
@@ -36,4 +37,19 @@ data class EditTransactionRequest(
     val amountFee: Double,
 
     val externalId: String?
-)
+
+
+) {
+    fun toCommand() = SubmitTransactionCommand(
+        id = id,
+        transactionType = transactionType,
+        date = date,
+        token1 = token1,
+        token2 = token2,
+        tokenFee = tokenFee,
+        amount1 = amount1,
+        amount2 = amount2,
+        amountFee = amountFee,
+        externalId = externalId
+    )
+}

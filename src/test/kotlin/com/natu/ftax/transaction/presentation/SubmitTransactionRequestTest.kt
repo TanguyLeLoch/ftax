@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.text.SimpleDateFormat
 
-class EditTransactionRequestTest {
+class SubmitTransactionRequestTest {
 
     private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
@@ -32,7 +32,7 @@ class EditTransactionRequestTest {
         val expectedDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         val expectedDate = expectedDateFormat.parse("2022-01-01T12:00:00.000+0000")
 
-        val request: EditTransactionRequest = objectMapper.readValue(json)
+        val request: SubmitTransactionRequest = objectMapper.readValue(json)
 
         assertEquals("1", request.id)
         assertEquals(TransactionType.SWAP, request.transactionType)

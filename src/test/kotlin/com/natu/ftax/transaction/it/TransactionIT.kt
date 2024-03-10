@@ -1,9 +1,11 @@
-package com.natu.ftax.transaction.controller
+package com.natu.ftax.transaction.it
 
+import com.natu.ftax.transaction.domain.Transaction
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -51,7 +53,6 @@ class TransactionIT {
                     }                """.trimIndent()
             )
             .post("/transaction/submit")
-        println(response.body.asString())
         response
             .then()
             .statusCode(200)
@@ -83,11 +84,28 @@ class TransactionIT {
             .statusCode(404)
             .body(
                 "message",
-                equalTo("Draft transaction not found with id: non-existing-id")
+                equalTo("Transaction not found with id: non-existing-id")
             )
-
-
     }
+
+    @Test
+    fun `should get all transactions`() {
+        val tx1Id = createDraftTransaction()
+        val tx2Id = createDraftTransaction()
+
+        val ids = given()
+            .`when`()
+            .get("/transaction")
+            .then()
+            .statusCode(200)
+            .extract()
+            .jsonPath()
+            .getList("$", Transaction::class.java)
+            .map { it.id }
+
+        assertTrue(ids.containsAll(listOf(tx1Id, tx2Id)), "The returned transactions should contain tx1 and tx2")
+    }
+
 
     private fun createDraftTransaction(): String {
         return given()

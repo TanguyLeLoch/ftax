@@ -1,7 +1,6 @@
 package com.natu.ftax.transaction.presentation
 
 import com.natu.ftax.transaction.application.TransactionService
-import com.natu.ftax.transaction.domain.DraftTransaction
 import com.natu.ftax.transaction.domain.Transaction
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
@@ -24,8 +23,8 @@ class TransactionController(val service: TransactionService) {
         produces = ["application/json"]
     )
     @ResponseStatus(HttpStatus.CREATED)
-    fun createDraftTransaction(): DraftTransaction {
-        val draftTransaction = service.createDraftTransaction()
+    fun createDraftTransaction(): Transaction {
+        val draftTransaction = service.createTransaction()
         LOGGER.info("Creating a draft transaction with id: ${draftTransaction.id}")
         return draftTransaction
     }
@@ -35,7 +34,7 @@ class TransactionController(val service: TransactionService) {
         value = ["submit"],
         consumes = ["application/json"]
     )
-    fun submitDraftTransaction(@Valid @RequestBody request: EditTransactionRequest) {
+    fun submitDraftTransaction(@Valid @RequestBody request: SubmitTransactionRequest) {
         LOGGER.info("Submitting draft transaction with id: ${request.id}")
         return service.submitDraftTransaction(request)
     }
