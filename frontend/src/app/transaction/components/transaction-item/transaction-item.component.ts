@@ -18,12 +18,11 @@ export class TransactionItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.transaction)
   }
 
   submitDraftTransaction() {
     const date = Date.parse(this.transaction.date!)
-    this.transaction.date = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    this.transaction.date = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     const request: EditTransactionRequest = {
       id: this.transaction.id,
       date: this.transaction.date!,

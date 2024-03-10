@@ -38,8 +38,8 @@ class TransactionIT {
             .body(
                 """
                     {
-                        "id": "1710002332816-0-1",
-                        "date": "2024-02-09T23:38",
+                        "id": "$txId",
+                        "date": "2024-02-09T23:38:00.000+0000",
                         "transactionType": "TRANSFER",
                         "amount1": 123,
                         "amount2": 123,
@@ -67,7 +67,7 @@ class TransactionIT {
                 {
                     "id": "non-existing-id",
                     "transactionType": "SWAP",
-                    "date": "2022-01-01T12:00:00.000",
+                    "date": "2022-01-01T12:00:00.000+0000",
                     "token1": "BTC",
                     "token2": "ETH",
                     "tokenFee": "USD",

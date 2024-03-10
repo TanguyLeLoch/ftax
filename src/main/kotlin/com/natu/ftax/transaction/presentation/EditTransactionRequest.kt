@@ -19,7 +19,7 @@ data class EditTransactionRequest(
     val transactionType: TransactionType,
 
     @field:PastOrPresent(message = "Date must be in the past or present")
-    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     val date: Date,
 
     val token1: String,
