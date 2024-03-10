@@ -34,7 +34,31 @@ class Transaction private constructor(val id: String) {
             field = value
         }
 
-    // string or null
+    constructor(
+        id: String,
+        state: TransactionState,
+        transactionType: TransactionType,
+        date: Date?,
+        token1: Token?,
+        token2: Token?,
+        tokenFee: Token?,
+        amount1: Double,
+        amount2: Double,
+        amountFee: Double,
+        externalId: String?
+    ) : this(id) {
+        this.state = state
+        this.transactionType = transactionType
+        this.date = date
+        this.token1 = token1
+        this.token2 = token2
+        this.tokenFee = tokenFee
+        this.amount1 = amount1
+        this.amount2 = amount2
+        this.amountFee = amountFee
+        this.externalId = externalId
+    }
+
     var externalId: String? = null
         private set
 
@@ -77,4 +101,5 @@ class Transaction private constructor(val id: String) {
             throw IllegalStateException("Cannot change date of a non draft transaction")
         }
     }
+
 }

@@ -1,12 +1,14 @@
-package com.natu.ftax.transaction.infrastructure
+package com.natu.ftax.transaction
 
 import com.natu.ftax.common.exception.NotFoundException
 import com.natu.ftax.transaction.application.TransactionRepository
 import com.natu.ftax.transaction.domain.Transaction
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 
 
 @Repository
+@Primary
 class TransactionRepositoryInMemory : TransactionRepository {
 
     private val transactions = hashMapOf<String, Transaction>()
