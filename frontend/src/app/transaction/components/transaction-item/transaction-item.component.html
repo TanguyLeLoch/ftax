@@ -1,13 +1,21 @@
-<input [(ngModel)]="txDate" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}" [readonly]="!editMode"
-       id="date" name="date" required
+<input [(ngModel)]="txDate"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isDateInvalid()}"
+       [readonly]="!editMode" class="input-type-date" id="date"
+       name="date"
+       required
        type="date">
-<input [(ngModel)]="txTime" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}" [readonly]="!editMode" id=time
-       required step="0.001"
+<input [(ngModel)]="txTime"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isTimeInvalid()}"
+       [readonly]="!editMode"
+       class="input-type-date"
+       id=time required
+       step="0.001"
        type="time">
 
 
 <select *ngIf="editMode" [(ngModel)]="transaction.transactionType" [disabled]="!editMode"
-        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}" id="transactionType"
+        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isTransactionTypeInvalid()}"
+        id="transactionType"
         name="transactionType" required>
   <option *ngFor="let transactionType of transactionTypes" [value]="transactionType">{{transactionType}}</option>
 </select>
@@ -16,25 +24,31 @@
   <span>{{transaction.transactionType}}</span>
 </div>
 
-<input [(ngModel)]="transaction.amount1" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
+<input [(ngModel)]="transaction.amount1"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isAmount1Invalid()}"
        [readonly]="!editMode" class="amount" id="amount1" name="amount1" required type="number">
 
-<input [(ngModel)]="transaction.token1" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
+<input [(ngModel)]="transaction.token1"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isToken1Invalid()}"
        [readonly]="!editMode" class="token" id="token1" name="token1" required type="text">
 
-<input [(ngModel)]="transaction.amount2" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
+<input [(ngModel)]="transaction.amount2"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isAmount2Invalid()}"
        [readonly]="!editMode"
        class="amount" id="amount2" name="amount2" required type="number">
 
-<input [(ngModel)]="transaction.token2" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
+<input [(ngModel)]="transaction.token2"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isToken2Invalid()}"
        [readonly]="!editMode" class="token" id="token2" name="token2"
        required type="text">
 
-<input [(ngModel)]="transaction.amountFee" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
+<input [(ngModel)]="transaction.amountFee"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isAmountFeeInvalid()}"
        [readonly]="!editMode"
        class="amount" id="amountFee" name="amountFee" required type="number">
 
-<input [(ngModel)]="transaction.tokenFee" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
+<input [(ngModel)]="transaction.tokenFee"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isTokenFeeInvalid()}"
        [readonly]="!editMode" class="token" id="tokenFee" name="tokenFee"
        required type="text">
 
@@ -42,7 +56,12 @@
        [readonly]="!editMode" id="externalId" name="externalId"
        required type="text">
 
-<button (click)="submitTransaction()" *ngIf="editMode">submit</button>
-<button (click)="editTransaction()" *ngIf="!editMode">edit</button>
-<button (click)="delete()">delete</button>
-
+<div (click)="submitTransaction()" *ngIf="editMode" class="button-icon" role="button" tabindex="0">
+  <fa-icon [icon]="faCheck"></fa-icon>
+</div>
+<div (click)="editTransaction()" *ngIf="!editMode" class="button-icon" role="button" tabindex="0">
+  <fa-icon [icon]="faEdit"></fa-icon>
+</div>
+<div (click)="delete()" class="button-icon" role="button" tabindex="0">
+  <fa-icon [icon]="faTrash"></fa-icon> <!-- Updated to use faTrash for deletion -->
+</div>

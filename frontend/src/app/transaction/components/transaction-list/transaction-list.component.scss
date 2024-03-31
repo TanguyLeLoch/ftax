@@ -12,13 +12,12 @@
 
 .tx-list-container {
   background-color: $background-color;
-  width: 80%;
   min-height: 30px;
   border-radius: 10px;
   box-shadow: #000000 0 0 5px 0;
   display: grid;
-  grid-template-columns: 2fr 2fr repeat(7, 1fr) 2fr 1fr 1fr;
-  gap: 8px; /* Adjust the gap between grid items as needed */
+  grid-template-columns: 2fr 2fr 1fr 0.5fr  0.8fr 0.5fr 0.8fr 0.5fr 0.8fr 2fr 0.3fr 0.3fr;
+  gap: 4px; /* Adjust the gap between grid items as needed */
 }
 
 .empty-tx {

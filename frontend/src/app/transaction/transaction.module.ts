@@ -5,7 +5,9 @@ import {CoreModule} from "../core/core.module";
 import {TransactionItemComponent} from './components/transaction-item/transaction-item.component';
 import {MatSelect} from "@angular/material/select";
 import {MatDatepickerInput} from "@angular/material/datepicker";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FaIconComponent, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {TransactionListHeaderComponent} from "./components/transaction-list-header/transaction-list-header.component";
 
 
 @NgModule({
@@ -22,6 +24,10 @@ import {FormsModule} from "@angular/forms";
     MatSelect,
     MatDatepickerInput,
     FormsModule,
+    FaIconComponent,
+    FontAwesomeModule,
+    TransactionListHeaderComponent,
+    ReactiveFormsModule
   ]
 })
 export class TransactionModule {
