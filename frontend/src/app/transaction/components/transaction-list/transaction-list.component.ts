@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../../core/services/transaction.service";
-import {DraftTransaction} from "../../../core/model";
+import {Transaction} from "../../../core/model";
 import {tap} from "rxjs";
 
 @Component({
@@ -9,7 +9,7 @@ import {tap} from "rxjs";
   styleUrls: ['./transaction-list.component.scss']
 })
 export class TransactionListComponent implements OnInit {
-  transactions: DraftTransaction[] = [];
+  transactions: Transaction[] = [];
 
   constructor(private transactionService: TransactionService) {
   }

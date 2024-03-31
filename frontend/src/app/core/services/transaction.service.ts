@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EditTransactionRequest, Transaction, TransactionControllerService} from "../model";
+import {SubmitTransactionRequest, Transaction, TransactionControllerService} from "../model";
 import {Observable, tap} from "rxjs";
 
 @Injectable({
@@ -24,7 +24,7 @@ export class TransactionService {
     );
   }
 
-  submitDraftTransaction(request: EditTransactionRequest): Observable<Transaction> {
+  submitDraftTransaction(request: SubmitTransactionRequest): Observable<Transaction> {
     return this.transactionControllerService.submitDraftTransaction(request).pipe(
       tap(() => this.getTransactions().subscribe())
     );

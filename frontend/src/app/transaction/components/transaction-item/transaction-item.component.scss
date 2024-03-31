@@ -1,20 +1,54 @@
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+@import "variables";
 
+:host {
+  display: contents;
 }
 
-.mat-mdc-select {
-  width: 300px; /* Set your desired width */
-}
-
-
-input {
-  background-color: rgb(29, 30, 30);
+input, select, .transaction-type {
+  background-color: $background-color;
   border-radius: 5px;
   box-shadow: none;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(217, 245, 248, 1);
   text-align: center;
+  font-size: 12px;
 }
+
+.read-only {
+  border: none;
+  cursor: default;
+  background-color: $background-color;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(217, 245, 248, 1);
+}
+
+
+.amount {
+  width: 50px;
+}
+
+.token {
+  width: 70px
+}
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+

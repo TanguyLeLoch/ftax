@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DraftTransaction, EditTransactionRequest} from "../../../core/model";
+import {SubmitTransactionRequest, Transaction} from "../../../core/model";
 import {TransactionService} from "../../../core/services/transaction.service";
 
 @Component({
@@ -9,26 +9,27 @@ import {TransactionService} from "../../../core/services/transaction.service";
 })
 export class TransactionItemComponent implements OnInit {
 
-  @Input() transaction!: DraftTransaction;
+  @Input() transaction!: Transaction;
   editMode!: boolean;
 
   txDate!: string;
   txTime!: string;
 
-  transactionTypes: DraftTransaction.TransactionTypeEnum[] = Object.values(DraftTransaction.TransactionTypeEnum);
+  transactionTypes: Transaction.TransactionTypeEnum[] = Object.values(Transaction.TransactionTypeEnum);
 
   constructor(private transactionService: TransactionService) {
   }
 
   ngOnInit(): void {
 
+    this.editMode = this.transaction.state === Transaction.StateEnum.Draft;
     if (this.transaction.date) {
       this.txDate = this.transaction.date.slice(0, 10)
       this.txTime = this.transaction.date.slice(11, 23)
     }
   }
 
-  submitDraftTransaction() {
+  submitTransaction() {
 
     const date = new Date(this.txDate + 'T' + this.txTime)
     console.log(this.txDate, this.txTime)
@@ -36,7 +37,7 @@ export class TransactionItemComponent implements OnInit {
     this.transaction.date = date.toISOString()
     console.log(this.transaction.date)
 
-    const request: EditTransactionRequest = {
+    const request: SubmitTransactionRequest = {
       id: this.transaction.id,
       date: this.transaction.date!,
       transactionType: this.transaction.transactionType,
@@ -56,4 +57,11 @@ export class TransactionItemComponent implements OnInit {
   }
 
 
+  editTransaction() {
+
+  }
+
+  delete() {
+
+  }
 }
