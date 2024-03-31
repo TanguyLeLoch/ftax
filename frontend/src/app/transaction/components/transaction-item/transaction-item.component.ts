@@ -60,10 +60,7 @@ export class TransactionItemComponent implements OnInit {
       this.transaction.tokenFee = 'DUMMY'
     }
     const date = new Date(this.txDate + 'T' + this.txTime)
-    console.log(this.txDate, this.txTime)
-    console.log(date)
     this.transaction.date = date.toISOString()
-    console.log(this.transaction.date)
 
     const request: SubmitTransactionRequest = {
       id: this.transaction.id,
@@ -77,11 +74,7 @@ export class TransactionItemComponent implements OnInit {
       tokenFee: this.transaction.tokenFee!,
       externalId: this.transaction.externalId
     }
-    this.transactionService.submitDraftTransaction(request).subscribe()
-  }
-
-  onChange(value: any) {
-    console.log(value)
+    this.transactionService.submitDraftTransaction(request)
   }
 
   editTransaction() {

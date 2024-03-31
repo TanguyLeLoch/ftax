@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../../core/services/transaction.service";
 import {Transaction} from "../../../core/model";
-import {tap} from "rxjs";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-transaction-list',
@@ -10,21 +10,26 @@ import {tap} from "rxjs";
 })
 export class TransactionListComponent implements OnInit {
   transactions: Transaction[] = [];
+  private transactionsSub!: Subscription;
 
   constructor(private transactionService: TransactionService) {
   }
 
   ngOnInit(): void {
     this.transactionService.getTransactions()
-      .pipe(
-        tap(transactions => this.transactions = transactions)
-      ).subscribe();
+    this.transactionsSub = this.transactionService.transactions$.subscribe(
+      transactions => {
+        this.transactions = transactions;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.transactionsSub.unsubscribe();
   }
 
   addTransaction() {
-    this.transactionService.createTransactions().pipe(
-      tap(transaction => this.transactions.push(transaction))
-    ).subscribe();
+    this.transactionService.createTransactions();
   }
 
 }
