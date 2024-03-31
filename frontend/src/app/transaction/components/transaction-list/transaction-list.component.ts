@@ -15,7 +15,10 @@ export class TransactionListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.transactions = this.transactionService.getTransactions();
+    this.transactionService.getTransactions()
+      .pipe(
+        tap(transactions => this.transactions = transactions)
+      ).subscribe();
   }
 
   addTransaction() {

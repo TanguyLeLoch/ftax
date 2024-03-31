@@ -18,7 +18,7 @@ class SubmitTransactionRequestTest {
             {
                 "id": "1",
                 "transactionType": "SWAP",
-                "date": "2022-01-01T12:00:00.000+0000",
+                "date": "2022-01-01T12:00:00.000Z",
                 "token1": "BTC",
                 "token2": "ETH",
                 "tokenFee": "USD",
@@ -29,8 +29,8 @@ class SubmitTransactionRequestTest {
             }
         """.trimIndent()
 
-        val expectedDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        val expectedDate = expectedDateFormat.parse("2022-01-01T12:00:00.000+0000")
+        val expectedDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        val expectedDate = expectedDateFormat.parse("2022-01-01T12:00:00.000Z")
 
         val request: SubmitTransactionRequest = objectMapper.readValue(json)
 

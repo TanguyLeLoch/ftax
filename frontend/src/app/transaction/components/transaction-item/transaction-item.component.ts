@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DraftTransaction, EditTransactionRequest} from "../../../core/model";
 import {TransactionService} from "../../../core/services/transaction.service";
-import {format} from 'date-fns';
 
 @Component({
   selector: 'app-transaction-item',
@@ -11,6 +10,10 @@ import {format} from 'date-fns';
 export class TransactionItemComponent implements OnInit {
 
   @Input() transaction!: DraftTransaction;
+  editMode!: boolean;
+
+  txDate!: string;
+  txTime!: string;
 
   transactionTypes: DraftTransaction.TransactionTypeEnum[] = Object.values(DraftTransaction.TransactionTypeEnum);
 
@@ -18,11 +21,21 @@ export class TransactionItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (this.transaction.date) {
+      this.txDate = this.transaction.date.slice(0, 10)
+      this.txTime = this.transaction.date.slice(11, 23)
+    }
   }
 
   submitDraftTransaction() {
-    const date = Date.parse(this.transaction.date!)
-    this.transaction.date = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+
+    const date = new Date(this.txDate + 'T' + this.txTime)
+    console.log(this.txDate, this.txTime)
+    console.log(date)
+    this.transaction.date = date.toISOString()
+    console.log(this.transaction.date)
+
     const request: EditTransactionRequest = {
       id: this.transaction.id,
       date: this.transaction.date!,
@@ -37,4 +50,10 @@ export class TransactionItemComponent implements OnInit {
     }
     this.transactionService.submitDraftTransaction(request).subscribe()
   }
+
+  onChange(value: any) {
+    console.log(value)
+  }
+
+
 }

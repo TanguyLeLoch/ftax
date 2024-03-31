@@ -1,5 +1,6 @@
 package com.natu.ftax.transaction.domain
 
+import com.natu.ftax.common.exception.FunctionalException
 import java.util.*
 
 
@@ -70,7 +71,9 @@ class Transaction private constructor(val id: String) {
 
 
     fun submit(command: SubmitTransactionCommand) {
-        checkIsDraft()
+        if (state != TransactionState.DRAFT) {
+            throw FunctionalException("Transaction is not in DRAFT state")
+        }
         this.transactionType = command.transactionType
         this.date = command.date
         this.token1 = command.token1
@@ -95,11 +98,4 @@ class Transaction private constructor(val id: String) {
         requireNotNull(token2) { "Token2 cannot be null" }
         requireNotNull(tokenFee) { "TokenFee cannot be null" }
     }
-
-    private fun checkIsDraft() {
-        if (state != TransactionState.DRAFT) {
-            throw IllegalStateException("Cannot change date of a non draft transaction")
-        }
-    }
-
 }
