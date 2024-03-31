@@ -19,9 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { DraftTransaction } from '../model/draftTransaction';
-// @ts-ignore
-import { EditTransactionRequest } from '../model/editTransactionRequest';
+import { SubmitTransactionRequest } from '../model/submitTransactionRequest';
 // @ts-ignore
 import { Transaction } from '../model/transaction';
 
@@ -100,9 +98,9 @@ export class TransactionControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createDraftTransaction(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DraftTransaction>;
-    public createDraftTransaction(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DraftTransaction>>;
-    public createDraftTransaction(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DraftTransaction>>;
+    public createDraftTransaction(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Transaction>;
+    public createDraftTransaction(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Transaction>>;
+    public createDraftTransaction(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Transaction>>;
     public createDraftTransaction(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -142,7 +140,7 @@ export class TransactionControllerService {
         }
 
         let localVarPath = `/transaction/draft`;
-        return this.httpClient.request<DraftTransaction>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Transaction>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -217,16 +215,16 @@ export class TransactionControllerService {
 
     /**
      * Submit a draft transaction
-     * @param editTransactionRequest 
+     * @param submitTransactionRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public submitDraftTransaction(editTransactionRequest: EditTransactionRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public submitDraftTransaction(editTransactionRequest: EditTransactionRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public submitDraftTransaction(editTransactionRequest: EditTransactionRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public submitDraftTransaction(editTransactionRequest: EditTransactionRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (editTransactionRequest === null || editTransactionRequest === undefined) {
-            throw new Error('Required parameter editTransactionRequest was null or undefined when calling submitDraftTransaction.');
+    public submitDraftTransaction(submitTransactionRequest: SubmitTransactionRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public submitDraftTransaction(submitTransactionRequest: SubmitTransactionRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public submitDraftTransaction(submitTransactionRequest: SubmitTransactionRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public submitDraftTransaction(submitTransactionRequest: SubmitTransactionRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (submitTransactionRequest === null || submitTransactionRequest === undefined) {
+            throw new Error('Required parameter submitTransactionRequest was null or undefined when calling submitDraftTransaction.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -277,7 +275,7 @@ export class TransactionControllerService {
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: editTransactionRequest,
+                body: submitTransactionRequest,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

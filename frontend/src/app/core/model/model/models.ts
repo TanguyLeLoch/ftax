@@ -1,3 +1,2 @@
-export * from './draftTransaction';
-export * from './editTransactionRequest';
+export * from './submitTransactionRequest';
 export * from './transaction';

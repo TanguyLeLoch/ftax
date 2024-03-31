@@ -11,25 +11,19 @@
  */
 
 
-export interface Transaction { 
+export interface SubmitTransactionRequest { 
     id: string;
-    state: Transaction.StateEnum;
-    transactionType: Transaction.TransactionTypeEnum;
-    date?: string;
-    token1?: string;
-    token2?: string;
-    tokenFee?: string;
+    transactionType: SubmitTransactionRequest.TransactionTypeEnum;
+    date: string;
+    token1: string;
+    token2: string;
+    tokenFee: string;
     amount1: number;
     amount2: number;
     amountFee: number;
     externalId?: string;
 }
-export namespace Transaction {
-    export type StateEnum = 'DRAFT' | 'SUBMITTED';
-    export const StateEnum = {
-        Draft: 'DRAFT' as StateEnum,
-        Submitted: 'SUBMITTED' as StateEnum
-    };
+export namespace SubmitTransactionRequest {
     export type TransactionTypeEnum = 'TRANSFER' | 'SWAP' | 'NONE';
     export const TransactionTypeEnum = {
         Transfer: 'TRANSFER' as TransactionTypeEnum,
