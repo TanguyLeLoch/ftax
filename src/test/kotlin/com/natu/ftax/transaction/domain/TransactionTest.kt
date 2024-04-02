@@ -1,5 +1,6 @@
 package com.natu.ftax.transaction.domain
 
+import com.natu.ftax.common.exception.FunctionalException
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -81,6 +82,48 @@ class TransactionTest {
 
         Assertions.assertThat(exception.message).contains(" must not be less than 0")
     }
+
+    @Test
+    fun `should be able to edit a transaction`() {
+        val transaction = submittedTransaction()
+
+        transaction.edit()
+
+        assertEquals("abc", transaction.id)
+        assertEquals(TransactionState.DRAFT, transaction.state)
+    }
+
+    @Test
+    fun `should not be able to edit a draft transaction`() {
+        val transaction = Transaction.create("abc")
+
+        val exception = assertThrows<FunctionalException> {
+            transaction.edit()
+        }
+
+        Assertions.assertThat(exception.message).contains("Transaction is not in SUBMITTED state")
+    }
+
+    private fun submittedTransaction(): Transaction {
+        val transaction = Transaction.create("abc")
+
+        transaction.submit(
+            SubmitTransactionCommand(
+                "abc",
+                TransactionType.SWAP,
+                Date(),
+                "0x123",
+                "0x456",
+                "0x789",
+                120.0,
+                0.0,
+                0.0,
+                "0x124"
+            )
+        )
+        return transaction
+    }
+
 
     companion object {
         @JvmStatic

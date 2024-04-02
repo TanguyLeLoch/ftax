@@ -53,7 +53,6 @@ class TransactionIT {
                     }                """.trimIndent()
             )
             .post("/transaction/submit")
-        println(response.body.asString())
         response
             .then()
             .statusCode(200)
@@ -87,6 +86,43 @@ class TransactionIT {
                 "message",
                 equalTo("Transaction not found with id: non-existing-id")
             )
+    }
+
+    @Test
+    fun `should edit a transaction`() {
+        val txId = submittedTransaction()
+        given()
+            .`when`()
+            .header("Content-Type", "application/json")
+            .post("/transaction/edit/${txId}")
+            .then()
+            .statusCode(200)
+            .body("state", equalTo("DRAFT"))
+
+    }
+
+    private fun submittedTransaction(): String {
+        val txId = createDraftTransaction()
+        given()
+            .`when`()
+            .header("Content-Type", "application/json")
+            .body(
+                """
+                        {
+                            "id": "$txId",
+                            "date": "2024-02-09T23:38:00.000Z",
+                            "transactionType": "TRANSFER",
+                            "amount1": 123,
+                            "amount2": 123,
+                            "amountFee": 123,
+                            "token1": "BTC",
+                            "token2": "ETH",
+                            "tokenFee": "BTC",
+                            "externalId": "0x123"
+                        }                """.trimIndent()
+            )
+            .post("/transaction/submit")
+        return txId;
     }
 
     @Test

@@ -98,4 +98,11 @@ class Transaction private constructor(val id: String) {
         requireNotNull(token2) { "Token2 cannot be null" }
         requireNotNull(tokenFee) { "TokenFee cannot be null" }
     }
+
+    fun edit() {
+        if (state != TransactionState.SUBMITTED) {
+            throw FunctionalException("Transaction is not in SUBMITTED state")
+        }
+        this.state = TransactionState.DRAFT
+    }
 }

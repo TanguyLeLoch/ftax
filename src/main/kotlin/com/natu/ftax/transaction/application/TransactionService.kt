@@ -23,4 +23,11 @@ class TransactionService(val idGenerator: IdGenerator, val transactionRepository
         transaction.submit(request.toCommand())
         transactionRepository.save(transaction)
     }
+
+    fun editTransaction(id: String) : Transaction{
+        val transaction = transactionRepository.getTransactionById(id)
+        transaction.edit()
+        transactionRepository.save(transaction)
+        return transaction
+    }
 }

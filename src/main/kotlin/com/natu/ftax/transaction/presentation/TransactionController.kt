@@ -39,6 +39,16 @@ class TransactionController(val service: TransactionService) {
         return service.submitDraftTransaction(request)
     }
 
+    @Operation(summary = "Edit a transaction")
+    @PostMapping(
+        value = ["edit/{id}"],
+        produces = ["application/json"]
+    )
+    fun editTransaction(@PathVariable id: String):Transaction{
+        LOGGER.info("Editing transaction with id: $id")
+        return service.editTransaction(id)
+    }
+
     @Operation(summary = "Get all transactions")
     @GetMapping(
         produces = ["application/json"]
