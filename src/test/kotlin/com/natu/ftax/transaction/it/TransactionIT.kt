@@ -122,7 +122,7 @@ class TransactionIT {
                         }                """.trimIndent()
             )
             .post("/transaction/submit")
-        return txId;
+        return txId
     }
 
     @Test
