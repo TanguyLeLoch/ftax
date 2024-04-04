@@ -30,4 +30,8 @@ class TransactionService(val idGenerator: IdGenerator, val transactionRepository
         transactionRepository.save(transaction)
         return transaction
     }
+
+    fun deleteTransaction(id: String) {
+        transactionRepository.deleteTransaction(id)
+    }
 }

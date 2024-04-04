@@ -58,4 +58,15 @@ class TransactionController(val service: TransactionService) {
         LOGGER.info("Getting all transactions")
         return service.getAllTransactions()
     }
+
+    @Operation(summary = "Delete a transaction")
+    @DeleteMapping(
+        value = ["delete/{id}"],
+        produces = ["application/json"]
+    )
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteTransaction(@PathVariable id: String) {
+        LOGGER.info("Deleting transaction with id: $id")
+        service.deleteTransaction(id)
+    }
 }

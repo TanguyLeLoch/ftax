@@ -25,4 +25,8 @@ class TransactionRepositoryInMemory : TransactionRepository {
     override fun save(transaction: Transaction) {
         transactions[transaction.id] = transaction
     }
+
+    override fun deleteTransaction(id: String) {
+        transactions.remove(id)
+    }
 }

@@ -6,4 +6,5 @@ interface TransactionRepository {
     fun getTransactionById(id: String): Transaction
     fun getAllTransactions(): Array<Transaction>
     fun save(transaction: Transaction)
+    fun deleteTransaction(id: String)
 }

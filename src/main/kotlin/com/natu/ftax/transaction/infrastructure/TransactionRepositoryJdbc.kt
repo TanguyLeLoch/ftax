@@ -21,4 +21,8 @@ class TransactionRepositoryImpl(val transactionRepositoryJpa: TransactionReposit
     override fun save(transaction: Transaction) {
         transactionRepositoryJpa.save(TransactionEntity.fromDomain(transaction))
     }
+
+    override fun deleteTransaction(id: String) {
+        transactionRepositoryJpa.deleteById(id)
+    }
 }

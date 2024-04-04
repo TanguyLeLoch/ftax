@@ -78,12 +78,12 @@ export class TransactionItemComponent implements OnInit {
   }
 
   editTransaction() {
-    console.log('edit')
+    this.transactionService.editTransaction(this.transaction.id)
 
   }
 
   delete() {
-    console.log('delete')
+    this.transactionService.deleteTransaction(this.transaction.id)
   }
 
   // In your component class

@@ -41,5 +41,21 @@ export class TransactionService {
         }
       )
   }
+
+  editTransaction(id: string) {
+    this.transactionControllerService.editTransaction(id)
+      .subscribe(() => {
+          this.getTransactions();
+        }
+      )
+  }
+
+  deleteTransaction(id: string) {
+    this.transactionControllerService.deleteTransaction(id)
+      .subscribe(() => {
+          this.getTransactions();
+        }
+      )
+  }
 }
 

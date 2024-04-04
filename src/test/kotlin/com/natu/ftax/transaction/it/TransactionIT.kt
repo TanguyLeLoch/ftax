@@ -5,6 +5,7 @@ import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -101,6 +102,19 @@ class TransactionIT {
 
     }
 
+    @Test
+    fun `should delete a transaction`() {
+        val txId = submittedTransaction()
+        given()
+            .`when`()
+            .delete("/transaction/delete/${txId}")
+            .then()
+            .statusCode(200)
+
+        val txIds = getTxIds()
+        assertFalse(txIds.contains(txId))
+    }
+
     private fun submittedTransaction(): String {
         val txId = createDraftTransaction()
         given()
@@ -130,18 +144,20 @@ class TransactionIT {
         val tx1Id = createDraftTransaction()
         val tx2Id = createDraftTransaction()
 
-        val ids = given()
-            .`when`()
-            .get("/transaction")
-            .then()
-            .statusCode(200)
-            .extract()
-            .jsonPath()
-            .getList("$", Transaction::class.java)
-            .map { it.id }
+        val ids = getTxIds()
 
         assertTrue(ids.containsAll(listOf(tx1Id, tx2Id)), "The returned transactions should contain tx1 and tx2")
     }
+
+    private fun getTxIds() = given()
+        .`when`()
+        .get("/transaction")
+        .then()
+        .statusCode(200)
+        .extract()
+        .jsonPath()
+        .getList("$", Transaction::class.java)
+        .map { it.id }
 
 
     private fun createDraftTransaction(): String {
