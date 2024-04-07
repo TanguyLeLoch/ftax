@@ -4,14 +4,16 @@ import com.natu.ftax.IDgenerator.domain.IdGenerator
 import com.natu.ftax.transaction.domain.Token
 import com.natu.ftax.transaction.domain.Transaction
 
-class LedgerEntry private constructor(
+class LedgerEntry (
     val id: String,
     val balances: MutableMap<Token, Balance>
 ) {
     companion object {
         fun create(id: String, previousEntry: LedgerEntry, tx:Transaction, idGenerator: IdGenerator): LedgerEntry {
             val balances = mutableMapOf<Token, Balance>()
-            balances.putAll(previousEntry.balances)
+            for ((key, value) in previousEntry.balances) {
+                balances[key] = Balance(idGenerator.generate(), value.amount, value.token)
+            }
             val ledgerEntry = LedgerEntry(id, balances)
             ledgerEntry.adjustBalanceIn(tx , idGenerator.generate())
             ledgerEntry.adjustBalanceOut(tx, idGenerator.generate())
@@ -23,6 +25,7 @@ class LedgerEntry private constructor(
             return LedgerEntry(id, mutableMapOf())
         }
     }
+
 
     private fun adjustBalanceIn(transaction: Transaction, balanceId : String) {
         if (transaction.amountIn == 0.0) return

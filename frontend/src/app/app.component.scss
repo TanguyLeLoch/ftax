@@ -1,0 +1,23 @@
+@import "variables";
+
+.router-links {
+  display: flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+  color: $font-color;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+li {
+  list-style: none;
+}
+
+.active-link {
+  text-decoration: underline;
+}
+
