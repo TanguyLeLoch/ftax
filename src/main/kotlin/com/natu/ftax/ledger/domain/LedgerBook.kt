@@ -7,5 +7,4 @@ class LedgerBook private constructor(val id: String, val ledgerEntries: MutableL
         }
     }
 
-
 }

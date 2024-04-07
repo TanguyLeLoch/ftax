@@ -13,20 +13,20 @@ class Transaction private constructor(val id: String) {
         private set
     var date: Date? = null
         private set
-    var token1: Token? = null
+    var tokenIn: Token? = null
         private set
-    var token2: Token? = null
+    var tokenOut: Token? = null
         private set
     var tokenFee: Token? = null
         private set
-    var amount1 = 0.0
+    var amountIn = 0.0
         private set(value) {
-            require(value >= 0) { "Amount1 must not be less than 0" }
+            require(value >= 0) { "AmountIn must not be less than 0" }
             field = value
         }
-    var amount2 = 0.0
+    var amountOut = 0.0
         private set(value) {
-            require(value >= 0) { "Amount2 must not be less than 0" }
+            require(value >= 0) { "AmountOut must not be less than 0" }
             field = value
         }
     var amountFee = 0.0
@@ -40,22 +40,22 @@ class Transaction private constructor(val id: String) {
         state: TransactionState,
         transactionType: TransactionType,
         date: Date?,
-        token1: Token?,
-        token2: Token?,
+        tokenIn: Token?,
+        tokenOut: Token?,
         tokenFee: Token?,
-        amount1: Double,
-        amount2: Double,
+        amountIn: Double,
+        amountOut: Double,
         amountFee: Double,
         externalId: String?
     ) : this(id) {
         this.state = state
         this.transactionType = transactionType
         this.date = date
-        this.token1 = token1
-        this.token2 = token2
+        this.tokenIn = tokenIn
+        this.tokenOut = tokenOut
         this.tokenFee = tokenFee
-        this.amount1 = amount1
-        this.amount2 = amount2
+        this.amountIn = amountIn
+        this.amountOut = amountOut
         this.amountFee = amountFee
         this.externalId = externalId
     }
@@ -76,11 +76,11 @@ class Transaction private constructor(val id: String) {
         }
         this.transactionType = command.transactionType
         this.date = command.date
-        this.token1 = command.token1
-        this.token2 = command.token2
+        this.tokenIn = command.tokenIn
+        this.tokenOut = command.tokenOut
         this.tokenFee = command.tokenFee
-        this.amount1 = command.amount1
-        this.amount2 = command.amount2
+        this.amountIn = command.amountIn
+        this.amountOut = command.amountOut
         this.amountFee = command.amountFee
         this.externalId = command.externalId
         checkNoNullValues()
@@ -90,12 +90,12 @@ class Transaction private constructor(val id: String) {
     private fun checkNoNullValues() {
         require(id.isNotBlank()) { "ID cannot be blank" }
         require(transactionType != TransactionType.NONE) { "Transaction type cannot be NONE" }
-        require(amount1 >= 0) { "Amount1 must not be less than 0" }
-        require(amount2 >= 0) { "Amount2 must not be less than 0" }
+        require(amountIn >= 0) { "AmountIn must not be less than 0" }
+        require(amountOut >= 0) { "AmountOut must not be less than 0" }
         require(amountFee >= 0) { "AmountFee must not be less than 0" }
         requireNotNull(date) { "Date cannot be null" }
-        requireNotNull(token1) { "Token1 cannot be null" }
-        requireNotNull(token2) { "Token2 cannot be null" }
+        requireNotNull(tokenIn) { "TokenIn cannot be null" }
+        requireNotNull(tokenOut) { "TokenOut cannot be null" }
         requireNotNull(tokenFee) { "TokenFee cannot be null" }
     }
 

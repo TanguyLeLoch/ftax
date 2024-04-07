@@ -42,19 +42,19 @@ export class TransactionItemComponent implements OnInit {
     if (this.isDateInvalid()
       || this.isTimeInvalid()
       || this.isTransactionTypeInvalid()
-      || this.isAmount1Invalid()
-      || this.isAmount2Invalid()
+      || this.isAmountInInvalid()
+      || this.isAmountOutInvalid()
       || this.isAmountFeeInvalid()
-      || this.isToken1Invalid()
-      || this.isToken2Invalid()
+      || this.isTokenInInvalid()
+      || this.isTokenOutInvalid()
       || this.isTokenFeeInvalid()) {
       return;
     }
-    if (!this.transaction.token1) {
-      this.transaction.token1 = 'DUMMY'
+    if (!this.transaction.tokenIn) {
+      this.transaction.tokenIn = 'DUMMY'
     }
-    if (!this.transaction.token2) {
-      this.transaction.token2 = 'DUMMY'
+    if (!this.transaction.tokenOut) {
+      this.transaction.tokenOut = 'DUMMY'
     }
     if (!this.transaction.tokenFee) {
       this.transaction.tokenFee = 'DUMMY'
@@ -66,11 +66,11 @@ export class TransactionItemComponent implements OnInit {
       id: this.transaction.id,
       date: this.transaction.date!,
       transactionType: this.transaction.transactionType,
-      amount1: this.transaction.amount1,
-      amount2: this.transaction.amount2,
+      amountIn: this.transaction.amountIn,
+      amountOut: this.transaction.amountOut,
       amountFee: this.transaction.amountFee,
-      token1: this.transaction.token1!,
-      token2: this.transaction.token2!,
+      tokenIn: this.transaction.tokenIn!,
+      tokenOut: this.transaction.tokenOut!,
       tokenFee: this.transaction.tokenFee!,
       externalId: this.transaction.externalId
     }
@@ -104,24 +104,24 @@ export class TransactionItemComponent implements OnInit {
     return this.submitted && this.transaction.transactionType === TransactionTypeEnum.None;
   }
 
-  isAmount1Invalid(): boolean {
-    return this.submitted && this.transaction.amount1 < 0;
+  isAmountInInvalid(): boolean {
+    return this.submitted && this.transaction.amountIn < 0;
   }
 
-  isAmount2Invalid(): boolean {
-    return this.submitted && this.transaction.amount2 < 0;
+  isAmountOutInvalid(): boolean {
+    return this.submitted && this.transaction.amountOut < 0;
   }
 
   isAmountFeeInvalid(): boolean {
     return this.submitted && this.transaction.amountFee < 0;
   }
 
-  isToken1Invalid(): boolean {
-    return this.submitted && (!this.transaction.token1 && this.transaction.amount1 !== 0);
+  isTokenInInvalid(): boolean {
+    return this.submitted && (!this.transaction.tokenIn && this.transaction.amountIn !== 0);
   }
 
-  isToken2Invalid(): boolean {
-    return this.submitted && (!this.transaction.token2 && this.transaction.amount2 !== 0);
+  isTokenOutInvalid(): boolean {
+    return this.submitted && (!this.transaction.tokenOut && this.transaction.amountOut !== 0);
   }
 
   isTokenFeeInvalid(): boolean {

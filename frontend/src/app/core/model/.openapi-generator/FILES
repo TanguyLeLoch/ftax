@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/ledgerBookController.service.ts
 api/transactionController.service.ts
 configuration.ts
 encoder.ts

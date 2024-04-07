@@ -15,11 +15,11 @@ export interface SubmitTransactionRequest {
     id: string;
     transactionType: SubmitTransactionRequest.TransactionTypeEnum;
     date: string;
-    token1: string;
-    token2: string;
+    tokenIn: string;
+    tokenOut: string;
     tokenFee: string;
-    amount1: number;
-    amount2: number;
+    amountIn: number;
+    amountOut: number;
     amountFee: number;
     externalId?: string;
 }

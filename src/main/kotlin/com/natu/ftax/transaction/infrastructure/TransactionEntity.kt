@@ -24,15 +24,15 @@ class TransactionEntity(
     @Temporal(TemporalType.TIMESTAMP)
     val date: Date? = null,
 
-    val token1: String? = null,
+    val tokenIn: String? = null,
 
-    val token2: String? = null,
+    val tokenOut: String? = null,
 
     val tokenFee: String? = null,
 
-    val amount1: Double = 0.0,
+    val amountIn: Double = 0.0,
 
-    val amount2: Double = 0.0,
+    val amountOut: Double = 0.0,
 
     val amountFee: Double = 0.0,
 
@@ -46,11 +46,11 @@ class TransactionEntity(
                 state = transaction.state,
                 transactionType = transaction.transactionType,
                 date = transaction.date,
-                token1 = transaction.token1,
-                token2 = transaction.token2,
+                tokenIn = transaction.tokenIn,
+                tokenOut = transaction.tokenOut,
                 tokenFee = transaction.tokenFee,
-                amount1 = transaction.amount1,
-                amount2 = transaction.amount2,
+                amountIn = transaction.amountIn,
+                amountOut = transaction.amountOut,
                 amountFee = transaction.amountFee,
                 externalId = transaction.externalId
             )
@@ -63,11 +63,11 @@ class TransactionEntity(
             state = state,
             transactionType = transactionType,
             date = date,
-            token1 = token1,
-            token2 = token2,
+            tokenIn = tokenIn,
+            tokenOut = tokenOut,
             tokenFee = tokenFee,
-            amount1 = amount1,
-            amount2 = amount2,
+            amountIn = amountIn,
+            amountOut = amountOut,
             amountFee = amountFee,
             externalId = externalId
         )

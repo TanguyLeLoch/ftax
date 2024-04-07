@@ -44,11 +44,11 @@ class TransactionIT {
                         "id": "$txId",
                         "date": "2024-02-09T23:38:00.000Z",
                         "transactionType": "TRANSFER",
-                        "amount1": 123,
-                        "amount2": 123,
+                        "amountIn": 123,
+                        "amountOut": 123,
                         "amountFee": 123,
-                        "token1": "BTC",
-                        "token2": "ETH",
+                        "tokenIn": "BTC",
+                        "tokenOut": "ETH",
                         "tokenFee": "BTC",
                         "externalId": "0x123"
                     }                """.trimIndent()
@@ -70,11 +70,11 @@ class TransactionIT {
                     "id": "non-existing-id",
                     "transactionType": "SWAP",
                     "date": "2022-01-01T12:00:00.000Z",
-                    "token1": "BTC",
-                    "token2": "ETH",
+                    "tokenIn": "BTC",
+                    "tokenOut": "ETH",
                     "tokenFee": "USD",
-                    "amount1": 1.0,
-                    "amount2": 2.0,
+                    "amountIn": 1.0,
+                    "amountOut": 2.0,
                     "amountFee": 0.1,
                     "externalId": "ext-123"
                 }
@@ -126,11 +126,11 @@ class TransactionIT {
                             "id": "$txId",
                             "date": "2024-02-09T23:38:00.000Z",
                             "transactionType": "TRANSFER",
-                            "amount1": 123,
-                            "amount2": 123,
+                            "amountIn": 123,
+                            "amountOut": 123,
                             "amountFee": 123,
-                            "token1": "BTC",
-                            "token2": "ETH",
+                            "tokenIn": "BTC",
+                            "tokenOut": "ETH",
                             "tokenFee": "BTC",
                             "externalId": "0x123"
                         }                """.trimIndent()
