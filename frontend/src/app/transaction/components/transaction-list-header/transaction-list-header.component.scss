@@ -19,6 +19,17 @@
 .header-token-fee {
   grid-column: 8 / 10; /* Spans the second header item across the next two columns */
 }
+.add-tx {
+  grid-column: 11 / 13; /* Spans the second header item across the next two columns */
+
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 
 span {
   text-align: center;
@@ -27,6 +38,4 @@ span {
   border-bottom: solid 1px $font-color;
 }
 
-.dummy {
-  visibility: hidden;
-}
+

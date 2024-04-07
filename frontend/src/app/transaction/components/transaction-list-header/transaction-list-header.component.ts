@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TransactionService} from "../../../core/services/transaction.service";
 
 @Component({
   selector: 'app-transaction-list-header',
@@ -9,4 +10,9 @@ import { Component } from '@angular/core';
 })
 export class TransactionListHeaderComponent {
 
+  constructor(private transactionService: TransactionService) {}
+
+  addTransaction() {
+    this.transactionService.createTransactions();
+  }
 }

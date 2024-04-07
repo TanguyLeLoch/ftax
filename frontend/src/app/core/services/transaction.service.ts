@@ -18,9 +18,8 @@ export class TransactionService {
 
   createTransactions() {
     this.transactionControllerService.createDraftTransaction()
-      .subscribe((transaction: Transaction) => {
-          this.transactions.push(transaction);
-          this.transactionsSubject.next(this.transactions);
+      .subscribe(() => {
+          this.getTransactions();
         }
       )
   }
@@ -29,6 +28,7 @@ export class TransactionService {
     this.transactionControllerService.getAllTransactions()
       .subscribe((transactions: Transaction[]) => {
           this.transactions = transactions;
+          this.orderTx()
           this.transactionsSubject.next(this.transactions);
         }
       );
@@ -56,6 +56,31 @@ export class TransactionService {
           this.getTransactions();
         }
       )
+  }
+
+  orderTransactionsByDraftFirst() {
+    this.transactions = this.transactions.sort((a, b) => {
+      if (a.state === 'DRAFT') {
+        return -1;
+      } else if (b.state === 'DRAFT') {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
+  orderTransactionsByDate() {
+    this.transactions = this.transactions.sort((a, b) => {
+      if (!a.date || !b.date) {
+        return 0;
+      }
+      return new Date(b.date!).getTime() - new Date(a.date!).getTime();
+    });
+  }
+
+  orderTx() {
+    this.orderTransactionsByDate();
+    this.orderTransactionsByDraftFirst();
   }
 }
 
