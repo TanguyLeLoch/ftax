@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {LedgerService} from "../../../core/services/ledger.service";
+import {LedgerBookControllerService} from "../../../core/model";
+import {publish} from "rxjs";
 
 @Component({
   selector: 'app-ledger-book',
@@ -9,4 +12,10 @@ import { Component } from '@angular/core';
 })
 export class LedgerBookComponent {
 
+  ledgerBook: any;
+
+  constructor(private ledgerService: LedgerService) {
+
+  }
 }
+

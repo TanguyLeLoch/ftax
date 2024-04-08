@@ -8,6 +8,9 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/balance.ts
+model/ledgerBook.ts
+model/ledgerEntry.ts
 model/models.ts
 model/submitTransactionRequest.ts
 model/transaction.ts

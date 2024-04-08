@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class LedgerBookService (val idGenerator: IdGenerator, val ledgerBookRepository: LedgerBookRepository, val transactionService: TransactionService){
 
-    fun generateLedgerBook() {
+    fun generateLedgerBook() : LedgerBook {
 
         val ledgerBook = LedgerBook.create(idGenerator.generate())
         val txs = transactionService.getAllTransactions()
@@ -19,7 +19,7 @@ class LedgerBookService (val idGenerator: IdGenerator, val ledgerBookRepository:
             ledgerBook.ledgerEntries.add(LedgerEntry.create(idGenerator.generate(), ledgerBook.ledgerEntries.last(), tx, idGenerator))
         }
         ledgerBookRepository.save(ledgerBook)
-
+        return ledgerBook
     }
 
     fun getAllLedgerBook(): MutableList<LedgerBook> {

@@ -16,8 +16,8 @@ class LedgerBookController(val service: LedgerBookService) {
         produces = ["application/json"]
     )
     @ResponseStatus(HttpStatus.CREATED)
-    fun generateLedgerBook() {
-        service.generateLedgerBook()
+    fun generateLedgerBook() : LedgerBook{
+        return service.generateLedgerBook()
     }
 
     @Operation(summary = "Get the ledger book")
