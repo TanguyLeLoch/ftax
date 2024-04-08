@@ -8,4 +8,8 @@ class BalanceRepositoryJdbc(val balanceRepositoryJpa : BalanceRepositoryJpa): Ba
     override fun save(balances: Collection<Balance>) {
         balanceRepositoryJpa.saveAll(balances.map { BalanceEntity.fromDomain(it) })
     }
+
+    override fun cleanOrphanBalances() {
+          balanceRepositoryJpa.cleanOrphanBalances()
+    }
 }

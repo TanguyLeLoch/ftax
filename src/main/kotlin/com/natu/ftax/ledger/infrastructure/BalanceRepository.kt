@@ -4,4 +4,5 @@ import com.natu.ftax.ledger.domain.Balance
 
 interface BalanceRepository {
     fun save(balances: Collection<Balance>)
+    fun cleanOrphanBalances()
 }
