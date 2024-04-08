@@ -13,7 +13,7 @@ class BalanceEntity (
     val token: Token
 ) {
     // No-arg constructor required by JPA
-    protected constructor() : this(id = "dum", amount = 0.0, token = "")
+    constructor() : this(id = "dum", amount = 0.0, token = "")
     companion object {
         fun fromDomain(balance: Balance): BalanceEntity {
             return BalanceEntity(balance.id, balance.amount, balance.token)

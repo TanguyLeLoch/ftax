@@ -1,9 +1,10 @@
 package com.natu.ftax.ledger.infrastructure
 
 
-
 import com.natu.ftax.ledger.domain.LedgerEntry
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 
 @Entity
 @Table(name = "ledger_entries")
@@ -12,11 +13,12 @@ class LedgerEntryEntity(
     @Id
     val id: String,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "ledger_book_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     var ledgerBook: LedgerBookEntity,
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "ledger_entry_balance",
         joinColumns = [JoinColumn(name = "ledger_entry_id")],
@@ -24,12 +26,13 @@ class LedgerEntryEntity(
     )
     val balances: MutableList<BalanceEntity>
 
-){
+) {
 
     // No-arg constructor required by JPA
-    protected constructor() : this(id = "dum", ledgerBook = LedgerBookEntity("dum"), balances = mutableListOf())
-companion object {
-        fun fromDomain(ledgerEntry: LedgerEntry, ledgerBookId : String): LedgerEntryEntity {
+    constructor() : this(id = "dum", ledgerBook = LedgerBookEntity("dum"), balances = mutableListOf())
+
+    companion object {
+        fun fromDomain(ledgerEntry: LedgerEntry, ledgerBookId: String): LedgerEntryEntity {
             return LedgerEntryEntity(
                 id = ledgerEntry.id,
                 ledgerBook = LedgerBookEntity(ledgerBookId),

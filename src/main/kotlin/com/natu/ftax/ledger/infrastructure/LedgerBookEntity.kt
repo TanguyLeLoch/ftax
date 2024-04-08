@@ -4,12 +4,12 @@ import com.natu.ftax.ledger.domain.LedgerBook
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "Ledger_Books")
+@Table(name = "ledger_books")
 class LedgerBookEntity(
     @Id
     val id: String,
 
-    @OneToMany(mappedBy = "ledgerBook", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ledgerBook", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     val ledgerEntries: MutableList<LedgerEntryEntity> = mutableListOf()
 ) {
     // No-arg constructor required by JPA

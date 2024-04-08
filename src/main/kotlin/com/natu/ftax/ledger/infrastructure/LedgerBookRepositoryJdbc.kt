@@ -2,16 +2,27 @@ package com.natu.ftax.ledger.infrastructure
 
 import LedgerBookRepository
 import com.natu.ftax.ledger.domain.LedgerBook
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Repository
 
 
 @Repository
-class LedgerBookRepositoryImpl(val ledgerBookRepositoryJpa: LedgerBookRepositoryJpa) : LedgerBookRepository {
+class LedgerBookRepositoryJdbc(
+    val ledgerBookRepositoryJpa: LedgerBookRepositoryJpa,
+    val ledgerEntryRepository: LedgerEntryRepository
+) : LedgerBookRepository {
+    @Transactional
     override fun save(ledgerBook: LedgerBook) {
-        ledgerBookRepositoryJpa.save(LedgerBookEntity.fromDomain(ledgerBook))
+        ledgerBook.ledgerEntries.forEach {
+            ledgerEntryRepository.save(it, ledgerBook.id)
+        }
     }
 
     override fun get(): MutableList<LedgerBook> {
-       return ledgerBookRepositoryJpa.findAll().map { it.toDomain() }.toMutableList()
+        return ledgerBookRepositoryJpa.findAll().map { it.toDomain() }.toMutableList()
+    }
+
+    override fun delete(ledgerBookId: String) {
+        ledgerBookRepositoryJpa.deleteById(ledgerBookId)
     }
 }

@@ -29,6 +29,16 @@ class LedgerBookController(val service: LedgerBookService) {
         return service.getAllLedgerBook()
     }
 
+    @Operation(summary = "Delete the ledger book")
+    @DeleteMapping(
+        value = ["{ledgerBookId}"],
+        produces = ["application/json"]
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteLedgerBook(@PathVariable ledgerBookId: String) {
+        service.deleteLedgerBook(ledgerBookId)
+    }
+
 
 
 }

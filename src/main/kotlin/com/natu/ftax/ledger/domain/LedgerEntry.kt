@@ -11,9 +11,7 @@ class LedgerEntry (
     companion object {
         fun create(id: String, previousEntry: LedgerEntry, tx:Transaction, idGenerator: IdGenerator): LedgerEntry {
             val balances = mutableMapOf<Token, Balance>()
-            for ((key, value) in previousEntry.balances) {
-                balances[key] = Balance(idGenerator.generate(), value.amount, value.token)
-            }
+            balances.putAll(previousEntry.balances)
             val ledgerEntry = LedgerEntry(id, balances)
             ledgerEntry.adjustBalanceIn(tx , idGenerator.generate())
             ledgerEntry.adjustBalanceOut(tx, idGenerator.generate())

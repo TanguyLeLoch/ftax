@@ -26,4 +26,8 @@ class LedgerBookService (val idGenerator: IdGenerator, val ledgerBookRepository:
         return ledgerBookRepository.get()
 
     }
+
+    fun deleteLedgerBook(ledgerBookId: String) {
+        ledgerBookRepository.delete(ledgerBookId)
+    }
 }
