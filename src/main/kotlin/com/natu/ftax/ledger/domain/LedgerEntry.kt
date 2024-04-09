@@ -3,16 +3,18 @@ package com.natu.ftax.ledger.domain
 import com.natu.ftax.IDgenerator.domain.IdGenerator
 import com.natu.ftax.transaction.domain.Token
 import com.natu.ftax.transaction.domain.Transaction
+import java.util.Date
 
 class LedgerEntry (
     val id: String,
-    val balances: MutableMap<Token, Balance>
+    val balances: MutableMap<Token, Balance>,
+    val date: Date
 ) {
     companion object {
         fun create(id: String, previousEntry: LedgerEntry, tx:Transaction, idGenerator: IdGenerator): LedgerEntry {
             val balances = mutableMapOf<Token, Balance>()
             balances.putAll(previousEntry.balances)
-            val ledgerEntry = LedgerEntry(id, balances)
+            val ledgerEntry = LedgerEntry(id, balances, tx.date!!)
             ledgerEntry.adjustBalanceIn(tx , idGenerator.generate())
             ledgerEntry.adjustBalanceOut(tx, idGenerator.generate())
             ledgerEntry.adjustBalanceFee(tx, idGenerator.generate())
@@ -20,7 +22,7 @@ class LedgerEntry (
         }
 
         fun first(id: String): LedgerEntry {
-            return LedgerEntry(id, mutableMapOf())
+            return LedgerEntry(id, mutableMapOf(), Date())
         }
     }
 

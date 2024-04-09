@@ -4,6 +4,7 @@ import com.natu.ftax.ledger.application.LedgerBookService
 import com.natu.ftax.ledger.domain.LedgerBook
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -25,8 +26,9 @@ class LedgerBookController(val service: LedgerBookService) {
         produces = ["application/json"]
     )
     @ResponseStatus(HttpStatus.OK)
-    fun getLedgerBook(): MutableList<LedgerBook> {
-        return service.getAllLedgerBook()
+    fun getLedgerBook(): ResponseEntity<LedgerBook> {
+        val ledgerBook = service.getLedgerBook() ?: return ResponseEntity.noContent().build()
+        return ResponseEntity.ok(ledgerBook)
     }
 
     @Operation(summary = "Delete the ledger book")

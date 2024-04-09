@@ -21,8 +21,9 @@ class LedgerBookRepositoryJdbc(
         balanceRepository.cleanOrphanBalances()
     }
 
-    override fun get(): MutableList<LedgerBook> {
-        return ledgerBookRepositoryJpa.findAll().map { it.toDomain() }.toMutableList()
+    override fun get(): LedgerBook? {
+        val result =  ledgerBookRepositoryJpa.findAll().map { it.toDomain() }.toMutableList()
+        return if (result.isEmpty()) null else result[0]
     }
 
     @Transactional
