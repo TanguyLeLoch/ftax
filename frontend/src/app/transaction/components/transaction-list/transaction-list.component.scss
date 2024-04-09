@@ -12,6 +12,8 @@
 
 .tx-list-container {
   background-color: $background-color;
+  width: 80%;
+
   min-height: 30px;
   border-radius: 10px;
   box-shadow: #000000 0 0 5px 0;
@@ -25,19 +27,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  font-size: 20px;
+  font-size: 22px;
   color: #fff;
-  padding: 20px;
+  padding-top: 20px;
 }
 
 .btn-add-tx {
   margin-top: 20px;
   padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
 }

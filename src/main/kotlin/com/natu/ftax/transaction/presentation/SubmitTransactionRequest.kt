@@ -23,15 +23,15 @@ class SubmitTransactionRequest(
     @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     val date: Date,
 
-    val token1: String,
-    val token2: String,
+    val tokenIn: String,
+    val tokenOut: String,
     val tokenFee: String,
 
     @field:PositiveOrZero(message = "Amount must be positive")
-    val amount1: Double,
+    val amountIn: Double,
 
     @field:PositiveOrZero(message = "Amount must be positive")
-    val amount2: Double,
+    val amountOut: Double,
 
     @field:PositiveOrZero(message = "Fee must be positive")
     val amountFee: Double,
@@ -44,11 +44,11 @@ class SubmitTransactionRequest(
         id = id,
         transactionType = transactionType,
         date = date,
-        token1 = token1,
-        token2 = token2,
+        tokenIn = tokenIn,
+        tokenOut = tokenOut,
         tokenFee = tokenFee,
-        amount1 = amount1,
-        amount2 = amount2,
+        amountIn = amountIn,
+        amountOut = amountOut,
         amountFee = amountFee,
         externalId = externalId
     )

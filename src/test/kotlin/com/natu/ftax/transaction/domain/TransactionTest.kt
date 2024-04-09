@@ -43,11 +43,11 @@ class TransactionTest {
         assertEquals("abc", transaction.id)
         assertEquals(TransactionState.SUBMITTED, transaction.state)
         assertEquals(TransactionType.SWAP, transaction.transactionType)
-        assertEquals("0x123", transaction.token1)
-        assertEquals("0x456", transaction.token2)
+        assertEquals("0x123", transaction.tokenIn)
+        assertEquals("0x456", transaction.tokenOut)
         assertEquals("0x789", transaction.tokenFee)
-        assertEquals(120.0, transaction.amount1)
-        assertEquals(0.0, transaction.amount2)
+        assertEquals(120.0, transaction.amountIn)
+        assertEquals(0.0, transaction.amountOut)
         assertEquals(0.0, transaction.amountFee)
         assertEquals("0x124", transaction.externalId)
 
@@ -56,8 +56,8 @@ class TransactionTest {
     @ParameterizedTest
     @MethodSource("amountArguments")
     fun `should not be able to submit a transaction with negative amounts`(
-        amount1: Double,
-        amount2: Double,
+        amountIn: Double,
+        amountOut: Double,
         amountFee: Double
     ) {
         val tx = Transaction.create("anId")
@@ -70,8 +70,8 @@ class TransactionTest {
                     "0x123",
                     "0x456",
                     "0x789",
-                    amount1,
-                    amount2,
+                    amountIn,
+                    amountOut,
                     amountFee,
                     "0x123"
                 )

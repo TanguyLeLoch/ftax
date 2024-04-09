@@ -24,22 +24,22 @@
   <span>{{transaction.transactionType}}</span>
 </div>
 
-<input [(ngModel)]="transaction.amount1"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isAmount1Invalid()}"
-       [readonly]="!editMode" class="amount" id="amount1" name="amount1" required type="number">
+<input [(ngModel)]="transaction.amountIn"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isAmountInInvalid()}"
+       [readonly]="!editMode" class="amount" id="amountIn" name="amountIn" required type="number">
 
-<input [(ngModel)]="transaction.token1"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isToken1Invalid()}"
-       [readonly]="!editMode" class="token" id="token1" name="token1" required type="text">
+<input [(ngModel)]="transaction.tokenIn"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isTokenInInvalid()}"
+       [readonly]="!editMode" class="token" id="tokenIn" name="tokenIn" required type="text">
 
-<input [(ngModel)]="transaction.amount2"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isAmount2Invalid()}"
+<input [(ngModel)]="transaction.amountOut"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isAmountOutInvalid()}"
        [readonly]="!editMode"
-       class="amount" id="amount2" name="amount2" required type="number">
+       class="amount" id="amountOut" name="amountOut" required type="number">
 
-<input [(ngModel)]="transaction.token2"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isToken2Invalid()}"
-       [readonly]="!editMode" class="token" id="token2" name="token2"
+<input [(ngModel)]="transaction.tokenOut"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isTokenOutInvalid()}"
+       [readonly]="!editMode" class="token" id="tokenOut" name="tokenOut"
        required type="text">
 
 <input [(ngModel)]="transaction.amountFee"

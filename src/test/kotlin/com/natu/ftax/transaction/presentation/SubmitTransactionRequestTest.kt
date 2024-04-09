@@ -19,11 +19,11 @@ class SubmitTransactionRequestTest {
                 "id": "1",
                 "transactionType": "SWAP",
                 "date": "2022-01-01T12:00:00.000Z",
-                "token1": "BTC",
-                "token2": "ETH",
+                "tokenIn": "BTC",
+                "tokenOut": "ETH",
                 "tokenFee": "USD",
-                "amount1": 1.0,
-                "amount2": 2.0,
+                "amountIn": 1.0,
+                "amountOut": 2.0,
                 "amountFee": 0.1,
                 "externalId": "ext-123"
             }
@@ -37,11 +37,11 @@ class SubmitTransactionRequestTest {
         assertEquals("1", request.id)
         assertEquals(TransactionType.SWAP, request.transactionType)
         assertEquals(expectedDate, request.date)
-        assertEquals("BTC", request.token1)
-        assertEquals("ETH", request.token2)
+        assertEquals("BTC", request.tokenIn)
+        assertEquals("ETH", request.tokenOut)
         assertEquals("USD", request.tokenFee)
-        assertEquals(1.0, request.amount1)
-        assertEquals(2.0, request.amount2)
+        assertEquals(1.0, request.amountIn)
+        assertEquals(2.0, request.amountOut)
         assertEquals(0.1, request.amountFee)
         assertEquals("ext-123", request.externalId)
     }

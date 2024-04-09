@@ -1,0 +1,18 @@
+<div class="container">
+    <button (click)="generateLedgerBook()" class="btn-generate-ledger-book btn-green"> generate Ledger book</button>
+
+    <div *ngIf="ledgerBook">
+        <input [(ngModel)]="date" (blur)="onDateChange()"
+               id="date"
+               name="date"
+               required
+               type="date">
+    </div>
+
+    <div *ngFor="let bal of balances">
+        {{bal.amount}} - {{bal.token}}
+    </div>
+
+
+
+</div>

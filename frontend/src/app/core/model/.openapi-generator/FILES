@@ -2,11 +2,15 @@
 README.md
 api.module.ts
 api/api.ts
+api/ledgerBookController.service.ts
 api/transactionController.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/balance.ts
+model/ledgerBook.ts
+model/ledgerEntry.ts
 model/models.ts
 model/submitTransactionRequest.ts
 model/transaction.ts

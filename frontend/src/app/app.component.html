@@ -1,4 +1,8 @@
 <main>
   <app-navbar></app-navbar>
-  <app-transaction-list></app-transaction-list>
+  <ul class="router-links">
+    <li><a routerLink="/transactions" routerLinkActive="active-link">Transactions</a></li>
+    <li><a routerLink="/ledger" routerLinkActive="active-link">Ledger-book</a></li>
+  </ul>
+  <router-outlet></router-outlet>
 </main>
