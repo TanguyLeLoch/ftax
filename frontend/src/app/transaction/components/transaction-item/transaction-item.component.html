@@ -19,8 +19,7 @@
         name="transactionType" required>
   <option *ngFor="let transactionType of transactionTypes" [value]="transactionType">{{transactionType}}</option>
 </select>
-<div *ngIf="!editMode" class="read-only center" id="transactionType-read-only"
-     name="transactionType">
+<div *ngIf="!editMode" class="read-only center" id="transactionType-read-only">
   <span>{{transaction.transactionType}}</span>
 </div>
 

@@ -23,7 +23,6 @@ export class TransactionItemComponent implements OnInit {
   submitted = false;
 
   transactionTypes: Transaction.TransactionTypeEnum[] = Object.values(Transaction.TransactionTypeEnum);
-  protected readonly TransactionTypeEnum = TransactionTypeEnum;
 
   constructor(private transactionService: TransactionService) {
   }
@@ -101,30 +100,30 @@ export class TransactionItemComponent implements OnInit {
   }
 
   isTransactionTypeInvalid(): boolean {
-    return this.submitted && this.transaction.transactionType === TransactionTypeEnum.None;
+    return this.transaction.transactionType === TransactionTypeEnum.None;
   }
 
   isAmountInInvalid(): boolean {
-    return this.submitted && this.transaction.amountIn < 0;
+    return this.transaction.amountIn < 0;
   }
 
   isAmountOutInvalid(): boolean {
-    return this.submitted && this.transaction.amountOut < 0;
+    return this.transaction.amountOut < 0;
   }
 
   isAmountFeeInvalid(): boolean {
-    return this.submitted && this.transaction.amountFee < 0;
+    return this.transaction.amountFee < 0;
   }
 
   isTokenInInvalid(): boolean {
-    return this.submitted && (!this.transaction.tokenIn && this.transaction.amountIn !== 0);
+    return !this.transaction.tokenIn && this.transaction.amountIn !== 0;
   }
 
   isTokenOutInvalid(): boolean {
-    return this.submitted && (!this.transaction.tokenOut && this.transaction.amountOut !== 0);
+    return !this.transaction.tokenOut && this.transaction.amountOut !== 0;
   }
 
   isTokenFeeInvalid(): boolean {
-    return this.submitted && (!this.transaction.tokenFee && this.transaction.amountFee !== 0);
+    return !this.transaction.tokenFee && this.transaction.amountFee !== 0;
   }
 }
