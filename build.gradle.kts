@@ -33,7 +33,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    // Use H2 database only at runtime
+
     implementation("mysql:mysql-connector-java:8.0.33")
 
     implementation("org.projectlombok:lombok:1.18.30")

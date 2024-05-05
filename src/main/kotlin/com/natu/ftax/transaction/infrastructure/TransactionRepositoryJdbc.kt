@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class TransactionRepositoryImpl(val transactionRepositoryJpa: TransactionRepositoryJpa) : TransactionRepository {
+class TransactionRepositoryImpl(private val transactionRepositoryJpa: TransactionRepositoryJpa) :
+    TransactionRepository {
 
     override fun getTransactionById(id: String): Transaction {
         return transactionRepositoryJpa.findById(id).map { it.toDomain() }

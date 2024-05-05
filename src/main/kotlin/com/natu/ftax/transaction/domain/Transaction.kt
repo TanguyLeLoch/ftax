@@ -20,20 +20,13 @@ class Transaction private constructor(val id: String) {
     var tokenFee: Token? = null
         private set
     var amountIn = 0.0
-        private set(value) {
-            require(value >= 0) { "AmountIn must not be less than 0" }
-            field = value
-        }
+        private set
+
     var amountOut = 0.0
-        private set(value) {
-            require(value >= 0) { "AmountOut must not be less than 0" }
-            field = value
-        }
+        private set
+
     var amountFee = 0.0
-        private set(value) {
-            require(value >= 0) { "AmountFee must not be less than 0" }
-            field = value
-        }
+        private set
 
     constructor(
         id: String,
@@ -71,9 +64,7 @@ class Transaction private constructor(val id: String) {
 
 
     fun submit(command: SubmitTransactionCommand) {
-        if (state != TransactionState.DRAFT) {
-            throw FunctionalException("Transaction is not in DRAFT state")
-        }
+        checkIsDraft()
         this.transactionType = command.transactionType
         this.date = command.date
         this.tokenIn = command.tokenIn
@@ -104,5 +95,59 @@ class Transaction private constructor(val id: String) {
             throw FunctionalException("Transaction is not in SUBMITTED state")
         }
         this.state = TransactionState.DRAFT
+    }
+
+    fun setTransactionType(transactionType: TransactionType) {
+        checkIsDraft()
+        this.transactionType = transactionType
+    }
+
+    fun setDate(date: Date?) {
+        checkIsDraft()
+        this.date = date
+    }
+
+    fun setTokenIn(tokenIn: Token?) {
+        checkIsDraft()
+        this.tokenIn = tokenIn
+    }
+
+    fun setTokenOut(tokenOut: Token?) {
+        checkIsDraft()
+        this.tokenOut = tokenOut
+    }
+
+    fun setTokenFee(tokenFee: Token?) {
+        checkIsDraft()
+        this.tokenFee = tokenFee
+    }
+
+    fun setAmountIn(amountIn: Double) {
+        checkIsDraft()
+        require(amountIn >= 0) { "AmountIn must not be less than 0" }
+        this.amountIn = amountIn
+    }
+
+    fun setAmountOut(amountOut: Double) {
+        checkIsDraft()
+        require(amountOut >= 0) { "AmountOut must not be less than 0" }
+        this.amountOut = amountOut
+    }
+
+    fun setAmountFee(amountFee: Double) {
+        checkIsDraft()
+        require(amountFee >= 0) { "AmountFee must not be less than 0" }
+        this.amountFee = amountFee
+    }
+
+    fun setExternalId(externalId: String?) {
+        checkIsDraft()
+        this.externalId = externalId
+    }
+
+    private fun checkIsDraft() {
+        if (state != TransactionState.DRAFT) {
+            throw FunctionalException("Transaction is not in DRAFT state")
+        }
     }
 }

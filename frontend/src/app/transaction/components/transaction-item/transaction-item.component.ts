@@ -36,6 +36,10 @@ export class TransactionItemComponent implements OnInit {
     }
   }
 
+  saveDate() {
+
+  }
+
   submitTransaction() {
     this.submitted = true;
     if (this.isDateInvalid()
@@ -86,6 +90,7 @@ export class TransactionItemComponent implements OnInit {
   }
 
   // In your component class
+
   isDateInvalid(): boolean {
     if (!this.txDate) return true;
     // check has pattern yyyy-mm-dd

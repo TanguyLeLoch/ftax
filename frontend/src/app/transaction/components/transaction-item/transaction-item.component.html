@@ -3,7 +3,9 @@
        [readonly]="!editMode" class="input-type-date" id="date"
        name="date"
        required
-       type="date">
+       type="date"
+       (blur)="saveDate()"
+>
 <input [(ngModel)]="txTime"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isTimeInvalid()}"
        [readonly]="!editMode"

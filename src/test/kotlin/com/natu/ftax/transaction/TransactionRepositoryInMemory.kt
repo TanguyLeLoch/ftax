@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 
 
-@Repository
 @Primary
+@Repository
 class TransactionRepositoryInMemory : TransactionRepository {
 
     private val transactions = hashMapOf<String, Transaction>()
