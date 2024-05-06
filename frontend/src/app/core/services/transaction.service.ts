@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EditFieldRequest, SubmitTransactionRequest, Transaction, TransactionControllerService} from "../model";
 import {BehaviorSubject, catchError, map, Observable, of, tap} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -93,7 +92,7 @@ export class TransactionService {
           this.getTransactions();
         }),
         map(() => true),
-        catchError((error: HttpErrorResponse) => of(false))
+        catchError(() => of(false))
       );
   }
 }
