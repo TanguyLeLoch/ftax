@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { EditTransactionRequest } from '../model/editTransactionRequest';
+import { EditFieldRequest } from '../model/editFieldRequest';
 // @ts-ignore
 import { SubmitTransactionRequest } from '../model/submitTransactionRequest';
 // @ts-ignore
@@ -220,16 +220,16 @@ export class TransactionControllerService {
 
     /**
      * Edit a field
-     * @param editTransactionRequest 
+     * @param editFieldRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public editField(editTransactionRequest: EditTransactionRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Transaction>;
-    public editField(editTransactionRequest: EditTransactionRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Transaction>>;
-    public editField(editTransactionRequest: EditTransactionRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Transaction>>;
-    public editField(editTransactionRequest: EditTransactionRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (editTransactionRequest === null || editTransactionRequest === undefined) {
-            throw new Error('Required parameter editTransactionRequest was null or undefined when calling editField.');
+    public editField(editFieldRequest: EditFieldRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Transaction>;
+    public editField(editFieldRequest: EditFieldRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Transaction>>;
+    public editField(editFieldRequest: EditFieldRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Transaction>>;
+    public editField(editFieldRequest: EditFieldRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (editFieldRequest === null || editFieldRequest === undefined) {
+            throw new Error('Required parameter editFieldRequest was null or undefined when calling editField.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -281,7 +281,7 @@ export class TransactionControllerService {
         return this.httpClient.request<Transaction>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: editTransactionRequest,
+                body: editFieldRequest,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -1,5 +1,5 @@
 <input [(ngModel)]="txDate"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isDateInvalid()}"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid}"
        [readonly]="!editMode" class="input-type-date" id="date"
        name="date"
        required
@@ -7,18 +7,20 @@
        (blur)="saveDate()"
 >
 <input [(ngModel)]="txTime"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isTimeInvalid()}"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid}"
        [readonly]="!editMode"
        class="input-type-date"
        id=time required
        step="0.001"
-       type="time">
+       type="time"
+       (blur)="saveDate()">
 
 
 <select *ngIf="editMode" [(ngModel)]="transaction.transactionType" [disabled]="!editMode"
         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isTransactionTypeInvalid()}"
         id="transactionType"
-        name="transactionType" required>
+        name="transactionType" required
+        (blur)="saveTransactionType()">
   <option *ngFor="let transactionType of transactionTypes" [value]="transactionType">{{transactionType}}</option>
 </select>
 <div *ngIf="!editMode" class="read-only center" id="transactionType-read-only">
@@ -27,35 +29,37 @@
 
 <input [(ngModel)]="transaction.amountIn"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':submitted && isAmountInInvalid()}"
-       [readonly]="!editMode" class="amount" id="amountIn" name="amountIn" required type="number">
+       [readonly]="!editMode" class="amount" id="amountIn" name="amountIn" required type="number"
+       (blur)="saveAmountIn()"
+>
 
 <input [(ngModel)]="transaction.tokenIn"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isTokenInInvalid()}"
-       [readonly]="!editMode" class="token" id="tokenIn" name="tokenIn" required type="text">
+       [readonly]="!editMode" class="token" id="tokenIn" name="tokenIn" required type="text" (blur)="saveTokenIn()">
 
 <input [(ngModel)]="transaction.amountOut"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isAmountOutInvalid()}"
        [readonly]="!editMode"
-       class="amount" id="amountOut" name="amountOut" required type="number">
+       class="amount" id="amountOut" name="amountOut" required type="number" (blur)="saveAmountOut()">
 
 <input [(ngModel)]="transaction.tokenOut"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isTokenOutInvalid()}"
        [readonly]="!editMode" class="token" id="tokenOut" name="tokenOut"
-       required type="text">
+       required type="text" (blur)="saveTokenOut()">
 
 <input [(ngModel)]="transaction.amountFee"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isAmountFeeInvalid()}"
        [readonly]="!editMode"
-       class="amount" id="amountFee" name="amountFee" required type="number">
+       class="amount" id="amountFee" name="amountFee" required type="number" (blur)="saveAmountFee()">
 
 <input [(ngModel)]="transaction.tokenFee"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode,'invalid':submitted && isTokenFeeInvalid()}"
        [readonly]="!editMode" class="token" id="tokenFee" name="tokenFee"
-       required type="text">
+       required type="text" (blur)="saveTokenFee()">
 
 <input [(ngModel)]="transaction.externalId" [ngClass]="{'read-only': !editMode, 'edit-mode': editMode}"
        [readonly]="!editMode" id="externalId" name="externalId"
-       required type="text">
+       required type="text" (blur)="saveExternalId()">
 
 <div (click)="submitTransaction()" *ngIf="editMode" class="button-icon" role="button" tabindex="0">
   <fa-icon [icon]="faCheck"></fa-icon>

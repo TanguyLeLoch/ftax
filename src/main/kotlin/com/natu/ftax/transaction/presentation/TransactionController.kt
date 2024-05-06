@@ -44,7 +44,7 @@ class TransactionController(val service: TransactionService) {
         value = ["edit"],
         produces = ["application/json"]
     )
-    fun editField(@Valid @RequestBody request: EditTransactionRequest): Transaction {
+    fun editField(@Valid @RequestBody request: EditFieldRequest): Transaction {
         LOGGER.info("Editing field with id: ${request.id}")
         return service.editField(request)
     }

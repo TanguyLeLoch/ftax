@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull
 import java.util.*
 
 
-class EditTransactionRequest(
+class EditFieldRequest(
 
     @field:NotNull(value = "Id cannot be null")
     val id: String,

@@ -2,7 +2,7 @@ package com.natu.ftax.transaction.application
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator
 import com.natu.ftax.transaction.domain.Transaction
-import com.natu.ftax.transaction.presentation.EditTransactionRequest
+import com.natu.ftax.transaction.presentation.EditFieldRequest
 import com.natu.ftax.transaction.presentation.SubmitTransactionRequest
 import org.springframework.stereotype.Service
 
@@ -25,7 +25,7 @@ class TransactionService(val idGenerator: IdGenerator, val transactionRepository
         transactionRepository.save(transaction)
     }
 
-    fun editField(request: EditTransactionRequest): Transaction {
+    fun editField(request: EditFieldRequest): Transaction {
         val transaction = transactionRepository.getTransactionById(request.id)
         request.toCommand().execute(transaction)
         transactionRepository.save(transaction)

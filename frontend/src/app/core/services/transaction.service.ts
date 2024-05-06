@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {SubmitTransactionRequest, Transaction, TransactionControllerService} from "../model";
-import {BehaviorSubject} from "rxjs";
+import {EditFieldRequest, SubmitTransactionRequest, Transaction, TransactionControllerService} from "../model";
+import {BehaviorSubject, catchError, map, Observable, of, tap} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,7 @@ export class TransactionService {
       }
     });
   }
+
   orderTransactionsByDate() {
     this.transactions = this.transactions.sort((a, b) => {
       if (!a.date || !b.date) {
@@ -81,6 +83,18 @@ export class TransactionService {
   orderTx() {
     this.orderTransactionsByDate();
     this.orderTransactionsByDraftFirst();
+  }
+
+
+  editField(editFieldRequest: EditFieldRequest): Observable<boolean> {
+    return this.transactionControllerService.editField(editFieldRequest)
+      .pipe(
+        tap(() => {
+          this.getTransactions();
+        }),
+        map(() => true),
+        catchError((error: HttpErrorResponse) => of(false))
+      );
   }
 }
 
