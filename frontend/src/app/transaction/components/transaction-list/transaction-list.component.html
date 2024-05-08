@@ -2,18 +2,18 @@
 
     <div *ngIf="transactions.length === 0; else elseTemplate" class="empty-tx">
 
-        <span>No transactions yet</span>
+        <span class="empty-tx-txt" >No transactions yet</span>
         <div>
 
-            <button (click)="addTransaction()" class="btn btn-add-tx btn-green">Add Transaction</button>
-            <button (click)="importFile()" class="btn btn-import-tx btn-green">Import</button>
+            <app-standard-button (clicked)="addTransaction()" [ngStyle]="{'margin': '20px'}">Add Transaction</app-standard-button>
+            <app-standard-button (clicked)="importFile()" [ngStyle]="{'margin': '20px'}">Import</app-standard-button>
         </div>
 
     </div>
     <ng-template #elseTemplate>
 
         <div class="tx-list-container">
-            <button (click)="importFile()" class="btn btn-import-tx btn-green">Import</button>
+            <app-standard-button (clicked)="importFile()" class="btn-import-tx" [ngStyle]="{'padding-bottom': '10px'}" >Import</app-standard-button>
             <div class="tx-list-table">
                 <app-transaction-list-header/>
                 <ng-container *ngFor="let tx of transactions" class="tx-item">

@@ -8,6 +8,7 @@ import {MatDatepickerInput} from "@angular/material/datepicker";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FaIconComponent, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {TransactionListHeaderComponent} from "./components/transaction-list-header/transaction-list-header.component";
+import {StandardButtonComponent} from "../core/components/standard-button/standard-button.component";
 
 
 @NgModule({
@@ -18,17 +19,18 @@ import {TransactionListHeaderComponent} from "./components/transaction-list-head
   exports: [
     TransactionListComponent
   ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    MatSelect,
-    MatDatepickerInput,
-    FormsModule,
-    FaIconComponent,
-    FontAwesomeModule,
-    TransactionListHeaderComponent,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        CoreModule,
+        MatSelect,
+        MatDatepickerInput,
+        FormsModule,
+        FaIconComponent,
+        FontAwesomeModule,
+        TransactionListHeaderComponent,
+        ReactiveFormsModule,
+        StandardButtonComponent
+    ]
 })
 export class TransactionModule {
 }

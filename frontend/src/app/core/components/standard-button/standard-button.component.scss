@@ -1,0 +1,21 @@
+@import "variables";
+
+
+button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: solid 2px $font-color;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: $font-color;
+  font-size: 12px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
