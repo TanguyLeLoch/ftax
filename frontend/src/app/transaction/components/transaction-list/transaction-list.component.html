@@ -6,14 +6,14 @@
         <div>
 
             <app-standard-button (clicked)="addTransaction()" [ngStyle]="{'margin': '20px'}">Add Transaction</app-standard-button>
-            <app-standard-button (clicked)="importFile()" [ngStyle]="{'margin': '20px'}">Import</app-standard-button>
+            <app-standard-button (clicked)="modal.open()" [ngStyle]="{'margin': '20px'}">Import</app-standard-button>
         </div>
 
     </div>
     <ng-template #elseTemplate>
 
         <div class="tx-list-container">
-            <app-standard-button (clicked)="importFile()" class="btn-import-tx" [ngStyle]="{'padding-bottom': '10px'}" >Import</app-standard-button>
+            <app-standard-button (clicked)="modal.open()" class="btn-import-tx" [ngStyle]="{'padding-bottom': '10px'}" >Import</app-standard-button>
             <div class="tx-list-table">
                 <app-transaction-list-header/>
                 <ng-container *ngFor="let tx of transactions" class="tx-item">
@@ -26,3 +26,7 @@
 
 
 </div>
+<app-modal #modal>
+    <h2>Modal Title</h2>
+    <p>This is content inside the modal.</p>
+</app-modal>

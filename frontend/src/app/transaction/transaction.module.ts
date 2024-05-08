@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FaIconComponent, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {TransactionListHeaderComponent} from "./components/transaction-list-header/transaction-list-header.component";
 import {StandardButtonComponent} from "../core/components/standard-button/standard-button.component";
+import {ModalComponent} from "../core/components/modal/modal.component";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {StandardButtonComponent} from "../core/components/standard-button/standa
         FontAwesomeModule,
         TransactionListHeaderComponent,
         ReactiveFormsModule,
-        StandardButtonComponent
+        StandardButtonComponent,
+        ModalComponent
     ]
 })
 export class TransactionModule {
