@@ -10,9 +10,10 @@
   align-items: center;
 }
 
-.tx-list-container {
+.tx-list-table {
   background-color: $background-color;
-  width: 80%;
+
+  width: 100%;
 
   min-height: 30px;
   border-radius: 10px;
@@ -20,6 +21,14 @@
   display: grid;
   grid-template-columns: 2fr 2fr 1fr 0.5fr  0.8fr 0.5fr 0.8fr 0.5fr 0.8fr 2fr 0.3fr 0.3fr;
   gap: 4px; /* Adjust the gap between grid items as needed */
+}
+
+.tx-list-container{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .empty-tx {
@@ -33,6 +42,12 @@
 }
 
 .btn-add-tx {
-  margin-top: 20px;
+  margin: 20px;
   padding: 10px 20px;
 }
+.btn-import-tx {
+  padding: 10px 20px;
+  margin: 20px;
+  align-self: flex-end;
+}
+

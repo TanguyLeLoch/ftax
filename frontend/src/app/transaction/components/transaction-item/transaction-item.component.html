@@ -1,5 +1,5 @@
 <input [(ngModel)]="txDate"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid}"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid || submitted && isDateInvalid()}"
        [readonly]="!editMode" class="input-type-date" id="date"
        name="date"
        required
@@ -7,7 +7,7 @@
        (blur)="saveDate()"
 >
 <input [(ngModel)]="txTime"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid}"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid || submitted && isDateInvalid()}"
        [readonly]="!editMode"
        class="input-type-date"
        id=time required

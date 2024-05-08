@@ -32,4 +32,7 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.createTransactions();
   }
 
+  importFile() {
+
+  }
 }
