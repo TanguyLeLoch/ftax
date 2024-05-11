@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NgIf} from "@angular/common";
 
 @Component({
@@ -12,6 +12,9 @@ import {NgIf} from "@angular/common";
 })
 export class ModalComponent {
   isVisible: boolean = false;
+  @Input() width = '300px';  // Default width with unit
+  @Input() height = '150px'; // Default height with unit
+
 
   open() {
     this.isVisible = true;

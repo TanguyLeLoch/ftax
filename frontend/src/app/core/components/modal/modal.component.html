@@ -1,5 +1,8 @@
 <div class="modal-backdrop" *ngIf="isVisible" (click)="close()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-        <ng-content></ng-content>
-    </div>
+  <div class="modal-content"
+       [style.width]="width"
+       [style.height]="height"
+       (click)="$event.stopPropagation()">
+    <ng-content></ng-content>
+  </div>
 </div>

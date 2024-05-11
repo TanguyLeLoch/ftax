@@ -1,32 +1,34 @@
 <div class="container">
 
-    <div *ngIf="transactions.length === 0; else elseTemplate" class="empty-tx">
+  <div *ngIf="transactions.length === 0; else elseTemplate" class="empty-tx">
 
-        <span class="empty-tx-txt" >No transactions yet</span>
-        <div>
+    <span class="empty-tx-txt">No transactions yet</span>
+    <div>
 
-            <app-standard-button (clicked)="addTransaction()" [ngStyle]="{'margin': '20px'}">Add Transaction</app-standard-button>
-            <app-standard-button (clicked)="modal.open()" [ngStyle]="{'margin': '20px'}">Import</app-standard-button>
-        </div>
-
+      <app-standard-button (clicked)="addTransaction()" [ngStyle]="{'margin': '20px'}">Add Transaction
+      </app-standard-button>
+      <app-standard-button (clicked)="modal.open()" [ngStyle]="{'margin': '20px'}">Import</app-standard-button>
     </div>
-    <ng-template #elseTemplate>
 
-        <div class="tx-list-container">
-            <app-standard-button (clicked)="modal.open()" class="btn-import-tx" [ngStyle]="{'padding-bottom': '10px'}" >Import</app-standard-button>
-            <div class="tx-list-table">
-                <app-transaction-list-header/>
-                <ng-container *ngFor="let tx of transactions" class="tx-item">
-                    <app-transaction-item [transaction]="tx"></app-transaction-item>
-                </ng-container>
+  </div>
+  <ng-template #elseTemplate>
 
-            </div>
-        </div>
-    </ng-template>
+    <div class="tx-list-container">
+      <app-standard-button (clicked)="modal.open()" class="btn-import-tx" [ngStyle]="{'padding-bottom': '10px'}">
+        Import
+      </app-standard-button>
+      <div class="tx-list-table">
+        <app-transaction-list-header/>
+        <ng-container *ngFor="let tx of transactions" class="tx-item">
+          <app-transaction-item [transaction]="tx"></app-transaction-item>
+        </ng-container>
+
+      </div>
+    </div>
+  </ng-template>
 
 
 </div>
-<app-modal #modal>
-    <h2>Modal Title</h2>
-    <p>This is content inside the modal.</p>
+<app-modal #modal [width]="'60%'" [height]="'60%'">
+  <app-platform-list></app-platform-list>
 </app-modal>

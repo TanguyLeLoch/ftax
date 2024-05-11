@@ -1,0 +1,8 @@
+<div class="container">
+  <span>Choose a platform to import transactions</span>
+  <div class="container-list">
+    <div class="item" *ngFor="let platform of platforms">
+      <img src="{{platform.logo}}" alt="{{ platform.name }}"/>
+    </div>
+  </div>
+</div>

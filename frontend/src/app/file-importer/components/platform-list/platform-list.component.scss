@@ -1,0 +1,41 @@
+@import "variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  span {
+    font-size: 14px;
+    color: $font-color;
+    text-align: center;
+    width: 100%;
+    padding-bottom: 30px;
+  }
+}
+
+.container-list {
+  padding: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  border: solid 2px $font-color;
+  border-radius: 5px;
+  padding: 10px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 90%;
+    height: 90%;
+  }
+}

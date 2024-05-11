@@ -10,19 +10,21 @@ import {FaIconComponent, FontAwesomeModule} from "@fortawesome/angular-fontaweso
 import {TransactionListHeaderComponent} from "./components/transaction-list-header/transaction-list-header.component";
 import {StandardButtonComponent} from "../core/components/standard-button/standard-button.component";
 import {ModalComponent} from "../core/components/modal/modal.component";
+import {FileImporterModule} from "../file-importer/file-importer.module";
 
 
 @NgModule({
-  declarations: [
-    TransactionListComponent,
-    TransactionItemComponent
-  ],
-  exports: [
-    TransactionListComponent
-  ],
+    declarations: [
+        TransactionListComponent,
+        TransactionItemComponent
+    ],
+    exports: [
+        TransactionListComponent
+    ],
     imports: [
         CommonModule,
         CoreModule,
+        FileImporterModule,
         MatSelect,
         MatDatepickerInput,
         FormsModule,
