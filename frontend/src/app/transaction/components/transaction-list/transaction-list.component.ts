@@ -1,18 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TransactionService} from "../../../core/services/transaction.service";
 import {Transaction} from "../../../core/model";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
   styleUrls: ['./transaction-list.component.scss']
 })
-export class TransactionListComponent implements OnInit {
+export class TransactionListComponent implements OnInit, OnDestroy {
   transactions: Transaction[] = [];
   private transactionsSub!: Subscription;
 
-  constructor(private transactionService: TransactionService) {
+  constructor(private transactionService: TransactionService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -32,7 +33,4 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.createTransactions();
   }
 
-  importFile() {
-
-  }
 }

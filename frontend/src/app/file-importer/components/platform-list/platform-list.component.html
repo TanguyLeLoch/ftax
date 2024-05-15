@@ -1,8 +1,16 @@
 <div class="container">
-  <span>Choose a platform to import transactions</span>
-  <div class="container-list">
-    <div class="item" *ngFor="let platform of platforms">
-      <img src="{{platform.logo}}" alt="{{ platform.name }}"/>
+  <!-- Only show this part if no platform has been selected yet -->
+  <ng-container *ngIf="!selectedPlatform">
+    <span>Choose a platform to import transactions</span>
+    <div class="container-list">
+      <div class="item" *ngFor="let platform of platforms" (click)="openImportComponent(platform)">
+        <img src="{{platform.logo}}" alt="{{ platform.name }}"/>
+      </div>
     </div>
-  </div>
+  </ng-container>
+
+  <!-- This template will be rendered when a platform is selected -->
+  <ng-template [ngIf]="selectedPlatform">
+    <app-import-file [platform]="selectedPlatform"></app-import-file>
+  </ng-template>
 </div>

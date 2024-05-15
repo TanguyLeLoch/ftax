@@ -2,15 +2,20 @@ import {NgModule} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {CoreModule} from "../core/core.module";
 import {PlatformListComponent} from "./components/platform-list/platform-list.component";
+import {ImportFileComponent} from "./components/import-file/import-file.component";
 
 
 @NgModule({
-  declarations: [PlatformListComponent],
-  exports: [PlatformListComponent],
+  declarations: [
+    ImportFileComponent,
+    PlatformListComponent,
+  ],
+  exports: [PlatformListComponent
+  ],
   imports: [
     CommonModule,
     CoreModule,
-    NgOptimizedImage
+    NgOptimizedImage,
   ]
 })
 export class FileImporterModule {
