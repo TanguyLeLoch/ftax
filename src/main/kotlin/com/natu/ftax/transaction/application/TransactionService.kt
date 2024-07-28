@@ -15,7 +15,7 @@ class TransactionService(val idGenerator: IdGenerator, val transactionRepository
         return transaction
     }
 
-    fun getAllTransactions(): Array<Transaction> {
+    fun getAllTransactions(): List<Transaction> {
         return transactionRepository.getAllTransactions()
     }
 
