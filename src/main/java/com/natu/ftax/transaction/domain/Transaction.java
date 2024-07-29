@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Optional;
 
 
 public class Transaction {
@@ -23,25 +24,27 @@ public class Transaction {
 
     private Transaction(String id) {
         this.id = id;
-        this.state = TransactionState.DRAFT;
-        this.transactionType = TransactionType.NONE;
+        state = TransactionState.DRAFT;
+        transactionType = TransactionType.NONE;
+        valueIn = Value.dummyValue();
+        valueOut = Value.dummyValue();
+        valueFee = Value.dummyValue();
+        instant = Instant.now();
+
     }
 
     public static Transaction reconstitute(String id, String state,
             String transactionType, Instant instant, Value valueIn,
             Value valueOut, Value valueFee, String externalId) {
         Transaction tx = new Transaction(id);
-        tx.state = TransactionState.valueOf(state);
-        tx.transactionType = TransactionType.valueOf(transactionType);
+        tx.state = TransactionState.from(state);
+        tx.transactionType = TransactionType.from(transactionType);
         tx.instant = instant;
         tx.valueIn = valueIn;
         tx.valueOut = valueOut;
         tx.valueFee = valueFee;
         tx.externalId = externalId;
         return tx;
-    }
-
-    private void validate() {
     }
 
     public static Transaction create(String id) {
@@ -56,31 +59,13 @@ public class Transaction {
         this.valueOut = command.getValueOut();
         this.valueFee = command.getValueFee();
         this.externalId = command.getExternalId();
-        checkNoNullValues();
         this.state = TransactionState.SUBMITTED;
-    }
-
-    private void checkNoNullValues() {
-        if (id == null || id.isBlank())
-            throw new IllegalArgumentException("ID cannot be blank");
-        if (transactionType == TransactionType.NONE)
-            throw new IllegalArgumentException("Transaction type cannot be NONE");
-        if (instant == null)
-            throw new IllegalArgumentException("Date cannot be null");
-        if (valueIn == null) {
-            throw new IllegalArgumentException("Value In cannot be null");
-        }
-        if (valueOut == null) {
-            throw new IllegalArgumentException("Value Out cannot be null");
-        }
-        if (valueFee == null) {
-            throw new IllegalArgumentException("Value Fee cannot be null");
-        }
     }
 
     public void edit() {
         if (state != TransactionState.SUBMITTED) {
-            throw new FunctionalException("Transaction is not in SUBMITTED state");
+            throw new FunctionalException(
+                    "Transaction is not in SUBMITTED state");
         }
         this.state = TransactionState.DRAFT;
     }
@@ -100,7 +85,6 @@ public class Transaction {
     }
 
 
-
     public Token getTokenIn() {
         return valueIn.getToken();
     }
@@ -113,17 +97,6 @@ public class Transaction {
         return valueFee.getToken();
     }
 
-    public BigDecimal getAmountIn() {
-        return valueIn.getAmount();
-    }
-
-    public BigDecimal getAmountOut() {
-        return valueOut.getAmount();
-    }
-
-    public BigDecimal getAmountFee() {
-        return valueFee.getAmount();
-    }
 
     void setTransactionType(TransactionType transactionType) {
         checkIsDraft();
@@ -144,6 +117,7 @@ public class Transaction {
         checkIsDraft();
         this.valueOut = valueOut;
     }
+
     void setValueFee(Value valueFee) {
         checkIsDraft();
         this.valueFee = valueFee;
@@ -153,4 +127,31 @@ public class Transaction {
         checkIsDraft();
         this.externalId = externalId;
     }
+
+    public BigDecimal getAmountIn() {
+        return valueIn.getAmount();
+    }
+
+    public BigDecimal getAmountOut() {
+        return valueOut.getAmount();
+    }
+
+    public BigDecimal getAmountFee() {
+        return valueFee.getAmount();
+    }
+
+    public String getSymbolIn() {
+        return valueIn.getSymbol();
+    }
+
+    public String getSymbolOut() {
+        return valueOut.getSymbol();
+
+    }
+
+    public String getSymbolFee() {
+        return valueOut.getSymbol();
+
+    }
+
 }

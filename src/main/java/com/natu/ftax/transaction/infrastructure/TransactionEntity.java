@@ -17,7 +17,7 @@ import java.time.Instant;
 @Table(name = "transactions")
 public class TransactionEntity {
     private final int PRECISION = 64;
-    private final int SCALE = 32;
+    private final int SCALE = 30;
 
     @Id
     private String id;
@@ -69,9 +69,9 @@ public class TransactionEntity {
             transaction.getState(),
             transaction.getTransactionType(),
             transaction.getInstant(),
-            transaction.getTokenIn().getSymbol(),
-            transaction.getTokenOut().getSymbol(),
-            transaction.getTokenFee().getSymbol(),
+            transaction.getSymbolIn(),
+            transaction.getSymbolOut(),
+            transaction.getSymbolFee(),
             transaction.getAmountIn(),
             transaction.getAmountOut(),
             transaction.getAmountFee(),
@@ -92,6 +92,4 @@ public class TransactionEntity {
         );
     }
 
-    // Getters and setters for all fields
-    // ...
 }

@@ -30,10 +30,10 @@ public class TransactionController {
         produces = "application/json"
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public Transaction createDraftTransaction() {
+    public TransactionResponse createDraftTransaction() {
         Transaction draftTransaction = service.createTransaction();
         LOGGER.info("Creating a draft transaction with id: {}", draftTransaction.getId());
-        return draftTransaction;
+        return new TransactionResponse(draftTransaction);
     }
 
     @Operation(summary = "Submit a draft transaction")
@@ -52,9 +52,9 @@ public class TransactionController {
         value = "edit",
         produces = "application/json"
     )
-    public Transaction editField(@Valid @RequestBody EditFieldRequest request) {
+    public TransactionResponse editField(@Valid @RequestBody EditFieldRequest request) {
         LOGGER.info("Editing field with id: {}", request.getId());
-        return service.editField(request);
+        return new TransactionResponse(service.editField(request));
     }
 
     @Operation(summary = "Edit a transaction")
@@ -62,9 +62,9 @@ public class TransactionController {
         value = "edit/{id}",
         produces = "application/json"
     )
-    public Transaction editTransaction(@PathVariable String id) {
+    public TransactionResponse editTransaction(@PathVariable() String id) {
         LOGGER.info("Editing transaction with id: {}", id);
-        return service.editTransaction(id);
+        return new TransactionResponse(service.editTransaction(id));
     }
 
     @Operation(summary = "Get all transactions")
@@ -72,9 +72,10 @@ public class TransactionController {
         produces = "application/json"
     )
     @ResponseStatus(HttpStatus.OK)
-    public List<Transaction> getAllTransactions() {
+    public List<TransactionResponse> getAllTransactions() {
         LOGGER.info("Getting all transactions");
-        return service.getAllTransactions();
+        return service.getAllTransactions().stream().map(
+                TransactionResponse::new).toList();
     }
 
     @Operation(summary = "Delete a transaction")

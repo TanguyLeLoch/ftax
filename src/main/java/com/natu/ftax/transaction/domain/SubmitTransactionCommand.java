@@ -28,7 +28,7 @@ public class SubmitTransactionCommand {
             String externalId
     ) {
         this.id = id;
-        this.transactionType = TransactionType.valueOf(transactionType);
+        this.transactionType = TransactionType.from(transactionType);
         this.instant = instant;
         this.valueIn = new Value(new Token(tokenIn), amountIn);
         this.valueOut = new Value(new Token(tokenOut), amountOut);

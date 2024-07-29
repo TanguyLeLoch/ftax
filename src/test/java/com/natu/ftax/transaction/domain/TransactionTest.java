@@ -78,8 +78,8 @@ class TransactionTest {
                 )
         );
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, executable);
-        Assertions.assertThat(exception.getMessage()).contains(" must not be less than 0");
+        FunctionalException exception = assertThrows(FunctionalException.class, executable);
+        Assertions.assertThat(exception.getMessage()).contains("Value cannot be negative");
     }
 
     @Test

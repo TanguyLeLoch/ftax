@@ -9,7 +9,7 @@ class LedgerBookTest {
         LedgerBook ledgerBook = LedgerBook.create("1");
         LedgerEntry firstLedgerEntry = LedgerEntry.first("first");
 
-        ledgerBook.getLedgerEntries().add(firstLedgerEntry);
+        ledgerBook.add(firstLedgerEntry);
 
         Assertions.assertThat(ledgerBook.getId()).isEqualTo("1");
         Assertions.assertThat(ledgerBook.getLedgerEntries().size()).isEqualTo(1);

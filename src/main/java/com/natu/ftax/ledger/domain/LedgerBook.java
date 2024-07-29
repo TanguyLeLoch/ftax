@@ -28,4 +28,8 @@ public class LedgerBook {
     public List<LedgerEntry> getLedgerEntries() {
         return Collections.unmodifiableList(ledgerEntries);
     }
+
+    public void add(LedgerEntry entry) {
+        ledgerEntries.add(entry);
+    }
 }

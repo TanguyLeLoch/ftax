@@ -15,9 +15,7 @@ enum TransactionType {
 
     }
 
-    static TransactionType forValue(String value) {
-        return TransactionType.valueOf(value.toUpperCase(Locale.getDefault()));
+    static TransactionType from(String value) {
+        return TransactionType.valueOf(value.toUpperCase());
     }
-
-
 }

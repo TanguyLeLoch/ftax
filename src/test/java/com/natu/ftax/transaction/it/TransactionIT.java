@@ -1,7 +1,9 @@
 package com.natu.ftax.transaction.it;
 
 import com.natu.ftax.transaction.domain.Transaction;
+import com.natu.ftax.transaction.presentation.TransactionResponse;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,9 +30,11 @@ public class TransactionIT {
 
     @Test
     void shouldCreateTx() {
-        given()
+        var response = given()
                 .when()
-            .post("/transaction/draft")
+            .post("/transaction/draft");
+        System.out.println(response.asString());
+        response
             .then()
             .statusCode(201)
                 .body("id", notNullValue());
@@ -82,11 +86,11 @@ public class TransactionIT {
         String txId = submittedTransaction();
         given()
                 .when()
-            .header("Content-Type", "application/json")
+                .header("Content-Type", "application/json")
                 .post("/transaction/edit/" + txId)
-            .then()
-            .statusCode(200)
-                .body("state", equalTo("DRAFT"));
+                .then()
+                .statusCode(200)
+                .body("state", equalTo("draft"));
     }
 
     @Test
@@ -113,23 +117,24 @@ public class TransactionIT {
     }
 
     private List<String> getTxIds() {
-        return given()
+        Response response = given()
                 .when()
-                .get("/transaction")
+                .get("/transaction");
+        System.out.println(response.asString());
+        return response
                 .then()
                 .statusCode(200)
                 .extract()
                 .jsonPath()
-                .getList("$", Transaction.class)
-                .stream()
-                .map(Transaction::getId)
-                .toList();
+                .getList("id", String.class);
     }
 
     private String createDraftTransaction() {
-        return given()
+        Response response = given()
                 .when()
-            .post("/transaction/draft")
+                .post("/transaction/draft");
+        System.out.println(response.asString());
+        return response
             .then()
             .statusCode(201)
             .extract()

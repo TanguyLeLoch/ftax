@@ -3,10 +3,13 @@ package com.natu.ftax.ledger.domain;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.IDgenerator.infrastructure.SequentialIdGenerator;
 import com.natu.ftax.transaction.TransactionTestUtils;
+import com.natu.ftax.transaction.domain.Token;
 import com.natu.ftax.transaction.domain.Transaction;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
 
 class LedgerEntryTest {
 
@@ -29,13 +32,13 @@ class LedgerEntryTest {
         Assertions.assertThat(ledgerEntry.getBalances().size()).isEqualTo(3);
         Assertions.assertThat(
                         ledgerEntry.getBalances().get(tx1.getTokenIn()).getAmount())
-                .isEqualTo(1.0);
+                .isEqualTo(BigDecimal.valueOf(1.0));
         Assertions.assertThat(
                         ledgerEntry.getBalances().get(tx1.getTokenOut()).getAmount())
-                .isEqualTo(-5.0);
+                .isEqualTo(BigDecimal.valueOf(-5.0));
         Assertions.assertThat(
                         ledgerEntry.getBalances().get(tx1.getTokenFee()).getAmount())
-                .isEqualTo(0.1);
+                .isEqualTo(BigDecimal.valueOf(0.1));
     }
 
     @Test
@@ -49,10 +52,10 @@ class LedgerEntryTest {
 
         Assertions.assertThat(ledgerEntry.getId()).isEqualTo("second");
         Assertions.assertThat(ledgerEntry.getBalances().size()).isEqualTo(2);
-        Assertions.assertThat(ledgerEntry.getBalances().get("BTC").getAmount())
-                .isEqualTo(1.1);
-        Assertions.assertThat(ledgerEntry.getBalances().get("ETH").getAmount())
-                .isEqualTo(-5.0);
+        Assertions.assertThat(ledgerEntry.getBalances().get(new Token("BTC")).getAmount())
+                .isEqualTo(BigDecimal.valueOf(1.1));
+        Assertions.assertThat(ledgerEntry.getBalances().get(new Token("ETH")).getAmount())
+                .isEqualTo(BigDecimal.valueOf(-5.0));
     }
 
     @Test
@@ -69,10 +72,10 @@ class LedgerEntryTest {
 
         Assertions.assertThat(ledgerEntry2.getId()).isEqualTo("third");
         Assertions.assertThat(ledgerEntry2.getBalances().size()).isEqualTo(2);
-        Assertions.assertThat(ledgerEntry2.getBalances().get("BTC").getAmount())
-                .isEqualTo(2.2);
-        Assertions.assertThat(ledgerEntry2.getBalances().get("ETH").getAmount())
-                .isEqualTo(-10.0);
+        Assertions.assertThat(ledgerEntry2.getBalances().get(new Token("BTC")).getAmount())
+                .isEqualTo(BigDecimal.valueOf(2.2));
+        Assertions.assertThat(ledgerEntry2.getBalances().get(new Token("ETH")).getAmount())
+                .isEqualTo(BigDecimal.valueOf(-10.0));
     }
 
     @Test

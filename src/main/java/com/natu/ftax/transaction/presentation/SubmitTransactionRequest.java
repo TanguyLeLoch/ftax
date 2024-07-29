@@ -1,6 +1,8 @@
 package com.natu.ftax.transaction.presentation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.natu.ftax.transaction.domain.SubmitTransactionCommand;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,7 +19,7 @@ public class SubmitTransactionRequest {
     private String transactionType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-    private Instant instant;
+    private Instant date;
 
     private String tokenIn;
     private String tokenOut;
@@ -34,11 +36,13 @@ public class SubmitTransactionRequest {
 
     private String externalId;
 
+
+
     public SubmitTransactionCommand toCommand() {
         return new SubmitTransactionCommand(
             id,
             transactionType,
-            instant,
+            date,
             tokenIn,
             tokenOut,
             tokenFee,

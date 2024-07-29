@@ -1,6 +1,7 @@
 package com.natu.ftax.transaction.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -11,13 +12,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SubmitTransactionRequestTest {
 
+    private static ObjectMapper mapper = new ObjectMapper();
+    static {
+        mapper.registerModule(new JavaTimeModule());
+    }
+
 
     @Test
     void testJacksonMappingFromJSON() throws Exception {
         String json = """
                     {
                         "id": "1",
-                        "transactionType": "SWAP",
+                        "transactionType": "swap",
                         "date": "2022-01-01T12:00:00.000Z",
                         "tokenIn": "BTC",
                         "tokenOut": "ETH",
@@ -32,11 +38,11 @@ class SubmitTransactionRequestTest {
         SimpleDateFormat expectedDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         Instant expectedDate = Instant.parse("2022-01-01T12:00:00.000Z");
 
-        SubmitTransactionRequest request = new ObjectMapper().readValue(json, SubmitTransactionRequest.class);
+        SubmitTransactionRequest request = mapper.readValue(json, SubmitTransactionRequest.class);
 
         assertEquals("1", request.getId());
         assertEquals("swap", request.getTransactionType());
-        assertEquals(expectedDate, request.getInstant());
+        assertEquals(expectedDate, request.getDate());
         assertEquals("BTC", request.getTokenIn());
         assertEquals("ETH", request.getTokenOut());
         assertEquals("USD", request.getTokenFee());

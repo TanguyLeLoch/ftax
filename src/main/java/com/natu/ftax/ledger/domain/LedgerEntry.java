@@ -3,15 +3,20 @@ package com.natu.ftax.ledger.domain;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.transaction.domain.Token;
 import com.natu.ftax.transaction.domain.Transaction;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LedgerEntry {
+    @Getter
     private final String id;
     private final Map<Token, Balance> balances;
+    @Getter
     private final Instant instant;
 
     public LedgerEntry(String id, Map<Token, Balance> balances,
@@ -37,7 +42,7 @@ public class LedgerEntry {
     private void adjustBalanceIn(Transaction transaction, String balanceId) {
         if (BigDecimal.ZERO.compareTo(transaction.getAmountIn()) == 0) return;
         Token tokenIn = transaction.getTokenIn();
-        BigDecimal oldBalanceTokenIn = balances.getOrDefault(tokenIn, new Balance(balanceId, BigDecimal.ZERO, tokenIn)).getAmount();
+        BigDecimal oldBalanceTokenIn = balances.getOrDefault(tokenIn, new  Balance(balanceId, BigDecimal.ZERO, tokenIn)).getAmount();
         BigDecimal newBalanceTokenIn = oldBalanceTokenIn.add(transaction.getAmountIn());
         if (BigDecimal.ZERO.compareTo(newBalanceTokenIn) == 0) {
             balances.remove(tokenIn);
@@ -70,15 +75,8 @@ public class LedgerEntry {
         balances.put(tokenFee, new Balance(balanceId, newBalanceTokenFee, tokenFee));
     }
 
-    public String getId() {
-        return id;
-    }
-
     public Map<Token, Balance> getBalances() {
-        return balances;
+        return Collections.unmodifiableMap(balances);
     }
 
-    public Instant getInstant() {
-        return instant;
-    }
 }

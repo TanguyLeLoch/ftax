@@ -10,6 +10,10 @@ enum TransactionState {
         this.value = value;
     }
 
+    static TransactionState from(String value) {
+        return TransactionState.valueOf(value.toUpperCase());
+    }
+
     public String getValue() {
         return value;
     }
