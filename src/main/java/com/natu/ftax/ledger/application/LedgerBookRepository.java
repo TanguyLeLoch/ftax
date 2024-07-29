@@ -1,3 +1,5 @@
+package com.natu.ftax.ledger.application;
+
 import com.natu.ftax.ledger.domain.LedgerBook;
 
 public interface LedgerBookRepository {

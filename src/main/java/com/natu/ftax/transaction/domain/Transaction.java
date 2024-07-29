@@ -92,11 +92,11 @@ public class Transaction {
     }
 
     public String getState() {
-        return state.name();
+        return state.getValue();
     }
 
     public String getTransactionType() {
-        return transactionType.name();
+        return transactionType.getValue();
     }
 
 

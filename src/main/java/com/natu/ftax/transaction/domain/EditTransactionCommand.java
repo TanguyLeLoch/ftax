@@ -1,7 +1,6 @@
 package com.natu.ftax.transaction.domain;
 
 import com.natu.ftax.common.exception.FunctionalException;
-import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -36,7 +35,7 @@ public class EditTransactionCommand {
         this.externalId = externalId;
     }
 
-    private static @Nullable Value createValueWithCheck(String token,
+    private static Value createValueWithCheck(String token,
             BigDecimal amount, String side) {
 
         checkValue(token, amount, side);
