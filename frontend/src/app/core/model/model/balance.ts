@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Token } from './token';
 
 
 export interface Balance { 
-    id: string;
-    amount: number;
-    token: string;
+    id?: string;
+    amount?: number;
+    token?: Token;
 }
 

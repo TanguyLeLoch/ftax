@@ -43,18 +43,18 @@ export class LedgerBookComponent implements OnInit{
     }
 
     onDateChange() {
-        console.log("Date changed to: ", this.date);
-        this.date = new Date(this.date!);
-        for (let entry of this.ledgerBook!.ledgerEntries) {
-
-            const entryDate = new Date(entry.date);
-
-            if (this.date! <= entryDate) {
-                this.balances = Object.values(entry.balances);
-            }
-        }
-        console.log("Balances: ", this.balances);
-
+      //     console.log("Date changed to: ", this.date);
+      //     this.date = new Date(this.date!);
+      //     for (let entry of this.ledgerBook!.ledgerEntries) {
+      //
+      //       const entryDate = new Date(entry.instant);
+      //
+      //         if (this.date! <= entryDate) {
+      //             this.balances = Object.values(entry.balances);
+      //         }
+      //     }
+      //     console.log("Balances: ", this.balances);
+      //
     }
 }
 

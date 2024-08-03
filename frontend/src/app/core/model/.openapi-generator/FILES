@@ -14,6 +14,7 @@ model/ledgerBook.ts
 model/ledgerEntry.ts
 model/models.ts
 model/submitTransactionRequest.ts
+model/token.ts
 model/transaction.ts
 param.ts
 variables.ts

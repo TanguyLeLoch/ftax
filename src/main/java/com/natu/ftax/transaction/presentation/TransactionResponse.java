@@ -1,11 +1,15 @@
 package com.natu.ftax.transaction.presentation;
 
 import com.natu.ftax.transaction.domain.Transaction;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
+@Schema(name = "Transaction", description = "Transaction object")
 public class TransactionResponse {
+
 
     private final Transaction transaction;
 
@@ -13,7 +17,8 @@ public class TransactionResponse {
         this.transaction = transaction;
     }
 
-    public String getId(){
+    @NotNull
+    public String getId() {
         return transaction.getId();
     }
 
@@ -21,15 +26,19 @@ public class TransactionResponse {
         return transaction.getInstant();
     }
 
+    @NotNull
+    @Schema(description = "The state of the transaction", allowableValues = {"draft", "submitted"})
     public String getState() {
         return transaction.getState();
     }
 
-    public String getType() {
+    @NotNull
+    @Schema(description = "The type of the transaction", allowableValues = {"transfer", "swap", "none"})
+    public String getTransactionType() {
         return transaction.getTransactionType();
     }
 
-    public String getTokenIn(){
+    public String getTokenIn() {
         return transaction.getSymbolIn();
     }
 
@@ -53,7 +62,7 @@ public class TransactionResponse {
         return transaction.getAmountFee();
     }
 
-    public String getExternalId(){
+    public String getExternalId() {
         return transaction.getExternalId();
     }
 

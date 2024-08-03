@@ -1,8 +1,6 @@
 package com.natu.ftax.transaction.presentation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.natu.ftax.transaction.domain.SubmitTransactionCommand;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -25,13 +23,10 @@ public class SubmitTransactionRequest {
     private String tokenOut;
     private String tokenFee;
 
-    @NotNull(message = "Amount in cannot be null")
     private BigDecimal amountIn;
 
-    @NotNull(message = "Amount out cannot be null")
     private BigDecimal amountOut;
 
-    @NotNull(message = "Amount fee cannot be null")
     private BigDecimal amountFee;
 
     private String externalId;

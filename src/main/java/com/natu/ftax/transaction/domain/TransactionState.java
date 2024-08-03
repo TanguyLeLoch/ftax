@@ -14,7 +14,7 @@ enum TransactionState {
         return TransactionState.valueOf(value.toUpperCase());
     }
 
-    public String getValue() {
+    String getValue() {
         return value;
     }
 

@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EditFieldRequest, SubmitTransactionRequest, Transaction} from "../../../core/model";
+import {EditFieldRequest, SubmitTransactionRequest, Transaction,} from "../../../core/model";
 import {TransactionService} from "../../../core/services/transaction.service";
 import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
-import TransactionTypeEnum = SubmitTransactionRequest.TransactionTypeEnum;
+import TransactionTypeEnum = Transaction.TransactionTypeEnum;
 
 
 @Component({
@@ -14,7 +14,6 @@ export class TransactionItemComponent implements OnInit {
 
   @Input() transaction!: Transaction;
   editMode!: boolean;
-
   txDate!: string;
   txTime!: string;
   faCheck = faCheck;
@@ -39,9 +38,9 @@ export class TransactionItemComponent implements OnInit {
   ngOnInit(): void {
 
     this.editMode = this.transaction.state === Transaction.StateEnum.Draft;
-    if (this.transaction.date) {
-      this.txDate = this.transaction.date.slice(0, 10)
-      this.txTime = this.transaction.date.slice(11, 23)
+    if (this.transaction.dateTime) {
+      this.txDate = this.transaction.dateTime.slice(0, 10)
+      this.txTime = this.transaction.dateTime.slice(11, 23)
     }
   }
 
@@ -69,11 +68,11 @@ export class TransactionItemComponent implements OnInit {
       this.transaction.tokenFee = 'DUMMY'
     }
     const date = new Date(this.txDate + 'T' + this.txTime)
-    this.transaction.date = date.toISOString()
+    this.transaction.dateTime = date.toISOString()
 
     const request: SubmitTransactionRequest = {
       id: this.transaction.id,
-      date: this.transaction.date!,
+      date: this.transaction.dateTime!,
       transactionType: this.transaction.transactionType,
       amountIn: this.transaction.amountIn,
       amountOut: this.transaction.amountOut,
@@ -115,15 +114,16 @@ export class TransactionItemComponent implements OnInit {
   }
 
   isAmountInInvalid(): boolean {
-    return this.transaction.amountIn < 0;
+    return this.transaction.amountIn !== undefined && this.transaction.amountIn < 0;
   }
 
+
   isAmountOutInvalid(): boolean {
-    return this.transaction.amountOut < 0;
+    return this.transaction.amountOut !== undefined && this.transaction.amountOut < 0;
   }
 
   isAmountFeeInvalid(): boolean {
-    return this.transaction.amountFee < 0;
+    return this.transaction.amountFee !== undefined && this.transaction.amountFee < 0;
   }
 
   isTokenInInvalid(): boolean {
@@ -157,7 +157,7 @@ export class TransactionItemComponent implements OnInit {
   saveDate() {
     const date = new Date(this.txDate + 'T' + this.txTime)
     try {
-      this.transaction.date = date.toISOString()
+      this.transaction.dateTime = date.toISOString()
     } catch (e) {
       this.dateValid = false
       return
@@ -167,12 +167,13 @@ export class TransactionItemComponent implements OnInit {
       (valid: boolean) => this.dateValid = valid,
       {
         id: this.transaction.id,
-        date: this.transaction.date
+        date: this.transaction.dateTime
       });
   }
 
   saveTransactionType() {
-    this.saveField(() => !this.isTransactionTypeInvalid(),
+    console.log('blur')
+    this.saveField(() => this.isTransactionTypeInvalid(),
       (valid: boolean) => this.transactionTypeValid = valid,
       {
         id: this.transaction.id,
@@ -243,3 +244,5 @@ export class TransactionItemComponent implements OnInit {
       });
   }
 }
+
+

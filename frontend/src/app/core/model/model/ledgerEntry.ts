@@ -13,8 +13,8 @@ import { Balance } from './balance';
 
 
 export interface LedgerEntry { 
-    id: string;
-    balances: { [key: string]: Balance; };
-    date: string;
+    id?: string;
+    balances?: { [key: string]: Balance; };
+    instant?: string;
 }
 

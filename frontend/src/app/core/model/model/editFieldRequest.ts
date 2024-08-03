@@ -13,7 +13,7 @@
 
 export interface EditFieldRequest { 
     id: string;
-    transactionType?: EditFieldRequest.TransactionTypeEnum;
+    transactionType?: string;
     date?: string;
     tokenIn?: string;
     tokenOut?: string;
@@ -23,13 +23,4 @@ export interface EditFieldRequest {
     amountFee?: number;
     externalId?: string;
 }
-export namespace EditFieldRequest {
-    export type TransactionTypeEnum = 'TRANSFER' | 'SWAP' | 'NONE';
-    export const TransactionTypeEnum = {
-        Transfer: 'TRANSFER' as TransactionTypeEnum,
-        Swap: 'SWAP' as TransactionTypeEnum,
-        None: 'NONE' as TransactionTypeEnum
-    };
-}
-
 

@@ -16,8 +16,8 @@ import java.time.Instant;
 @Entity
 @Table(name = "transactions")
 public class TransactionEntity {
-    private final int PRECISION = 64;
-    private final int SCALE = 30;
+    private final static int PRECISION = 64;
+    private final static int SCALE = 30;
 
     @Id
     private String id;

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {LedgerBook, LedgerBookControllerService, Transaction, TransactionControllerService} from "../model";
+import {LedgerBook, LedgerBookControllerService} from "../model";
 import {BehaviorSubject} from "rxjs";
 
 @Injectable({

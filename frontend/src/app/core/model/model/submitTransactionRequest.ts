@@ -13,23 +13,14 @@
 
 export interface SubmitTransactionRequest { 
     id: string;
-    transactionType: SubmitTransactionRequest.TransactionTypeEnum;
-    date: string;
-    tokenIn: string;
-    tokenOut: string;
-    tokenFee: string;
-    amountIn: number;
-    amountOut: number;
-    amountFee: number;
+    transactionType: string;
+    date?: string;
+    tokenIn?: string;
+    tokenOut?: string;
+    tokenFee?: string;
+    amountIn?: number;
+    amountOut?: number;
+    amountFee?: number;
     externalId?: string;
 }
-export namespace SubmitTransactionRequest {
-    export type TransactionTypeEnum = 'TRANSFER' | 'SWAP' | 'NONE';
-    export const TransactionTypeEnum = {
-        Transfer: 'TRANSFER' as TransactionTypeEnum,
-        Swap: 'SWAP' as TransactionTypeEnum,
-        None: 'NONE' as TransactionTypeEnum
-    };
-}
-
 

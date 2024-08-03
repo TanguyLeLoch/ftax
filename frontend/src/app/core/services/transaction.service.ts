@@ -60,9 +60,9 @@ export class TransactionService {
 
   orderTransactionsByDraftFirst() {
     this.transactions = this.transactions.sort((a, b) => {
-      if (a.state === 'DRAFT') {
+      if (a.state === 'draft') {
         return -1;
-      } else if (b.state === 'DRAFT') {
+      } else if (b.state === 'draft') {
         return 1;
       } else {
         return 0;
@@ -72,10 +72,10 @@ export class TransactionService {
 
   orderTransactionsByDate() {
     this.transactions = this.transactions.sort((a, b) => {
-      if (!a.date || !b.date) {
+      if (!a.dateTime || !b.dateTime) {
         return 0;
       }
-      return new Date(b.date!).getTime() - new Date(a.date!).getTime();
+      return new Date(b.dateTime!).getTime() - new Date(a.dateTime!).getTime();
     });
   }
 

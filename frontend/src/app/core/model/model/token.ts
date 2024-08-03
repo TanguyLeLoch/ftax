@@ -9,11 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LedgerEntry } from './ledgerEntry';
 
 
-export interface LedgerBook { 
-    id?: string;
-    ledgerEntries?: Array<LedgerEntry>;
+export interface Token { 
+    symbol?: string;
 }
 

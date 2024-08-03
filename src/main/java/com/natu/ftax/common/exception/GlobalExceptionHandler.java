@@ -31,6 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FunctionalException.class)
     public ResponseEntity<ExceptionResponse> handleFunctionalException(FunctionalException exception) {
         ExceptionResponse response = new ExceptionResponse(exception.getMessage());
+        LOGGER.error(exception.getMessage(), exception);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

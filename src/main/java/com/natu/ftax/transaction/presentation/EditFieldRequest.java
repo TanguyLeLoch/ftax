@@ -18,7 +18,7 @@ public class EditFieldRequest {
     private String transactionType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-    private Instant instant;
+    private Instant date;
 
     private String tokenIn;
     private String tokenOut;
@@ -34,7 +34,7 @@ public class EditFieldRequest {
         return new EditTransactionCommand(
             id,
             transactionType,
-            instant,
+            date,
             tokenIn,
             tokenOut,
             tokenFee,
