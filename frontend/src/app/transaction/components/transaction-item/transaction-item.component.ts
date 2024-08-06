@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EditFieldRequest, SubmitTransactionRequest, Transaction,} from "../../../core/model";
+import {EditFieldRequest, Transaction,} from "../../../core/model";
 import {TransactionService} from "../../../core/services/transaction.service";
 import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {
@@ -39,6 +39,7 @@ export class TransactionItemComponent implements OnInit {
   valueOutField!: ValueOutField
   valueFeeField!: ValueFeeField
   externalIdField!: ExternalIdField
+  fields!: FormField<any>[];
 
 
   transactionTypes: Transaction.TransactionTypeEnum[] = Object.values(Transaction.TransactionTypeEnum);
@@ -71,6 +72,7 @@ export class TransactionItemComponent implements OnInit {
 
     this.externalIdField = new ExternalIdField(tx, this.transaction.externalId, () => true);
 
+    this.fields = [this.dateTimeField, this.transactionTypeField, this.valueInField, this.valueOutField, this.valueFeeField, this.externalIdField]
   }
 
   isTransactionTypeValid(value: TransactionTypeEnum | undefined) {
@@ -80,43 +82,18 @@ export class TransactionItemComponent implements OnInit {
 
 
   submitTransaction() {
-    this.submitted = true;
-    if (this.isDateInvalid()
-      || this.isTimeInvalid()
-      || this.isTransactionTypeInvalid()
-      || this.isAmountInInvalid()
-      || this.isAmountOutInvalid()
-      || this.isAmountFeeInvalid()
-      || this.isTokenInInvalid()
-      || this.isTokenOutInvalid()
-      || this.isTokenFeeInvalid()) {
+    let valid = true;
+    for (const field of this.fields) {
+      field.dirty();
+      if (!field.isValid()) {
+        valid = false;
+      }
+    }
+    if (!valid) {
       return;
     }
-    if (!this.transaction.tokenIn) {
-      this.transaction.tokenIn = 'DUMMY'
-    }
-    if (!this.transaction.tokenOut) {
-      this.transaction.tokenOut = 'DUMMY'
-    }
-    if (!this.transaction.tokenFee) {
-      this.transaction.tokenFee = 'DUMMY'
-    }
-    const date = new Date(this.txDate + 'T' + this.txTime)
-    this.transaction.dateTime = date.toISOString()
 
-    const request: SubmitTransactionRequest = {
-      id: this.transaction.id,
-      date: this.transaction.dateTime!,
-      transactionType: this.transaction.transactionType,
-      amountIn: this.transaction.amountIn,
-      amountOut: this.transaction.amountOut,
-      amountFee: this.transaction.amountFee,
-      tokenIn: this.transaction.tokenIn!,
-      tokenOut: this.transaction.tokenOut!,
-      tokenFee: this.transaction.tokenFee!,
-      externalId: this.transaction.externalId
-    }
-    this.transactionService.submitDraftTransaction(request)
+    this.transactionService.submitDraftTransaction(this.transaction.id)
   }
 
   editTransaction() {

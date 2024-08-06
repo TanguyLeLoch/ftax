@@ -21,16 +21,16 @@
         id="transactionType"
         name="transactionType" required
         (blur)="save(transactionTypeField)">
-  <option *ngFor="let transactionType of transactionTypes" [value]="transactionType">{{transactionType}}</option>
+  <option *ngFor="let transactionType of transactionTypes" [value]="transactionType">{{ transactionType }}</option>
 </select>
 <div *ngIf="!editMode" class="read-only center" id="transactionType-read-only">
-  <span>{{transaction.transactionType}}</span>
+  <span>{{ transaction.transactionType }}</span>
 </div>
 
-<div [ngClass]="{'invalid':valueInField.isInvalid()}" class="value">
+<div class="value">
   <input [(ngModel)]="valueInField.value!.amount"
          [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueInField.isAmountInvalid()}"
-       [readonly]="!editMode" class="amount" id="amountIn" name="amountIn" required type="number"
+         [readonly]="!editMode" class="amount" id="amountIn" name="amountIn" required type="number"
          (blur)="save(valueInField)">
 
   <input [(ngModel)]="valueInField.value!.token"
@@ -38,7 +38,7 @@
          [readonly]="!editMode" class="token" id="tokenIn" name="tokenIn" required type="text"
          (blur)="save(valueInField)">
 </div>
-<div [ngClass]="{'invalid':valueOutField.isInvalid()}" class="value">
+<div class="value">
   <input [(ngModel)]="valueOutField.value!.amount"
          [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueOutField.isAmountInvalid()}"
          [readonly]="!editMode" class="amount" id="amountOut" name="amountOut" required type="number"
@@ -49,7 +49,7 @@
          [readonly]="!editMode" class="token" id="tokenOut" name="tokenOut" required type="text"
          (blur)="save(valueOutField)">
 </div>
-<div [ngClass]="{'invalid':valueFeeField.isInvalid()}" class="value">
+<div class="value">
   <input [(ngModel)]="valueFeeField.value!.amount"
          [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueFeeField.isAmountInvalid()}"
          [readonly]="!editMode" class="amount" id="amountFee" name="amountFee" required type="number"
@@ -61,7 +61,7 @@
          (blur)="save(valueFeeField)">
 </div>
 <input [(ngModel)]="externalIdField.value"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':externalIdField.isInvalid()}"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid': externalIdField.isInvalid()}"
        [readonly]="!editMode" id="externalId" name="externalId"
        required type="text" (blur)="save(externalIdField)">
 

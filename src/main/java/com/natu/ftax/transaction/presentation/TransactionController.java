@@ -47,6 +47,17 @@ public class TransactionController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Submit a draft transaction")
+    @PostMapping(
+            value = "submit/{id}"
+    )
+    public ResponseEntity<Void> submitDraftTransactionById(
+            @PathVariable() String id) {
+        LOGGER.info("Submitting draft transaction by id: {}", id);
+        service.submitDraftTransaction(id);
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "Edit a field")
     @PutMapping(
         value = "edit",

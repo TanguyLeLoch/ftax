@@ -60,6 +60,11 @@ public class Transaction {
         this.state = TransactionState.SUBMITTED;
     }
 
+    public void submit() {
+        checkIsDraft();
+        this.state = TransactionState.SUBMITTED;
+    }
+
     public void edit() {
         if (state != TransactionState.SUBMITTED) {
             throw new FunctionalException(

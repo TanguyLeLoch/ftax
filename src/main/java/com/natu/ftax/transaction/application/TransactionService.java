@@ -52,4 +52,11 @@ public class TransactionService {
     public void deleteTransaction(String id) {
         transactionRepository.deleteTransaction(id);
     }
+
+    public void submitDraftTransaction(String id) {
+        Transaction transaction = transactionRepository.getTransactionById(id);
+        transaction.submit();
+        transactionRepository.save(transaction);
+    }
 }
+

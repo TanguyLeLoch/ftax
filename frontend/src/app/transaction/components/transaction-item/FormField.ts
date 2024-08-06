@@ -71,11 +71,11 @@ export class TokenInField extends FormField<string> {
 
 export abstract class ValueField extends FormField<Value> {
   isAmountInvalid() {
-    return this.isInvalid() || !this.value!.isAmountValid()
+    return this.isInvalid() && !this.value!.isAmountValid()
   }
 
   isTokenInvalid() {
-    return this.isInvalid() || !this.value!.isTokenValid()
+    return this.isInvalid() && !this.value!.isTokenValid()
   }
 }
 
@@ -195,7 +195,7 @@ export class Value {
   }
 
   isAmountValid() {
-    return !!this.amount
+    return this.isValid() || !!this.amount
   }
 }
 
