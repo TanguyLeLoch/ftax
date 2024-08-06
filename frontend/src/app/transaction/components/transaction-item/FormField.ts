@@ -4,7 +4,7 @@ import TransactionTypeEnum = Transaction.TransactionTypeEnum;
 export abstract class FormField<T> {
   protected readonly tx: Transaction
   protected isDirty: boolean;
-  private validFunction: (value: T | undefined) => boolean;
+  private readonly validFunction: (value: T | undefined) => boolean;
   value: T | undefined;
 
 
@@ -13,15 +13,7 @@ export abstract class FormField<T> {
     this.value = value;
     this.validFunction = isValidFunction
     this.isDirty = false;
-  }
-
-  setValue(value: T) {
-    this.value = value
-  }
-
-  getValue() {
-    return this.value;
-  }
+  };
 
   isValid() {
     return this.validFunction(this.value);
@@ -66,17 +58,6 @@ export class DateTimeFormField extends FormField<DateAndTime> {
   }
 }
 
-export class TokenInField extends FormField<string> {
-  createEditRequestBody(): EditFieldRequest {
-    const value = this.value!
-    return {
-      id: this.tx.id,
-      tokenIn: value,
-      amountIn: this.tx.amountIn
-    }
-  }
-}
-
 export abstract class ValueField extends FormField<Value> {
   isAmountInvalid() {
     return this.isInvalid() && !this.value!.isAmountValid()
@@ -116,62 +97,6 @@ export class ValueFeeField extends ValueField {
       id: this.tx.id,
       tokenFee: value.token,
       amountFee: value.amount
-    }
-  }
-}
-
-export class TokenOutField extends FormField<string> {
-  createEditRequestBody(): EditFieldRequest {
-    const value = this.value!
-    return {
-      id: this.tx.id,
-      tokenOut: value,
-      amountOut: this.tx.amountOut
-    }
-  }
-}
-
-export class TokenFeeField extends FormField<string> {
-  createEditRequestBody(): EditFieldRequest {
-    const value = this.value!
-    return {
-      id: this.tx.id,
-      tokenFee: value,
-      amountFee: this.tx.amountFee
-    }
-  }
-}
-
-
-export class AmountInField extends FormField<number> {
-  createEditRequestBody(): EditFieldRequest {
-    const value = this.value!
-    return {
-      id: this.tx.id,
-      tokenIn: this.tx.tokenIn,
-      amountIn: value
-    }
-  }
-}
-
-export class AmountOutField extends FormField<number> {
-  createEditRequestBody(): EditFieldRequest {
-    const value = this.value!
-    return {
-      id: this.tx.id,
-      tokenOut: this.tx.tokenOut,
-      amountOut: value
-    }
-  }
-}
-
-export class AmountFeeField extends FormField<number> {
-  createEditRequestBody(): EditFieldRequest {
-    const value = this.value!
-    return {
-      id: this.tx.id,
-      tokenFee: this.tx.tokenFee,
-      amountFee: value
     }
   }
 }

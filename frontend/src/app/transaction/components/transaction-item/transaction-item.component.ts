@@ -25,13 +25,10 @@ export class TransactionItemComponent implements OnInit {
 
   @Input() transaction!: Transaction;
   editMode!: boolean;
-  txDate!: string;
-  txTime!: string;
+
   faCheck = faCheck;
   faEdit = faEdit;
   faTrash = faTrash;
-  submitted = false;
-  dateValid = true;
 
   dateTimeField!: DateTimeFormField
   transactionTypeField!: TransactionTypeFormField
@@ -48,15 +45,10 @@ export class TransactionItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const tx = this.transaction
 
     this.editMode = this.transaction.state === Transaction.StateEnum.Draft;
-    let dateAndTime: DateAndTime | undefined = undefined;
-    if (this.transaction.dateTime) {
-      this.txDate = this.transaction.dateTime.slice(0, 10)
-      this.txTime = this.transaction.dateTime.slice(11, 23)
-      dateAndTime = new DateAndTime(this.transaction.dateTime.slice(0, 10), this.transaction.dateTime.slice(11, 23))
-    }
-    const tx = this.transaction
+    const dateAndTime = new DateAndTime(this.transaction.dateTime.slice(0, 10), this.transaction.dateTime.slice(11, 23))
 
     this.dateTimeField = new DateTimeFormField(tx, dateAndTime, (value) => !!value && value.isValid())
     this.transactionTypeField = new TransactionTypeFormField(tx, this.transaction.transactionType, this.isTransactionTypeValid)
@@ -102,7 +94,7 @@ export class TransactionItemComponent implements OnInit {
     if (field.isValid()) {
       const request = field.createEditRequestBody();
       this.transactionService.editField(request).subscribe((success: boolean) => {
-        console.log("savedField")
+        console.log("success", success);
       });
     }
   }

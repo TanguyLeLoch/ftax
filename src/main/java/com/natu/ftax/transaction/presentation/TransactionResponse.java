@@ -22,6 +22,7 @@ public class TransactionResponse {
         return transaction.getId();
     }
 
+    @NotNull
     public Instant getDateTime() {
         return transaction.getInstant();
     }
