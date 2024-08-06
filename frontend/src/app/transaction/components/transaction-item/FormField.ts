@@ -3,7 +3,7 @@ import TransactionTypeEnum = Transaction.TransactionTypeEnum;
 
 export abstract class FormField<T> {
   protected readonly tx: Transaction
-  private isDirty: boolean;
+  protected isDirty: boolean;
   private validFunction: (value: T | undefined) => boolean;
   value: T | undefined;
 
@@ -55,6 +55,14 @@ export class DateTimeFormField extends FormField<DateAndTime> {
       id: this.tx.id,
       date: value.getDateAsIso()
     }
+  }
+
+  isDateInvalid() {
+    return this.isDirty && !this.value!.isDateValid()
+  }
+
+  isTimeInvalid() {
+    return this.isDirty && !this.value!.isTimeValid()
   }
 }
 
@@ -201,8 +209,8 @@ export class Value {
 
 
 export class DateAndTime {
-  private date: string;
-  private time: string;
+  date: string;
+  time: string;
 
   constructor(date: string, time: string) {
     this.date = date;
@@ -213,28 +221,22 @@ export class DateAndTime {
     return this.isDateValid() && this.isTimeValid()
   }
 
-  private isDateValid(): boolean {
+  isDateValid(): boolean {
     if (!this.date) return false;
     // check has pattern yyyy-mm-dd
     return /^\d{4}-\d{2}-\d{2}$/.test(this.date);
-
-
   }
 
-  private isTimeValid(): boolean {
+  isTimeValid(): boolean {
+    console.log(this.time)
+    console.log(/^\d{2}:\d{2}:\d{2}.\d{3}$/.test(this.time))
     if (!this.time) return false
     // check has pattern hh:mm:ss.SSS
-    return /^\d{2}:\d{2}:\d{2}.\d{3}$/.test(this.date);
+    return /^\d{2}:\d{2}:\d{2}.\d{3}$/.test(this.time);
   }
 
   getDateAsIso(): string {
-    const date = new Date(this.date + 'T' + this.time)
+    const date = new Date(this.date + 'T' + this.time + 'Z')
     return date.toISOString();
-    // try {
-    //   this.transaction.dateTime = date.toISOString()
-    // } catch (e) {
-    //   this.dateValid = false
-    //   return
-    // }
   }
 }

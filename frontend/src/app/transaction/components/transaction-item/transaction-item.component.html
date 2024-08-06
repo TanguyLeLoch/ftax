@@ -1,20 +1,19 @@
-<input [(ngModel)]="txDate"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid}"
+<input [(ngModel)]="dateTimeField.value!.date"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':dateTimeField.isDateInvalid()}"
        [readonly]="!editMode" class="input-type-date" id="date"
        name="date"
        required
        type="date"
-       (blur)="saveDate()"
+       (blur)="save(dateTimeField)"
 >
-<input [(ngModel)]="txTime"
-       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':!dateValid}"
+<input [(ngModel)]="dateTimeField.value!.time"
+       [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':dateTimeField.isTimeInvalid()}"
        [readonly]="!editMode"
        class="input-type-date"
        id=time required
        step="0.001"
        type="time"
-       (blur)="saveDate()">
-
+       (blur)="save(dateTimeField)">
 
 <select *ngIf="editMode" [(ngModel)]="transactionTypeField.value" [disabled]="!editMode"
         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':transactionTypeField.isInvalid()}"
