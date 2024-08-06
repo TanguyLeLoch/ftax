@@ -27,42 +27,38 @@
   <span>{{transaction.transactionType}}</span>
 </div>
 
-<div [ngClass]="{'invalid':valueInField.isInvalid()}">
+<div [ngClass]="{'invalid':valueInField.isInvalid()}" class="value">
   <input [(ngModel)]="valueInField.value!.amount"
-         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':amountInField.isInvalid()}"
+         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueInField.isAmountInvalid()}"
        [readonly]="!editMode" class="amount" id="amountIn" name="amountIn" required type="number"
-         (blur)="save(amountInField)">
+         (blur)="save(valueInField)">
 
   <input [(ngModel)]="valueInField.value!.token"
-         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':tokenInField.isInvalid()}"
+         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueInField.isTokenInvalid()}"
          [readonly]="!editMode" class="token" id="tokenIn" name="tokenIn" required type="text"
          (blur)="save(valueInField)">
 </div>
-<div [ngClass]="{'invalid':valueOutField.isInvalid()}">
-  <input [(ngModel)]="amountOutField.value"
-         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':amountOutField.isInvalid()}"
-       [readonly]="!editMode"
-         class="amount" id="amountOut" name="amountOut" required type="number"
-         (blur)="save(amountOutField)">
+<div [ngClass]="{'invalid':valueOutField.isInvalid()}" class="value">
+  <input [(ngModel)]="valueOutField.value!.amount"
+         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueOutField.isAmountInvalid()}"
+         [readonly]="!editMode" class="amount" id="amountOut" name="amountOut" required type="number"
+         (blur)="save(valueOutField)">
 
-  <input [(ngModel)]="tokenOutField.value"
-         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':tokenOutField.isInvalid()}"
-       [readonly]="!editMode" class="token" id="tokenOut" name="tokenOut"
-         required type="text"
-         (blur)="save(tokenOutField)">
+  <input [(ngModel)]="valueOutField.value!.token"
+         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueOutField.isTokenInvalid()}"
+         [readonly]="!editMode" class="token" id="tokenOut" name="tokenOut" required type="text"
+         (blur)="save(valueOutField)">
 </div>
-<div [ngClass]="{'invalid':valueFeeField.isInvalid()}">
-  <input [(ngModel)]="amountFeeField.value"
-         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':amountFeeField.isInvalid()}"
-       [readonly]="!editMode"
-         class="amount" id="amountFee" name="amountFee" required type="number"
-         (blur)="save(amountFeeField)">
+<div [ngClass]="{'invalid':valueFeeField.isInvalid()}" class="value">
+  <input [(ngModel)]="valueFeeField.value!.amount"
+         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueFeeField.isAmountInvalid()}"
+         [readonly]="!editMode" class="amount" id="amountFee" name="amountFee" required type="number"
+         (blur)="save(valueFeeField)">
 
-  <input [(ngModel)]="tokenFeeField.value"
-         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':tokenFeeField.isInvalid()}"
-       [readonly]="!editMode" class="token" id="tokenFee" name="tokenFee"
-         required type="text"
-         (blur)="save(tokenFeeField)">
+  <input [(ngModel)]="valueFeeField.value!.token"
+         [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueFeeField.isTokenInvalid()}"
+         [readonly]="!editMode" class="token" id="tokenFee" name="tokenFee" required type="text"
+         (blur)="save(valueFeeField)">
 </div>
 <input [(ngModel)]="externalIdField.value"
        [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':externalIdField.isInvalid()}"

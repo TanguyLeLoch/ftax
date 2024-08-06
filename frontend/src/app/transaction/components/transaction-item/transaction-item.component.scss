@@ -4,7 +4,7 @@
   display: contents;
 }
 
-input, select, .transaction-type {
+input, select, .transaction-type, .value {
   background-color: $background-color;
   border-radius: 5px;
   box-shadow: none;
@@ -80,4 +80,10 @@ input[type="number"] {
 
 .invalid {
   color: red;
+}
+
+.value {
+  .invalid {
+    border: 1px solid red;
+  }
 }

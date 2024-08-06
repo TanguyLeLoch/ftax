@@ -69,7 +69,17 @@ export class TokenInField extends FormField<string> {
   }
 }
 
-export class ValueInField extends FormField<Value> {
+export abstract class ValueField extends FormField<Value> {
+  isAmountInvalid() {
+    return this.isInvalid() || !this.value!.isAmountValid()
+  }
+
+  isTokenInvalid() {
+    return this.isInvalid() || !this.value!.isTokenValid()
+  }
+}
+
+export class ValueInField extends ValueField {
   createEditRequestBody(): EditFieldRequest {
     const value = this.value!
     return {
@@ -80,7 +90,7 @@ export class ValueInField extends FormField<Value> {
   }
 }
 
-export class ValueOutField extends FormField<Value> {
+export class ValueOutField extends ValueField {
   createEditRequestBody(): EditFieldRequest {
     const value = this.value!
     return {
@@ -91,7 +101,7 @@ export class ValueOutField extends FormField<Value> {
   }
 }
 
-export class ValueFeeField extends FormField<Value> {
+export class ValueFeeField extends ValueField {
   createEditRequestBody(): EditFieldRequest {
     const value = this.value!
     return {
@@ -178,6 +188,14 @@ export class Value {
 
   isValid(): boolean {
     return !this.token === !this.amount;
+  }
+
+  isTokenValid() {
+    return this.isValid() || !!this.token
+  }
+
+  isAmountValid() {
+    return !!this.amount
   }
 }
 

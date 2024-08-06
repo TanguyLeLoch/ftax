@@ -3,16 +3,10 @@ import {EditFieldRequest, SubmitTransactionRequest, Transaction,} from "../../..
 import {TransactionService} from "../../../core/services/transaction.service";
 import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {
-  AmountFeeField,
-  AmountInField,
-  AmountOutField,
   DateAndTime,
   DateTimeFormField,
   ExternalIdField,
   FormField,
-  TokenFeeField,
-  TokenInField,
-  TokenOutField,
   TransactionTypeFormField,
   Value,
   ValueFeeField,
@@ -38,26 +32,12 @@ export class TransactionItemComponent implements OnInit {
   faTrash = faTrash;
   submitted = false;
   dateValid = true;
-  transactionTypeValid = true;
-  amountInValid = true;
-  amountOutValid = true;
-  amountFeeValid = true;
-  tokenInValid = true;
-  tokenOutValid = true;
-  tokenFeeValid = true;
-  externalIdValid = true;
 
   dateTimeField!: DateTimeFormField
   transactionTypeField!: TransactionTypeFormField
   valueInField!: ValueInField
   valueOutField!: ValueOutField
   valueFeeField!: ValueFeeField
-  amountInField!: AmountInField
-  amountOutField!: AmountOutField
-  amountFeeField!: AmountFeeField
-  tokenInField!: TokenInField
-  tokenOutField!: TokenOutField
-  tokenFeeField!: TokenFeeField
   externalIdField!: ExternalIdField
 
 
@@ -79,13 +59,6 @@ export class TransactionItemComponent implements OnInit {
 
     this.dateTimeField = new DateTimeFormField(tx, dateAndTime, (value) => !!value && value.isValid())
     this.transactionTypeField = new TransactionTypeFormField(tx, this.transaction.transactionType, this.isTransactionTypeValid)
-    this.amountInField = new AmountInField(tx, this.transaction.amountIn, this.isAmountValid)
-    this.amountOutField = new AmountOutField(tx, this.transaction.amountOut, this.isAmountValid)
-    this.amountFeeField = new AmountFeeField(tx, this.transaction.amountFee, this.isAmountValid)
-    this.tokenInField = new TokenInField(tx, this.transaction.tokenIn, (value) => this.isTokenValid(value, this.amountInField.value));
-    this.tokenOutField = new TokenOutField(tx, this.transaction.tokenOut, (value) => this.isTokenValid(value, this.amountOutField.value));
-    this.tokenFeeField = new TokenFeeField(tx, this.transaction.tokenFee, (value) => this.isTokenValid(value, this.amountFeeField.value));
-    this.externalIdField = new ExternalIdField(tx, this.transaction.externalId, () => true);
 
     let valueIn = new Value(this.transaction.tokenIn, this.transaction.amountIn)
     this.valueInField = new ValueInField(tx, valueIn, (value) => !!value && value.isValid())
@@ -96,21 +69,14 @@ export class TransactionItemComponent implements OnInit {
     let valueFee = new Value(this.transaction.tokenFee, this.transaction.amountFee)
     this.valueFeeField = new ValueFeeField(tx, valueFee, (value) => !!value && value.isValid())
 
-  }
+    this.externalIdField = new ExternalIdField(tx, this.transaction.externalId, () => true);
 
-
-  isAmountValid(value: number | undefined): boolean {
-    return value !== undefined && value >= 0;
   }
 
   isTransactionTypeValid(value: TransactionTypeEnum | undefined) {
     return value != TransactionTypeEnum.None
   }
 
-  isTokenValid(value: string | undefined, amountValue: number | undefined): boolean {
-    return !!value || !amountValue;
-
-  }
 
 
   submitTransaction() {
@@ -239,18 +205,6 @@ export class TransactionItemComponent implements OnInit {
       });
   }
 
-  saveTransactionType() {
-    this.transactionTypeField.dirty()
-    if (this.transactionTypeField.isValid()) {
-      const request: EditFieldRequest = {
-        id: this.transaction.id,
-        transactionType: this.transactionTypeField.value
-      }
-      this.transactionService.editField(request).subscribe((success: boolean) => {
-        console.log("savedField")
-      });
-    }
-  }
 
   save(field: FormField<any>) {
     field.dirty();
@@ -260,72 +214,6 @@ export class TransactionItemComponent implements OnInit {
         console.log("savedField")
       });
     }
-  }
-
-  saveAmountIn() {
-    this.saveField(() => this.isAmountInInvalid(),
-      (valid: boolean) => this.amountInValid = valid,
-      {
-        id: this.transaction.id,
-        amountIn: this.transaction.amountIn
-      });
-  }
-
-  saveTokenIn() {
-    this.saveField(() => this.isTokenInInvalid(),
-      (valid: boolean) => this.tokenInValid = valid,
-      {
-        id: this.transaction.id,
-        tokenIn: this.transaction.tokenIn
-      });
-  }
-
-  saveAmountOut() {
-    this.saveField(() => this.isAmountOutInvalid(),
-      (valid: boolean) => this.amountOutValid = valid,
-      {
-        id: this.transaction.id,
-        amountOut: this.transaction.amountOut
-      });
-  }
-
-  saveTokenOut() {
-    this.saveField(() => this.isTokenOutInvalid(),
-      (valid: boolean) => this.tokenOutValid = valid,
-      {
-        id: this.transaction.id,
-        tokenOut: this.transaction.tokenOut
-      });
-  }
-
-  saveAmountFee() {
-    this.saveField(() => this.isAmountFeeInvalid(),
-      (valid: boolean) => this.amountFeeValid = valid,
-      {
-        id: this.transaction.id,
-        amountFee: this.transaction.amountFee
-      });
-  }
-
-  saveTokenFee() {
-    this.saveField(() => this.isTokenFeeInvalid(),
-      (valid: boolean) => this.tokenFeeValid = valid,
-      {
-        id: this.transaction.id,
-        tokenFee: this.transaction.tokenFee
-      });
-  }
-
-  saveExternalId() {
-    this.saveField(() => false,
-      (valid: boolean) => this.externalIdValid = valid,
-      {
-        id: this.transaction.id,
-        externalId: this.transaction.externalId
-      });
-  }
-
-  isDateValid() {
   }
 
 }
