@@ -72,7 +72,7 @@ export class TransactionItemComponent implements OnInit {
 
     this.externalIdField = new ExternalIdField(tx, this.transaction.externalId, () => true);
 
-    this.fields = [this.dateTimeField, this.transactionTypeField, this.valueInField, this.valueOutField, this.valueFeeField, this.externalIdField]
+    this.fields = [this.transactionTypeField, this.valueInField, this.valueOutField, this.valueFeeField, this.externalIdField]
   }
 
   isTransactionTypeValid(value: TransactionTypeEnum | undefined) {
@@ -93,7 +93,7 @@ export class TransactionItemComponent implements OnInit {
       return;
     }
 
-    this.transactionService.submitDraftTransaction(this.transaction.id)
+    this.transactionService.submitDraftTransactionById(this.transaction.id)
   }
 
   editTransaction() {

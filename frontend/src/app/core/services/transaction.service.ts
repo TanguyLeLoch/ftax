@@ -42,6 +42,14 @@ export class TransactionService {
       )
   }
 
+  submitDraftTransactionById(id: string) {
+    this.transactionControllerService.submitDraftTransactionById(id)
+      .subscribe(() => {
+          this.getTransactions();
+        }
+      )
+  }
+
   editTransaction(id: string) {
     this.transactionControllerService.editTransaction(id)
       .subscribe(() => {

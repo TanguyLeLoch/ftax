@@ -14,6 +14,10 @@ input, select, .transaction-type {
   font-size: 12px;
 }
 
+input {
+  height: 100%;
+}
+
 .amount {
   text-align: right;
 }
@@ -80,8 +84,14 @@ input[type="number"] {
 
 .invalid {
   color: red;
+  border: 1px solid rgba(255, 0, 0, 0.55);
 }
 
-.value.invalid {
-    border: 1px solid red;
+.value {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
 }
+
