@@ -27,7 +27,8 @@ public class EditTransactionCommand {
             String externalId
     ) {
         this.id = id;
-        this.transactionType = TransactionType.from(transactionType);
+        this.transactionType = transactionType == null ? null
+                : TransactionType.from(transactionType);
         this.instant = instant;
         this.valueIn = createValueWithCheck(tokenIn, amountIn, "In");
         this.valueOut = createValueWithCheck(tokenOut, amountOut, "Out");

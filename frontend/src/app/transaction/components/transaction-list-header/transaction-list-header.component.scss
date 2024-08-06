@@ -9,18 +9,18 @@
 }
 
 .header-tokenIn {
-  grid-column: 4 / 6; /* Spans the second header item across the next two columns */
+  grid-column: 4 / 5; /* Spans the second header item across the next two columns */
 }
 
 .header-tokenOut {
-  grid-column: 6 / 8; /* Spans the second header item across the next two columns */
+  grid-column: 5 / 6; /* Spans the second header item across the next two columns */
 }
 
 .header-token-fee {
-  grid-column: 8 / 10; /* Spans the second header item across the next two columns */
+  grid-column: 6 / 7; /* Spans the second header item across the next two columns */
 }
 .add-tx {
-  grid-column: 11 / 13; /* Spans the second header item across the next two columns */
+  grid-column: 8 / 10; /* Spans the second header item across the next two columns */
 }
 
 

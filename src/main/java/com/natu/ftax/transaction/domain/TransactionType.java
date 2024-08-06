@@ -2,12 +2,10 @@ package com.natu.ftax.transaction.domain;
 
 import lombok.Getter;
 
-import java.util.Locale;
-
+@Getter
 enum TransactionType {
     TRANSFER("transfer"), SWAP("swap"), NONE("none");
 
-    @Getter
     private final String value;
 
     TransactionType(String value) {

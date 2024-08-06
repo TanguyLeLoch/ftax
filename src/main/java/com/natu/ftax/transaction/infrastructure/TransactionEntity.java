@@ -29,15 +29,18 @@ public class TransactionEntity {
 
     private Instant instant;
 
+    @Column(nullable = true)
     private String tokenIn;
+    @Column(nullable = true)
     private String tokenOut;
+    @Column(nullable = true)
     private String tokenFee;
 
-    @Column(nullable = false, precision = PRECISION, scale = SCALE)
+    @Column(nullable = true, precision = PRECISION, scale = SCALE)
     private BigDecimal amountOut;
-    @Column(nullable = false, precision = PRECISION, scale = SCALE)
+    @Column(nullable = true, precision = PRECISION, scale = SCALE)
     private BigDecimal amountFee ;
-    @Column(nullable = false, precision = PRECISION, scale = SCALE)
+    @Column(nullable = true, precision = PRECISION, scale = SCALE)
     private BigDecimal amountIn;
 
     private String externalId;
@@ -81,14 +84,17 @@ public class TransactionEntity {
 
     public Transaction toDomain() {
         return Transaction.reconstitute(
-            id,
-            state,
-            transactionType,
-            instant,
-            new Value(new Token(tokenIn),amountIn),
-            new Value(new Token(tokenOut),amountOut),
-            new Value(new Token(tokenFee),amountFee),
-            externalId
+                id,
+                state,
+                transactionType,
+                instant,
+                tokenIn != null && amountIn != null ?
+                        new Value(new Token(tokenIn), amountIn) : null,
+                tokenOut != null && amountOut != null ?
+                        new Value(new Token(tokenOut), amountOut) : null,
+                tokenFee != null && amountFee != null ?
+                        new Value(new Token(tokenFee), amountFee) : null,
+                externalId
         );
     }
 

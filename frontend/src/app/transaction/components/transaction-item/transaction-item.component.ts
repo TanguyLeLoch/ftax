@@ -2,6 +2,23 @@ import {Component, Input, OnInit} from '@angular/core';
 import {EditFieldRequest, SubmitTransactionRequest, Transaction,} from "../../../core/model";
 import {TransactionService} from "../../../core/services/transaction.service";
 import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {
+  AmountFeeField,
+  AmountInField,
+  AmountOutField,
+  DateAndTime,
+  DateTimeFormField,
+  ExternalIdField,
+  FormField,
+  TokenFeeField,
+  TokenInField,
+  TokenOutField,
+  TransactionTypeFormField,
+  Value,
+  ValueFeeField,
+  ValueInField,
+  ValueOutField
+} from './FormField';
 import TransactionTypeEnum = Transaction.TransactionTypeEnum;
 
 
@@ -30,6 +47,20 @@ export class TransactionItemComponent implements OnInit {
   tokenFeeValid = true;
   externalIdValid = true;
 
+  dateTimeField!: DateTimeFormField
+  transactionTypeField!: TransactionTypeFormField
+  valueInField!: ValueInField
+  valueOutField!: ValueOutField
+  valueFeeField!: ValueFeeField
+  amountInField!: AmountInField
+  amountOutField!: AmountOutField
+  amountFeeField!: AmountFeeField
+  tokenInField!: TokenInField
+  tokenOutField!: TokenOutField
+  tokenFeeField!: TokenFeeField
+  externalIdField!: ExternalIdField
+
+
   transactionTypes: Transaction.TransactionTypeEnum[] = Object.values(Transaction.TransactionTypeEnum);
 
   constructor(private transactionService: TransactionService) {
@@ -38,10 +69,47 @@ export class TransactionItemComponent implements OnInit {
   ngOnInit(): void {
 
     this.editMode = this.transaction.state === Transaction.StateEnum.Draft;
+    let dateAndTime: DateAndTime | undefined = undefined;
     if (this.transaction.dateTime) {
       this.txDate = this.transaction.dateTime.slice(0, 10)
       this.txTime = this.transaction.dateTime.slice(11, 23)
+      dateAndTime = new DateAndTime(this.transaction.dateTime.slice(0, 10), this.transaction.dateTime.slice(11, 23))
     }
+    const tx = this.transaction
+
+    this.dateTimeField = new DateTimeFormField(tx, dateAndTime, (value) => !!value && value.isValid())
+    this.transactionTypeField = new TransactionTypeFormField(tx, this.transaction.transactionType, this.isTransactionTypeValid)
+    this.amountInField = new AmountInField(tx, this.transaction.amountIn, this.isAmountValid)
+    this.amountOutField = new AmountOutField(tx, this.transaction.amountOut, this.isAmountValid)
+    this.amountFeeField = new AmountFeeField(tx, this.transaction.amountFee, this.isAmountValid)
+    this.tokenInField = new TokenInField(tx, this.transaction.tokenIn, (value) => this.isTokenValid(value, this.amountInField.value));
+    this.tokenOutField = new TokenOutField(tx, this.transaction.tokenOut, (value) => this.isTokenValid(value, this.amountOutField.value));
+    this.tokenFeeField = new TokenFeeField(tx, this.transaction.tokenFee, (value) => this.isTokenValid(value, this.amountFeeField.value));
+    this.externalIdField = new ExternalIdField(tx, this.transaction.externalId, () => true);
+
+    let valueIn = new Value(this.transaction.tokenIn, this.transaction.amountIn)
+    this.valueInField = new ValueInField(tx, valueIn, (value) => !!value && value.isValid())
+
+    let valueOut = new Value(this.transaction.tokenOut, this.transaction.amountOut)
+    this.valueOutField = new ValueOutField(tx, valueOut, (value) => !!value && value.isValid())
+
+    let valueFee = new Value(this.transaction.tokenFee, this.transaction.amountFee)
+    this.valueFeeField = new ValueFeeField(tx, valueFee, (value) => !!value && value.isValid())
+
+  }
+
+
+  isAmountValid(value: number | undefined): boolean {
+    return value !== undefined && value >= 0;
+  }
+
+  isTransactionTypeValid(value: TransactionTypeEnum | undefined) {
+    return value != TransactionTypeEnum.None
+  }
+
+  isTokenValid(value: string | undefined, amountValue: number | undefined): boolean {
+    return !!value || !amountValue;
+
   }
 
 
@@ -172,13 +240,26 @@ export class TransactionItemComponent implements OnInit {
   }
 
   saveTransactionType() {
-    console.log('blur')
-    this.saveField(() => this.isTransactionTypeInvalid(),
-      (valid: boolean) => this.transactionTypeValid = valid,
-      {
+    this.transactionTypeField.dirty()
+    if (this.transactionTypeField.isValid()) {
+      const request: EditFieldRequest = {
         id: this.transaction.id,
-        transactionType: this.transaction.transactionType
+        transactionType: this.transactionTypeField.value
+      }
+      this.transactionService.editField(request).subscribe((success: boolean) => {
+        console.log("savedField")
       });
+    }
+  }
+
+  save(field: FormField<any>) {
+    field.dirty();
+    if (field.isValid()) {
+      const request = field.createEditRequestBody();
+      this.transactionService.editField(request).subscribe((success: boolean) => {
+        console.log("savedField")
+      });
+    }
   }
 
   saveAmountIn() {
@@ -243,6 +324,10 @@ export class TransactionItemComponent implements OnInit {
         externalId: this.transaction.externalId
       });
   }
+
+  isDateValid() {
+  }
+
 }
 
 

@@ -25,11 +25,10 @@ public class Transaction {
         this.id = id;
         state = TransactionState.DRAFT;
         transactionType = TransactionType.NONE;
-        valueIn = Value.dummyValue();
-        valueOut = Value.dummyValue();
-        valueFee = Value.dummyValue();
+        valueIn = null;
+        valueOut = null;
+        valueFee = null;
         instant = Instant.now();
-
     }
 
     public static Transaction reconstitute(String id, String state,
@@ -128,27 +127,32 @@ public class Transaction {
     }
 
     public BigDecimal getAmountIn() {
+        if (null == valueIn) return null;
         return valueIn.getAmount();
     }
 
     public BigDecimal getAmountOut() {
+        if (null == valueOut) return null;
         return valueOut.getAmount();
     }
 
     public BigDecimal getAmountFee() {
+        if (null == valueFee) return null;
         return valueFee.getAmount();
     }
 
     public String getSymbolIn() {
+        if (null == valueIn) return null;
         return valueIn.getSymbol();
     }
 
     public String getSymbolOut() {
+        if (null == valueOut) return null;
         return valueOut.getSymbol();
-
     }
 
     public String getSymbolFee() {
+        if (null == valueFee) return null;
         return valueOut.getSymbol();
 
     }
