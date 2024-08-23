@@ -21,6 +21,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { EditFieldRequest } from '../model/editFieldRequest';
 // @ts-ignore
+import { ExceptionResponse } from '../model/exceptionResponse';
+// @ts-ignore
 import { SubmitTransactionRequest } from '../model/submitTransactionRequest';
 // @ts-ignore
 import { Transaction } from '../model/transaction';

@@ -24,7 +24,6 @@ export interface Transaction {
      * The type of the transaction
      */
     transactionType: Transaction.TransactionTypeEnum;
-    dateTime: string;
     amountIn?: number;
     amountOut?: number;
     amountFee?: number;
@@ -32,6 +31,7 @@ export interface Transaction {
     tokenIn?: string;
     tokenOut?: string;
     tokenFee?: string;
+    dateTime: string;
 }
 export namespace Transaction {
     export type StateEnum = 'draft' | 'submitted';

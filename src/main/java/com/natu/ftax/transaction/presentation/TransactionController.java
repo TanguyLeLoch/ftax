@@ -1,8 +1,13 @@
 package com.natu.ftax.transaction.presentation;
 
+import com.natu.ftax.common.exception.ExceptionResponse;
 import com.natu.ftax.transaction.application.TransactionService;
 import com.natu.ftax.transaction.domain.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +68,10 @@ public class TransactionController {
         value = "edit",
         produces = "application/json"
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Field edited successfully", content = @Content(schema = @Schema(implementation = TransactionResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+    })
     public TransactionResponse editField(@Valid @RequestBody EditFieldRequest request) {
         LOGGER.info("Editing field with id: {}", request.getId());
         return new TransactionResponse(service.editField(request));

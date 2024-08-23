@@ -90,11 +90,14 @@ export class TransactionItemComponent implements OnInit {
   }
 
   save(field: FormField<any>) {
+    if (!this.editMode) {
+      return;
+    }
     field.dirty();
     if (field.isValid()) {
       const request = field.createEditRequestBody();
       this.transactionService.editField(request).subscribe((success: boolean) => {
-        console.log("success", success);
+        field.setBackendInvalid(!success);
       });
     }
   }

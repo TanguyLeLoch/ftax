@@ -7,10 +7,11 @@ import {provideNativeDateAdapter} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
+import {ToastComponent} from "./components/toast/toast.component";
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ToastComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -18,13 +19,15 @@ import {FormsModule} from "@angular/forms";
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+
   ],
   exports: [
     MatSelectModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
+    ToastComponent,
   ],
   providers: [provideNativeDateAdapter()],
 })

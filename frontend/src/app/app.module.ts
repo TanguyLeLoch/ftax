@@ -10,6 +10,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {TransactionListComponent} from "./transaction/components/transaction-list/transaction-list.component";
 import {LedgerBookComponent} from "./ledger/components/ledger-book/ledger-book.component";
 import {LedgerModule} from "./ledger/ledger.module";
+import {CoreModule} from "./core/core.module";
 
 
 const routes: Routes = [
@@ -28,7 +29,8 @@ const routes: Routes = [
     TransactionModule,
     LedgerModule,
     FontAwesomeModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    CoreModule
 
   ],
   providers: [

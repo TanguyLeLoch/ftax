@@ -10,6 +10,7 @@ git_push.sh
 index.ts
 model/balance.ts
 model/editFieldRequest.ts
+model/exceptionResponse.ts
 model/ledgerBook.ts
 model/ledgerEntry.ts
 model/models.ts

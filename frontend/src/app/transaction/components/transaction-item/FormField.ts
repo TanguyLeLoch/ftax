@@ -6,6 +6,7 @@ export abstract class FormField<T> {
   protected isDirty: boolean;
   private readonly validFunction: (value: T | undefined) => boolean;
   value: T | undefined;
+  protected backendInvalid: boolean;
 
 
   constructor(tx: Transaction, value: T | undefined, isValidFunction: (value: T | undefined) => boolean) {
@@ -13,6 +14,7 @@ export abstract class FormField<T> {
     this.value = value;
     this.validFunction = isValidFunction
     this.isDirty = false;
+    this.backendInvalid = false;
   };
 
   isValid() {
@@ -26,6 +28,10 @@ export abstract class FormField<T> {
 
   isInvalid() {
     return this.isDirty && !this.isValid()
+  }
+
+  setBackendInvalid(value: boolean) {
+    this.backendInvalid = value;
   }
 
   abstract createEditRequestBody(): EditFieldRequest;
@@ -50,21 +56,21 @@ export class DateTimeFormField extends FormField<DateAndTime> {
   }
 
   isDateInvalid() {
-    return this.isDirty && !this.value!.isDateValid()
+    return this.backendInvalid || this.isDirty && !this.value!.isDateValid()
   }
 
   isTimeInvalid() {
-    return this.isDirty && !this.value!.isTimeValid()
+    return this.backendInvalid || this.isDirty && !this.value!.isTimeValid()
   }
 }
 
 export abstract class ValueField extends FormField<Value> {
   isAmountInvalid() {
-    return this.isInvalid() && !this.value!.isAmountValid()
+    return this.backendInvalid || this.isInvalid() && !this.value!.isAmountValid()
   }
 
   isTokenInvalid() {
-    return this.isInvalid() && !this.value!.isTokenValid()
+    return this.backendInvalid || this.isInvalid() && !this.value!.isTokenValid()
   }
 }
 

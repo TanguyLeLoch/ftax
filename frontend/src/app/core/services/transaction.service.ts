@@ -1,6 +1,14 @@
 import {Injectable} from '@angular/core';
-import {EditFieldRequest, SubmitTransactionRequest, Transaction, TransactionControllerService} from "../model";
+import {
+  EditFieldRequest,
+  ExceptionResponse,
+  SubmitTransactionRequest,
+  Transaction,
+  TransactionControllerService
+} from "../model";
 import {BehaviorSubject, catchError, map, Observable, of, tap} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
+import {ToastService} from "./toast.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +21,7 @@ export class TransactionService {
   private transactionsSubject = new BehaviorSubject<Transaction[]>(this.transactions);
   public transactions$ = this.transactionsSubject.asObservable();
 
-  constructor(private transactionControllerService: TransactionControllerService) {
+  constructor(private transactionControllerService: TransactionControllerService, private toastService: ToastService) {
   }
 
   createTransactions() {
@@ -97,10 +105,16 @@ export class TransactionService {
     return this.transactionControllerService.editField(editFieldRequest)
       .pipe(
         tap(() => {
+          console.log('Field edited successfully ');
           this.getTransactions();
         }),
         map(() => true),
-        catchError(() => of(false))
+        catchError((error: HttpErrorResponse) => {
+          const response: ExceptionResponse = error.error
+          this.toastService.showToast('error', response.message);
+          console.log(response.message);
+          return of(false);
+        })
       );
   }
 }
