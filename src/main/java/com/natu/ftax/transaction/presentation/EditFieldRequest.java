@@ -45,6 +45,4 @@ public class EditFieldRequest {
         );
     }
 
-    // Getters and setters
-    // ...
 }
