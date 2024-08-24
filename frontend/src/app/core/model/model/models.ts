@@ -4,5 +4,5 @@ export * from './exceptionResponse';
 export * from './ledgerBook';
 export * from './ledgerEntry';
 export * from './submitTransactionRequest';
-export * from './token';
+export * from './timelineItem';
 export * from './transaction';

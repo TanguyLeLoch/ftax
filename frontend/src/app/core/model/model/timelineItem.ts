@@ -9,12 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Balance } from './balance';
 
 
-export interface LedgerEntry { 
-    id?: string;
-    balances: { [key: string]: Balance; };
-    instant?: string;
+export interface TimelineItem { 
+    dateTime: string;
 }
 

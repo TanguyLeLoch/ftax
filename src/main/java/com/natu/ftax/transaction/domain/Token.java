@@ -1,6 +1,7 @@
 package com.natu.ftax.transaction.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -14,6 +15,7 @@ public class Token {
         this.symbol = symbol;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return symbol;

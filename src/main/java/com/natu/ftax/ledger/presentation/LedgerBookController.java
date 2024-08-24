@@ -2,10 +2,14 @@ package com.natu.ftax.ledger.presentation;
 
 import com.natu.ftax.ledger.application.LedgerBookService;
 import com.natu.ftax.ledger.domain.LedgerBook;
+import com.natu.ftax.transaction.domain.Token;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("ledger-book")
@@ -25,6 +29,30 @@ public class LedgerBookController {
     @ResponseStatus(HttpStatus.CREATED)
     public LedgerBook generateLedgerBook() {
         return service.generateLedgerBook();
+    }
+
+    @GetMapping(
+            value = "{bookId}/tokens",
+            produces = "application/json"
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Token> getTokens(@PathVariable String bookId) {
+        LedgerBook ledgerBook = service.getLedgerBook();
+        return ledgerBook.getTokens();
+    }
+
+    @GetMapping(
+            value = "timeline/{bookId}/{tokenId}",
+            produces = "application/json"
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public List<TimelineItem> getTimelineForToken(
+            @PathVariable String bookId,
+            @PathVariable String tokenId) {
+
+        LedgerBook ledgerBook = service.getLedgerBook();
+        return new TimeLine(ledgerBook).getTimeLine(tokenId);
+
     }
 
     @Operation(summary = "Get the ledger book")

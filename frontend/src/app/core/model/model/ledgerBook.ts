@@ -13,7 +13,8 @@ import { LedgerEntry } from './ledgerEntry';
 
 
 export interface LedgerBook { 
-    id?: string;
-    ledgerEntries?: Array<LedgerEntry>;
+    id: string;
+    ledgerEntries: Array<LedgerEntry>;
+    tokens?: Set<string>;
 }
 

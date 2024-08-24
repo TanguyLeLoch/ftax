@@ -3,11 +3,11 @@ package com.natu.ftax.ledger.domain;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.transaction.domain.Token;
 import com.natu.ftax.transaction.domain.Transaction;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,7 @@ import java.util.Map;
 public class LedgerEntry {
     @Getter
     private final String id;
+    @NotNull
     private final Map<Token, Balance> balances;
     @Getter
     private final Instant instant;
