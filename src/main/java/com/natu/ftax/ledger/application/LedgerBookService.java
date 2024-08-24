@@ -31,9 +31,9 @@ public class LedgerBookService {
 
         LedgerBook ledgerBook = LedgerBook.create(idGenerator.generate());
         List<Transaction> txs = transactionService.getAllTransactions();
-        ledgerBook.getLedgerEntries().add(LedgerEntry.first(idGenerator.generate()));
+        ledgerBook.add(LedgerEntry.first(idGenerator.generate()));
         for (Transaction tx : txs) {
-            ledgerBook.getLedgerEntries().add(
+            ledgerBook.add(
                     LedgerEntry.create(
                             idGenerator.generate(),
                             ledgerBook.getLedgerEntries().get(ledgerBook.getLedgerEntries().size() - 1),
