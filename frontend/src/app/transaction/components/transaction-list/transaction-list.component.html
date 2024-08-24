@@ -1,5 +1,12 @@
 <div class="container">
 
+  <div *ngIf="isImportOpen">
+    <app-file-upload (closeModal)="isImportOpen = false"
+                     (upload)="importTransactions($event)"
+    ></app-file-upload>
+  </div>
+  <button (click)="isImportOpen = true" class="btn-green btn-import">Import transactions</button>
+
   <div *ngIf="transactions.length === 0; else elseTemplate"  class="empty-tx">
 
       <span>No transactions yet</span>

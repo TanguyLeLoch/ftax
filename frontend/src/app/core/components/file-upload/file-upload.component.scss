@@ -1,0 +1,79 @@
+@import "variables";
+/* Overlay to blur the background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal style */
+.file-upload-modal {
+  background: $background-color;
+  width: 400px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-container {
+  text-align: center;
+  margin: 50px auto;
+}
+
+h2 {
+  font-size: 24px;
+  color: $font-color;
+  margin-bottom: 20px;
+}
+
+input[type="file"] {
+  display: none; /* Hide the file input */
+}
+
+
+
+.custom-file-upload:hover {
+  background-color: #0056b3;
+}
+
+.custom-file-upload i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.files {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+.filename {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 10px;
+  gap: 5px;
+}
+
+.icon-trash {
+  cursor: pointer;
+}
+
+.btn-upload {
+align-self: flex-end;
+  padding: 6px 12px;
+}
+
+

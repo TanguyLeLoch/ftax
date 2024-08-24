@@ -12,6 +12,8 @@ export class TransactionListComponent implements OnInit {
   transactions: Transaction[] = [];
   private transactionsSub!: Subscription;
 
+  protected isImportOpen = false;
+
   constructor(private transactionService: TransactionService) {
   }
 
@@ -32,4 +34,7 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.createTransactions();
   }
 
+  importTransactions($event: File[]) {
+    console.log($event)
+  }
 }

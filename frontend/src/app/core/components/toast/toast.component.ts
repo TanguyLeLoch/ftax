@@ -15,7 +15,7 @@ export class ToastComponent implements OnInit {
   ngOnInit(): void {
     this.toastService.toastState.subscribe((toast: ToastMessage) => {
       this.toastMessages.push(toast);
-      setTimeout(() => this.removeToast(toast), 3000);
+      setTimeout(() => this.removeToast(toast), 5000);
     });
   }
 

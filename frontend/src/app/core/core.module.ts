@@ -8,10 +8,12 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {ToastComponent} from "./components/toast/toast.component";
+import {FileUploadComponent} from "./components/file-upload/file-upload.component";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 
 @NgModule({
-  declarations: [ToastComponent],
+  declarations: [ToastComponent, FileUploadComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -20,6 +22,7 @@ import {ToastComponent} from "./components/toast/toast.component";
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    FaIconComponent,
 
   ],
   exports: [
@@ -28,6 +31,7 @@ import {ToastComponent} from "./components/toast/toast.component";
     MatFormFieldModule,
     MatInputModule,
     ToastComponent,
+    FileUploadComponent,
   ],
   providers: [provideNativeDateAdapter()],
 })

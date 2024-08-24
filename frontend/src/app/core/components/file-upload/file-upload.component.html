@@ -1,0 +1,22 @@
+<div class="overlay" (click)="onCloseModal()">1
+  <div class="file-upload-modal" (click)="$event.stopPropagation()">
+    <div class="upload-container">
+      <h2>Upload Files</h2>
+      <label for="file-upload" class="btn-transparent">
+        <fa-icon [icon]="faCloudUpload"></fa-icon>
+        Choose Files
+      </label>
+      <input id="file-upload" type="file" multiple (change)="onFileSelected($event)"/>
+    </div>
+    <ul class="files">
+      <li class="filename" *ngFor="let file of files">
+        <span>{{ getFileName(file) }}</span>
+        <fa-icon class="icon-trash" [icon]="faTrash" (click)="removeFile(file)"></fa-icon>
+    </ul>
+    <button class="btn-transparent btn-upload" (click)="onUpload()"
+            [ngClass]="{disabled : files.length === 0}"
+            [disabled]="files.length ===0">
+      Confirm
+    </button>
+  </div>
+</div>
