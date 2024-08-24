@@ -49,6 +49,7 @@ export class FileUploadComponent {
   }
 
   onUpload() {
+    console.log('uploading files');
     this.upload.emit(this.files);
   }
 }

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -107,5 +108,34 @@ public class TransactionController {
     public void deleteTransaction(@PathVariable String id) {
         LOGGER.info("Deleting transaction with id: {}", id);
         service.deleteTransaction(id);
+    }
+
+    @Operation(summary = "Import transactions from files")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Transactions imported successfully",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid input",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    @PostMapping(
+            value = "import",
+            consumes = "multipart/form-data"
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    public void importTransactions(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("platform") String platform
+    ) {
+        LOGGER.info("Importing transactions from platform: {}", platform);
+        LOGGER.info("Importing transactions from file: {}",
+                file.getOriginalFilename());
+        service.importTransactions(platform, file);
+//        for (MultipartFile fileEntry : file) {
+//            LOGGER.info("Importing transactions from file: {}",
+//                    fileEntry.getOriginalFilename());
+//        }
+
     }
 }

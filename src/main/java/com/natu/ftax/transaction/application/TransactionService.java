@@ -5,6 +5,7 @@ import com.natu.ftax.transaction.domain.Transaction;
 import com.natu.ftax.transaction.presentation.EditFieldRequest;
 import com.natu.ftax.transaction.presentation.SubmitTransactionRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -57,6 +58,10 @@ public class TransactionService {
         Transaction transaction = transactionRepository.getTransactionById(id);
         transaction.submit();
         transactionRepository.save(transaction);
+    }
+
+    public void importTransactions(String platform, MultipartFile file) {
+
     }
 }
 

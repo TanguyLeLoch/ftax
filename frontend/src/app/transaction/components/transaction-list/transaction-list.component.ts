@@ -34,7 +34,7 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.createTransactions();
   }
 
-  importTransactions($event: File[]) {
-    console.log($event)
+  importTransactions(files: File[]) {
+    this.transactionService.importTransactionFiles(files).subscribe()
   }
 }

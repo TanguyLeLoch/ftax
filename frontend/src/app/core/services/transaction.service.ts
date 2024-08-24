@@ -6,7 +6,7 @@ import {
   Transaction,
   TransactionControllerService
 } from "../model";
-import {BehaviorSubject, catchError, map, Observable, of, tap} from "rxjs";
+import {BehaviorSubject, catchError, forkJoin, map, Observable, of, tap} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastService} from "./toast.service";
 
@@ -117,5 +117,33 @@ export class TransactionService {
         })
       );
   }
+
+  importTransactionFile(file: File): Observable<boolean> {
+    return this.transactionControllerService.importTransactions('MEXC', file).pipe(
+      tap(() => {
+        console.log('Transactions imported successfully');
+        this.getTransactions();
+      }),
+      map(() => true),
+      catchError((error: HttpErrorResponse) => {
+        const response: ExceptionResponse = error.error
+        this.toastService.showToast('error',
+          `file with name ${file.name} could not be imported : ${response.message}`);
+        console.log(`file with name ${file.name} could not be imported : ${response.message}`);
+        return of(false);
+      })
+    );
+  }
+
+  importTransactionFiles(files: File[]): Observable<boolean> {
+    const importObservables: Observable<boolean>[] = files.map(file =>
+      this.importTransactionFile(file)
+    );
+
+    return forkJoin(importObservables).pipe(
+      map(results => results.every(result => result))
+    );
+  }
+
 }
 
