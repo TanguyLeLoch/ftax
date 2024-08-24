@@ -1,6 +1,7 @@
 package com.natu.ftax.transaction.application;
 
 import com.natu.ftax.transaction.domain.Transaction;
+
 import java.util.List;
 
 public interface TransactionRepository {
@@ -8,4 +9,6 @@ public interface TransactionRepository {
     List<Transaction> getAllTransactions();
     void save(Transaction transaction);
     void deleteTransaction(String id);
+
+    void saveAll(List<Transaction> transactions);
 }

@@ -1,11 +1,13 @@
 package com.natu.ftax.transaction.presentation;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.natu.ftax.transaction.domain.Transaction;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Schema(name = "Transaction", description = "Transaction object")
 public class TransactionResponse {
@@ -23,8 +25,9 @@ public class TransactionResponse {
     }
 
     @NotNull
-    public Instant getDateTime() {
-        return transaction.getInstant();
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    public ZonedDateTime getDateTime() {
+        return transaction.getInstant().atZone(ZoneId.of("UTC"));
     }
 
     @NotNull

@@ -40,4 +40,9 @@ public class TransactionRepositoryInMemory implements TransactionRepository {
     public void deleteTransaction(String id) {
         transactions.remove(id);
     }
+
+    @Override
+    public void saveAll(List<Transaction> transactions) {
+        transactions.forEach(this::save);
+    }
 }

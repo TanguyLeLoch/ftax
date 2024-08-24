@@ -1,6 +1,7 @@
 package com.natu.ftax.transaction.application;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
+import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.transaction.domain.Transaction;
 import com.natu.ftax.transaction.presentation.EditFieldRequest;
 import com.natu.ftax.transaction.presentation.SubmitTransactionRequest;
@@ -8,16 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TransactionService {
 
     private final IdGenerator idGenerator;
     private final TransactionRepository transactionRepository;
+    private final Map<String, PlatformImporter> platformImporters;
 
-    public TransactionService(IdGenerator idGenerator, TransactionRepository transactionRepository) {
+    public TransactionService(IdGenerator idGenerator,
+            TransactionRepository transactionRepository,
+            Map<String, PlatformImporter> platformImporters) {
         this.idGenerator = idGenerator;
         this.transactionRepository = transactionRepository;
+        this.platformImporters = platformImporters;
+
     }
 
     public Transaction createTransaction() {
@@ -61,7 +68,14 @@ public class TransactionService {
     }
 
     public void importTransactions(String platform, MultipartFile file) {
-
+        PlatformImporter importer = platformImporters.get(
+                platform + "Importer");
+        if (importer != null) {
+            importer.importTransaction(file);
+        } else {
+            throw new FunctionalException(
+                    "Platform " + platform + " not supported");
+        }
     }
 }
 

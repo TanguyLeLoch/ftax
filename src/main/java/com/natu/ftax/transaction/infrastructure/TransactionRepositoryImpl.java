@@ -4,6 +4,7 @@ import com.natu.ftax.common.exception.NotFoundException;
 import com.natu.ftax.transaction.application.TransactionRepository;
 import com.natu.ftax.transaction.domain.Transaction;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,5 +39,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public void deleteTransaction(String id) {
         transactionRepositoryJpa.deleteById(id);
+    }
+
+    @Override
+    public void saveAll(List<Transaction> transactions) {
+        transactionRepositoryJpa.saveAll(transactions.stream()
+                .map(TransactionEntity::fromDomain)
+                .collect(Collectors.toList()));
     }
 }

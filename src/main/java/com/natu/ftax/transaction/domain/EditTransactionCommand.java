@@ -57,15 +57,12 @@ public class EditTransactionCommand {
     public void execute(Transaction transaction) {
         if (transactionType != null) {
             transaction.setTransactionType(transactionType);
-            return;
         }
         if (instant != null) {
             transaction.setInstant(instant);
-            return;
         }
         if (valueIn != null) {
             transaction.setValueIn(valueIn);
-            return;
         }
         if (valueOut != null) {
             transaction.setValueOut(valueOut);

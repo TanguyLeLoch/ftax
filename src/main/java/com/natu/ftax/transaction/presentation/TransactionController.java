@@ -128,14 +128,9 @@ public class TransactionController {
             @RequestParam("file") MultipartFile file,
             @RequestParam("platform") String platform
     ) {
-        LOGGER.info("Importing transactions from platform: {}", platform);
-        LOGGER.info("Importing transactions from file: {}",
-                file.getOriginalFilename());
+        LOGGER.info("Importing transactions from file: {} with platform: {}",
+                file.getOriginalFilename(), platform);
         service.importTransactions(platform, file);
-//        for (MultipartFile fileEntry : file) {
-//            LOGGER.info("Importing transactions from file: {}",
-//                    fileEntry.getOriginalFilename());
-//        }
 
     }
 }

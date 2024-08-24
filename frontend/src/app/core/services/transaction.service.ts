@@ -119,7 +119,7 @@ export class TransactionService {
   }
 
   importTransactionFile(file: File): Observable<boolean> {
-    return this.transactionControllerService.importTransactions('MEXC', file).pipe(
+    return this.transactionControllerService.importTransactions('Mexc', file).pipe(
       tap(() => {
         console.log('Transactions imported successfully');
         this.getTransactions();
