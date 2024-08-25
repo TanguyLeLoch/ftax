@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LedgerService} from "../../../core/services/ledger.service";
-import {Balance, LedgerBook} from "../../../core/model";
+import {LedgerBook, TimelineItem} from "../../../core/model";
 import {Subscription} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
@@ -23,11 +23,12 @@ export class LedgerBookComponent implements OnInit, OnDestroy {
   ledgerBookSub!: Subscription;
 
   date: Date | null = null;
-  balances: Balance[] = [];
+
+  timeline: Map<string, TimelineItem[]>
 
 
   constructor(private ledgerService: LedgerService) {
-
+    this.timeline = new Map();
   }
 
   ngOnInit(): void {
@@ -50,19 +51,12 @@ export class LedgerBookComponent implements OnInit, OnDestroy {
     this.ledgerService.generateLedgerBook();
   }
 
-  onDateChange() {
-    console.log("Date changed to: ", this.date);
-    this.date = new Date(this.date!);
-    for (let entry of this.ledgerBook!.ledgerEntries!) {
+  onTokenChange(event: Event) {
+    const selectedToken = (event.target as HTMLSelectElement).value;
+    // fetch the timeline for the selected token
+    // this.timeline.set(selectedToken, this.ledgerService.getTimelineForToken(this.ledgerBook!.id, selectedToken));
 
-      const entryDate = new Date(entry.instant!);
 
-      if (this.date! <= entryDate) {
-        this.balances = Object.values(entry.balances);
-      }
-    }
-    console.log("Balances: ", this.balances);
   }
-
 }
 

@@ -2,19 +2,11 @@
     <button (click)="generateLedgerBook()" class="btn-generate-ledger-book btn-green"> generate Ledger book</button>
 
     <div *ngIf="ledgerBook">
-        <input [(ngModel)]="date" (blur)="onDateChange()"
-               id="date"
-               name="date"
-               required
-               type="date">
+      <select name="token" (change)="onTokenChange($event)">
+        <option value="" disabled selected>Choose a token</option>
+        <option *ngFor="let token of getTokens()" [value]="token">{{ token }}</option>
+      </select>
     </div>
 
-    <div *ngFor="let bal of balances">
-        {{bal.amount}} - {{bal.token}}
-    </div>
-
-  <select name="token">
-    <option *ngFor="let token of getTokens()" [value]="token">{{ token }}</option>
-  </select>
 
 </div>
