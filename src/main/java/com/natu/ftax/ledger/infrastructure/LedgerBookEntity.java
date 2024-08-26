@@ -15,6 +15,7 @@ public class LedgerBookEntity {
     private String id;
 
     @OneToMany(mappedBy = "ledgerBook", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("instant")
     private List<LedgerEntryEntity> ledgerEntries;
 
     protected LedgerBookEntity() {
