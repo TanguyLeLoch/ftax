@@ -2,18 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LedgerService} from "../../../core/services/ledger.service";
 import {LedgerBook, TimelineItem} from "../../../core/model";
 import {Subscription, tap} from "rxjs";
-import {FormsModule} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
 
 
 @Component({
   selector: 'app-ledger-book',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgIf,
-    NgForOf
-  ],
   templateUrl: './ledger-book.component.html',
   styleUrl: './ledger-book.component.scss'
 })

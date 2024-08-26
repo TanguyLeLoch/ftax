@@ -22,16 +22,10 @@ export class LedgerService {
       tap((ledgerBook: LedgerBook) => {
         this.ledgerBook = ledgerBook;
         this.ledgerBookSubject.next(ledgerBook);
-        this.getTokens(ledgerBook.id);
+        this.tokens = ledgerBook.tokens;
+
       }),
     ).subscribe();
-  }
-
-  getTokens(bookId: string): void {
-    this.ledgerBookControllerService.getTokens(bookId).pipe(
-      tap((tokens: Set<string>) => {
-        this.tokens = tokens;
-      })).subscribe();
   }
 
   getTimelineForToken(bookId: string, selectedToken: string): Observable<TimelineItem[]> {

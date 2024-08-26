@@ -36,6 +36,7 @@ public class LedgerBook {
         ledgerEntries.add(entry);
     }
 
+    @NotNull
     public Set<Token> getTokens() {
         return ledgerEntries.stream()
                 .map(LedgerEntry::getBalances)

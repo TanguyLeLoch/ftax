@@ -11,6 +11,7 @@ import {TransactionListComponent} from "./transaction/components/transaction-lis
 import {LedgerBookComponent} from "./ledger/components/ledger-book/ledger-book.component";
 import {LedgerModule} from "./ledger/ledger.module";
 import {CoreModule} from "./core/core.module";
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
 const routes: Routes = [
@@ -34,7 +35,8 @@ const routes: Routes = [
 
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideCharts(withDefaultRegisterables())
   ],
   bootstrap: [AppComponent]
 })

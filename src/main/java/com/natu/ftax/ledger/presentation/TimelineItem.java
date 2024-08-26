@@ -14,6 +14,7 @@ public class TimelineItem {
     @NotNull
     private final Instant dateTime;
     @Getter
+    @NotNull
     private final BigDecimal amount;
 
     public TimelineItem(Instant dateTime, BigDecimal amount) {
