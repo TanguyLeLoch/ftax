@@ -13,5 +13,6 @@
 
 export interface TimelineItem { 
     dateTime: string;
+    amount?: number;
 }
 

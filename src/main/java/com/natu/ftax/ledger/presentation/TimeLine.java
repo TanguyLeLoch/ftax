@@ -3,6 +3,7 @@ package com.natu.ftax.ledger.presentation;
 import com.natu.ftax.ledger.domain.Balance;
 import com.natu.ftax.ledger.domain.LedgerBook;
 import com.natu.ftax.ledger.domain.LedgerEntry;
+import com.natu.ftax.transaction.domain.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class TimeLine {
         String previousBalanceId = null;
         for (LedgerEntry ledgerEntry : ledgerBook.getLedgerEntries()) {
             var instant = ledgerEntry.getInstant();
-            Balance balance = ledgerEntry.getBalances().get(token);
+            Balance balance = ledgerEntry.getBalances().get(new Token(token));
             if (balance == null || balance.getId().equals(previousBalanceId)) {
                 continue;
             }

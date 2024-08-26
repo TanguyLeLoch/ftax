@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {LedgerBook, LedgerBookControllerService} from "../model";
-import {BehaviorSubject, tap} from "rxjs";
+import {LedgerBook, LedgerBookControllerService, TimelineItem} from "../model";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -34,4 +34,7 @@ export class LedgerService {
       })).subscribe();
   }
 
+  getTimelineForToken(bookId: string, selectedToken: string): Observable<TimelineItem[]> {
+    return this.ledgerBookControllerService.getTimelineForToken(bookId, selectedToken);
+  }
 }

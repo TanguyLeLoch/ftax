@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LedgerService} from "../../../core/services/ledger.service";
 import {LedgerBook, TimelineItem} from "../../../core/model";
-import {Subscription} from "rxjs";
+import {Subscription, tap} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 
@@ -21,6 +21,7 @@ export class LedgerBookComponent implements OnInit, OnDestroy {
 
   ledgerBook: LedgerBook | null = null;
   ledgerBookSub!: Subscription;
+
 
   date: Date | null = null;
 
@@ -53,8 +54,11 @@ export class LedgerBookComponent implements OnInit, OnDestroy {
 
   onTokenChange(event: Event) {
     const selectedToken = (event.target as HTMLSelectElement).value;
-    // fetch the timeline for the selected token
-    // this.timeline.set(selectedToken, this.ledgerService.getTimelineForToken(this.ledgerBook!.id, selectedToken));
+    this.ledgerService.getTimelineForToken(this.ledgerBook!.id, selectedToken).pipe(
+      tap((timelineItems: TimelineItem[]) => {
+        this.timeline.set(selectedToken, timelineItems);
+      })
+    ).subscribe();
 
 
   }

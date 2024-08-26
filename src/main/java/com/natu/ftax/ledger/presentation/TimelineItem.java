@@ -2,6 +2,7 @@ package com.natu.ftax.ledger.presentation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -12,6 +13,7 @@ public class TimelineItem {
 
     @NotNull
     private final Instant dateTime;
+    @Getter
     private final BigDecimal amount;
 
     public TimelineItem(Instant dateTime, BigDecimal amount) {
