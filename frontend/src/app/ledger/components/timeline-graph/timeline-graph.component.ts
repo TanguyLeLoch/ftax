@@ -51,9 +51,7 @@ export class TimelineGraphComponent implements OnInit{
       scales: {
         x: {
           type: 'time', // Use the time scale
-          time: {
-            unit: 'month', // Adjust the unit as needed (e.g., 'day', 'month', 'year')
-          },
+
         },
       }
     }
