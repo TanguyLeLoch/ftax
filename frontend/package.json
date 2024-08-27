@@ -25,6 +25,8 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "chart.js": "^4.4.4",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^3.6.0",
     "ng2-charts": "^6.0.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

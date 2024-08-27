@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {LedgerService} from "../../../core/services/ledger.service";
 import {LedgerBook, TimelineItem} from "../../../core/model";
 import {Subscription, tap} from "rxjs";
@@ -18,9 +18,10 @@ export class LedgerBookComponent implements OnInit, OnDestroy {
   date: Date | null = null;
 
   timeline: Map<string, TimelineItem[]>
+  tokens: string[] = [];
 
 
-  constructor(private ledgerService: LedgerService) {
+  constructor(private ledgerService: LedgerService, private cdr: ChangeDetectorRef) {
     this.timeline = new Map();
   }
 
@@ -46,13 +47,15 @@ export class LedgerBookComponent implements OnInit, OnDestroy {
 
   onTokenChange(event: Event) {
     const selectedToken = (event.target as HTMLSelectElement).value;
+    if (this.tokens.includes(selectedToken)) {
+      return;
+    }
     this.ledgerService.getTimelineForToken(this.ledgerBook!.id, selectedToken).pipe(
       tap((timelineItems: TimelineItem[]) => {
         this.timeline.set(selectedToken, timelineItems);
+        this.tokens.push(selectedToken);
       })
     ).subscribe();
-
-
   }
 }
 

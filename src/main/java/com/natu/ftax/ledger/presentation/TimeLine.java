@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimeLine {
-    private LedgerBook ledgerBook;
+    private final LedgerBook ledgerBook;
 
     public TimeLine(LedgerBook ledgerBook) {
         this.ledgerBook = ledgerBook;

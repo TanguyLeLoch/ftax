@@ -8,7 +8,9 @@
       </select>
     </div>
   <div class="graph-container">
-    <app-timeline-graph *ngFor="let token of timeline.keys()" [timeline]="timeline.get(token)!">
+    <app-timeline-graph *ngFor="let token of tokens"
+                        [timeline]="timeline.get(token)!"
+                        [token]="token">
 
     </app-timeline-graph>
   </div>

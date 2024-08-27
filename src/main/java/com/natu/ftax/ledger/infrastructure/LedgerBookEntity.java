@@ -35,7 +35,10 @@ public class LedgerBookEntity {
     public static LedgerBookEntity fromDomain(LedgerBook ledgerBook) {
         return new LedgerBookEntity(
             ledgerBook.getId(),
-            ledgerBook.getLedgerEntries().stream().map(entry -> LedgerEntryEntity.fromDomain(entry, ledgerBook.getId())).collect(Collectors.toList())
+                ledgerBook.getLedgerEntries().stream().map(
+                                entry -> LedgerEntryEntity.fromDomain(entry,
+                                        ledgerBook.getId()))
+                        .collect(Collectors.toList())
         );
     }
 
