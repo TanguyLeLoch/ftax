@@ -50,8 +50,7 @@ export class TimelineGraphComponent implements OnInit{
     options: {
       scales: {
         x: {
-          type: 'time', // Use the time scale
-
+          type: 'time',
         },
       }
     }
