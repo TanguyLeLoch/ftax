@@ -35,13 +35,17 @@ public class TransactionEntity {
     private String tokenOut;
     @Column(nullable = true)
     private String tokenFee;
+    @Column(nullable = true)
+    private String tokenFiat;
 
+    @Column(nullable = true, precision = PRECISION, scale = SCALE)
+    private BigDecimal amountIn;
     @Column(nullable = true, precision = PRECISION, scale = SCALE)
     private BigDecimal amountOut;
     @Column(nullable = true, precision = PRECISION, scale = SCALE)
     private BigDecimal amountFee ;
     @Column(nullable = true, precision = PRECISION, scale = SCALE)
-    private BigDecimal amountIn;
+    private BigDecimal amountFiat;
 
     private String externalId;
 
@@ -94,6 +98,8 @@ public class TransactionEntity {
                         new Value(new Token(tokenOut), amountOut) : null,
                 tokenFee != null && amountFee != null ?
                         new Value(new Token(tokenFee), amountFee) : null,
+                tokenFiat != null && amountFiat != null ?
+                        new Value(new Token(tokenFiat), amountFiat) : null,
                 externalId
         );
     }

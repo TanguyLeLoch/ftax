@@ -18,9 +18,11 @@ export interface EditFieldRequest {
     tokenIn?: string;
     tokenOut?: string;
     tokenFee?: string;
+    tokenFiat?: string;
     amountIn?: number;
     amountOut?: number;
     amountFee?: number;
+    amountFiat?: number;
     externalId?: string;
 }
 

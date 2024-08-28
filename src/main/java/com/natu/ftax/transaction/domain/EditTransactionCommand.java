@@ -12,6 +12,7 @@ public class EditTransactionCommand {
     private final Value valueIn;
     private final Value valueOut;
     private final Value valueFee;
+    private final Value valueFiat;
     private final String externalId;
 
     public EditTransactionCommand(
@@ -21,9 +22,11 @@ public class EditTransactionCommand {
             String tokenIn,
             String tokenOut,
             String tokenFee,
+            String tokenFiat,
             BigDecimal amountIn,
             BigDecimal amountOut,
             BigDecimal amountFee,
+            BigDecimal amountFiat,
             String externalId
     ) {
         this.id = id;
@@ -33,6 +36,7 @@ public class EditTransactionCommand {
         this.valueIn = createValueWithCheck(tokenIn, amountIn, "In");
         this.valueOut = createValueWithCheck(tokenOut, amountOut, "Out");
         this.valueFee = createValueWithCheck(tokenFee, amountFee, "Fee");
+        this.valueFiat = createValueWithCheck(tokenFiat, amountFiat, "Fiat");
         this.externalId = externalId;
     }
 
@@ -69,6 +73,9 @@ public class EditTransactionCommand {
         }
         if (valueFee != null) {
             transaction.setValueFee(valueFee);
+        }
+        if (valueFiat != null) {
+            transaction.setValueFiat(valueFiat);
         }
         if (externalId != null) {
             transaction.setExternalId(externalId);

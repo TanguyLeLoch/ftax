@@ -20,6 +20,7 @@ public class Transaction {
     private Value valueFee;
     @Getter
     private String externalId;
+    private Value valueFiat;
 
     private Transaction(String id) {
         this.id = id;
@@ -28,12 +29,14 @@ public class Transaction {
         valueIn = null;
         valueOut = null;
         valueFee = null;
+        valueFiat = null;
         instant = Instant.now();
     }
 
     public static Transaction reconstitute(String id, String state,
             String transactionType, Instant instant, Value valueIn,
-            Value valueOut, Value valueFee, String externalId) {
+            Value valueOut, Value valueFee, Value valueFiat,
+            String externalId) {
         Transaction tx = new Transaction(id);
         tx.state = TransactionState.from(state);
         tx.transactionType = TransactionType.from(transactionType);
@@ -41,6 +44,7 @@ public class Transaction {
         tx.valueIn = valueIn;
         tx.valueOut = valueOut;
         tx.valueFee = valueFee;
+        tx.valueFiat = valueFiat;
         tx.externalId = externalId;
         return tx;
     }
@@ -124,6 +128,11 @@ public class Transaction {
     void setValueFee(Value valueFee) {
         checkIsDraft();
         this.valueFee = valueFee;
+    }
+
+    void setValueFiat(Value valueFiat) {
+        checkIsDraft();
+        this.valueFiat = valueFiat;
     }
 
     void setExternalId(String externalId) {

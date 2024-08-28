@@ -1,11 +1,5 @@
 import {Injectable} from '@angular/core';
-import {
-  EditFieldRequest,
-  ExceptionResponse,
-  SubmitTransactionRequest,
-  Transaction,
-  TransactionControllerService
-} from "../model";
+import {EditFieldRequest, ExceptionResponse, Transaction, TransactionControllerService} from "../model";
 import {BehaviorSubject, catchError, forkJoin, map, Observable, of, tap} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastService} from "./toast.service";
@@ -40,14 +34,6 @@ export class TransactionService {
           this.transactionsSubject.next(this.transactions);
         }
       );
-  }
-
-  submitDraftTransaction(request: SubmitTransactionRequest) {
-    this.transactionControllerService.submitDraftTransaction(request)
-      .subscribe(() => {
-          this.getTransactions();
-        }
-      )
   }
 
   submitDraftTransactionById(id: string) {

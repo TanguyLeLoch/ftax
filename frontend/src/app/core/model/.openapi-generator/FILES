@@ -14,7 +14,6 @@ model/exceptionResponse.ts
 model/ledgerBook.ts
 model/ledgerEntry.ts
 model/models.ts
-model/submitTransactionRequest.ts
 model/timelineItem.ts
 model/transaction.ts
 param.ts

@@ -10,7 +10,6 @@ enum TransactionType {
 
     TransactionType(String value) {
         this.value = value;
-
     }
 
     static TransactionType from(String value) {

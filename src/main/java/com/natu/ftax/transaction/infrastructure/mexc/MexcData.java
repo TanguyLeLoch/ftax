@@ -57,10 +57,12 @@ public class MexcData {
                 time.toInstant(ZoneOffset.UTC),
                 tokenIn,
                 tokenOut,
-                pair.split("_")[0],// TODO check this
+                pair.split("_")[1],
+                null,
                 buy ? total : executedAmount,
                 buy ? executedAmount : total,
                 fee,
+                null,
                 null);
 
     }

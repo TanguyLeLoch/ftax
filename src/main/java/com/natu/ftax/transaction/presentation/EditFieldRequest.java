@@ -23,25 +23,30 @@ public class EditFieldRequest {
     private String tokenIn;
     private String tokenOut;
     private String tokenFee;
+    private String tokenFiat;
 
     private BigDecimal amountIn;
     private BigDecimal amountOut;
     private BigDecimal amountFee;
+    private BigDecimal amountFiat;
+
 
     private String externalId;
 
     public EditTransactionCommand toCommand() {
         return new EditTransactionCommand(
-            id,
-            transactionType,
-            date,
-            tokenIn,
-            tokenOut,
-            tokenFee,
-            amountIn,
-            amountOut,
-            amountFee,
-            externalId
+                id,
+                transactionType,
+                date,
+                tokenIn,
+                tokenOut,
+                tokenFee,
+                tokenFiat,
+                amountIn,
+                amountOut,
+                amountFee,
+                amountFiat,
+                externalId
         );
     }
 
