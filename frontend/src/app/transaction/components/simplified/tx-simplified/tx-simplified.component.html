@@ -1,0 +1,35 @@
+<form [formGroup]="txForm" (ngSubmit)="onSubmit()" class="tx-simplified">
+  <label for="date">On</label>
+  <input id="date" formControlName="date" type="date" class="minimal-input">
+
+  <label for="time">at</label>
+  <input id="time" formControlName="time" type="time" step="1" class="minimal-input">
+
+  <label for="type">I</label>
+  <select id="type" formControlName="type" class="minimal-input">
+    <option value="BUY">bought</option>
+    <option value="SELL">sold</option>
+  </select>
+
+  <input formControlName="amount" type="number" class="minimal-input">
+  <input formControlName="token" type="text" class="minimal-input">
+
+  <label for="dollarValue">for</label>
+  <input id="dollarValue" formControlName="dollarValue" type="number" class="minimal-input">
+
+  <label>USD</label>
+
+  <ng-container *ngIf="!isValid; else placeholder">
+    <fa-icon class="warning-icon" [icon]="faWarning"></fa-icon>
+  </ng-container>
+  <ng-template #placeholder>
+    <div class="icon-placeholder"></div>
+  </ng-template>
+
+
+  <button class="check-icon" type="submit" [disabled]="txForm.invalid">
+    <fa-icon [icon]="faCheck"></fa-icon>
+  </button>
+
+
+</form>

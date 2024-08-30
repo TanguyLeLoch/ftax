@@ -20,6 +20,7 @@ export interface Transaction {
      * The state of the transaction
      */
     state: Transaction.StateEnum;
+    dateTime: string;
     amountIn?: number;
     amountOut?: number;
     amountFee?: number;
@@ -27,7 +28,6 @@ export interface Transaction {
     tokenIn?: string;
     tokenOut?: string;
     tokenFee?: string;
-    dateTime: string;
     /**
      * The type of the transaction
      */

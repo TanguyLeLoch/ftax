@@ -1,0 +1,12 @@
+<div container>
+  <button class="btn-transparent" (click)="newTx()"> add a transaction</button>
+
+  <div class="tx-list">
+    <div *ngFor="let tx of txs" class="tx-item">
+      <app-tx-simplified [transaction]="tx"></app-tx-simplified>
+    </div>
+  </div>
+
+</div>
+
+

@@ -11,13 +11,22 @@ import {TransactionListComponent} from "./transaction/components/transaction-lis
 import {LedgerBookComponent} from "./ledger/components/ledger-book/ledger-book.component";
 import {LedgerModule} from "./ledger/ledger.module";
 import {CoreModule} from "./core/core.module";
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
+import {TxListComponent} from "./transaction/components/simplified/tx-list/tx-list.component";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSelectModule} from "@angular/material/select";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
 
 
 const routes: Routes = [
+  {path: 'simplified', component: TxListComponent},
   { path: 'transactions', component: TransactionListComponent },
   { path: 'ledger', component: LedgerBookComponent },
-  { path: '', redirectTo: '/transactions', pathMatch: 'full' } // default route
+  {path: '', redirectTo: '/simplified', pathMatch: 'full'} // default route
 ];
 
 @NgModule({
@@ -31,7 +40,14 @@ const routes: Routes = [
     LedgerModule,
     FontAwesomeModule,
     RouterModule.forRoot(routes),
-    CoreModule
+    CoreModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule
 
   ],
   providers: [

@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/ledgerBookController.service.ts
 api/transactionController.service.ts
+api/transactionSimplifiedController.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -16,5 +17,6 @@ model/ledgerEntry.ts
 model/models.ts
 model/timelineItem.ts
 model/transaction.ts
+model/transactionSimplified.ts
 param.ts
 variables.ts

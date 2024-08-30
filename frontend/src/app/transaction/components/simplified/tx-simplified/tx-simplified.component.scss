@@ -1,0 +1,72 @@
+.tx-simplified {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: Pacifico, "Roboto Light", serif;
+  font-size: 1rem;
+
+
+  label {
+    padding: 0 8px
+  }
+
+  input, select {
+    font-size: 12px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+
+
+  .check-icon {
+    margin-left: 20px;
+    color: #0f7300;
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .warning-icon {
+    color: #ff7a2d;
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+
+  }
+
+  .icon-placeholder {
+    width: 18px;
+    height: 18px;
+  }
+
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+select {
+  -webkit-appearance: none; /* Chrome, Safari, Opera */
+  -moz-appearance: none; /* Firefox */
+  appearance: none; /* Default */
+  background: none; /* Remove background */
+  padding-right: 20px; /* Ensure space for custom arrow, if needed */
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none; /* Remove the default outline */
+  border: none; /* Remove the border */
+}
