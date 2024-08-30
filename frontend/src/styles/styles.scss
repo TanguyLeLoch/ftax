@@ -36,15 +36,18 @@ body {
 .btn-transparent {
   border-radius: 20px;
   //background-color: rgba(0, 0, 0, 0.1);
-  border: 2px solid black;
+  border: 1.5px solid $font-color;
   color: $font-color;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
   padding: 5px 10px;
+  background-color: transparent;
+  transition: box-shadow 0.3s ease;
+
 
   &:hover:not(:disabled) {
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    background-color: rgb(186, 27, 27);
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+
   }
 
   &:disabled {

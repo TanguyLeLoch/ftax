@@ -16,6 +16,12 @@ export class TxSimplifiedComponent implements OnInit {
   time!: string;
 
   isValid = false;
+  isCollapsed: boolean = true;
+
+  open(): void {
+    this.isCollapsed = false
+  }
+
 
   constructor(private service: TransactionSimplifiedControllerService, private fb: FormBuilder) {
 
@@ -46,7 +52,10 @@ export class TxSimplifiedComponent implements OnInit {
     this.transaction.amount = this.txForm.get('amount')!.value;
     this.transaction.token = this.txForm.get('token')!.value;
     this.transaction.dollarValue = this.txForm.get('dollarValue')!.value;
-    this.service.post(this.transaction).subscribe(tx => this.transaction = tx);
+    this.service.post(this.transaction).subscribe(tx => {
+      this.transaction = tx
+      this.isCollapsed = true;
+    });
   }
 
   protected readonly faTrash = faTrash;

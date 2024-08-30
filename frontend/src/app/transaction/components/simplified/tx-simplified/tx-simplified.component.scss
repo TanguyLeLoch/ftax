@@ -5,7 +5,91 @@
   font-family: Pacifico, "Roboto Light", serif;
   font-size: 1rem;
 
+  .foldable-container {
+    background-color: #fffdfd;
+    border-radius: 15px;
+    box-shadow: #000000 0 0 5px 0;
+    padding: 5px;
+    opacity: 1;
+    transition: width 0.5s ease-in-out;
 
+
+    &.open {
+      width: 80vw;
+    }
+
+    &.closed {
+      width: 50vw;
+    }
+  }
+
+  .colapsed-content {
+
+    &.closed {
+      visibility: visible;
+    }
+
+    &.open {
+      visibility: hidden;
+      height: 0;
+    }
+  }
+
+  .not-collapsed-content {
+    &.closed {
+      visibility: hidden;
+      height: 0;
+    }
+
+    &.open {
+      display: block;
+    }
+  }
+
+
+  .colapsed-content {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .not-collapsed-content {
+  }
+
+  .left-colapsed-content {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .right-colapsed-content {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .far-right-colapsed-content {
+    width: 10%;
+  }
+
+
+  .number-input {
+    width: 50px;
+    text-align: end;
+  }
+
+  .mobile-break {
+    display: none; /* Hide on non mobile devices */
+  }
+
+  @media (max-width: 1000px) {
+    .mobile-break {
+      display: block; /* Show on mobile devices */
+    }
+  }
   label {
     padding: 0 8px
   }
