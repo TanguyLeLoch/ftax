@@ -136,7 +136,7 @@ export class TransactionSimplifiedControllerService {
             }
         }
 
-        let localVarPath = `/transaction-simplified`;
+        let localVarPath = `/api/transaction-simplified`;
         return this.httpClient.request<Array<TransactionSimplified>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -199,7 +199,7 @@ export class TransactionSimplifiedControllerService {
             }
         }
 
-        let localVarPath = `/transaction-simplified/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/transaction-simplified/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<TransactionSimplified>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -271,7 +271,7 @@ export class TransactionSimplifiedControllerService {
             }
         }
 
-        let localVarPath = `/transaction-simplified`;
+        let localVarPath = `/api/transaction-simplified`;
         return this.httpClient.request<TransactionSimplified>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

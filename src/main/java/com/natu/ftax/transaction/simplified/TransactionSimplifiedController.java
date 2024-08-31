@@ -12,7 +12,7 @@ import java.util.List;
 import static com.natu.ftax.transaction.simplified.TransactionSimplified.Type.BUY;
 
 @RestController
-@RequestMapping("/transaction-simplified")
+@RequestMapping("/api/transaction-simplified")
 
 public class TransactionSimplifiedController {
     private final TransactionSimplifiedRepositoryJpa repository;

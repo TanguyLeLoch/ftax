@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --watch --configuration development",
-    "start2": "ng serve --host 0.0.0.0 --port 4200",
-    "build": "ng build",
+    "build-dev": "ng build --output-path=../src/main/resources/static",
+    "build-prod": "ng build --configuration=production --output-path=dist",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "generate model": "openapi-generator-cli generate -i http://localhost:8081/v3/api-docs.yaml -g typescript-angular -o src/app/core/model"

@@ -20,6 +20,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
+import {basePathProvider} from "../config/basePathProvider";
 
 
 const routes: Routes = [
@@ -52,7 +53,8 @@ const routes: Routes = [
   ],
   providers: [
     provideAnimationsAsync(),
-    provideCharts(withDefaultRegisterables())
+    provideCharts(withDefaultRegisterables()),
+    basePathProvider
   ],
   bootstrap: [AppComponent]
 })
