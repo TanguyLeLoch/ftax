@@ -12,9 +12,8 @@
 
 
 export interface Token { 
-    id?: string;
-    ticker?: string;
-    name?: string;
-    iconUrl?: string;
+    id: string;
+    ticker: string;
+    name: string;
 }
 

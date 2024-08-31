@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {TransactionListComponent} from './components/transaction-list/transaction-list.component';
 import {CoreModule} from "../core/core.module";
 import {TransactionItemComponent} from './components/transaction-item/transaction-item.component';
@@ -12,6 +12,9 @@ import {TxSimplifiedComponent} from "./components/simplified/tx-simplified/tx-si
 import {TxListComponent} from "./components/simplified/tx-list/tx-list.component";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -36,7 +39,11 @@ import {MatIconButton} from "@angular/material/button";
     TransactionListHeaderComponent,
     ReactiveFormsModule,
     MatIcon,
-    MatIconButton
+    MatIconButton,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    AsyncPipe,
   ]
 })
 export class TransactionModule {

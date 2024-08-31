@@ -99,7 +99,6 @@
     border: none;
     border-bottom: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #fff;
   }
 
   .input-error {
@@ -163,3 +162,12 @@ textarea:focus {
 }
 
 
+.input-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.add-token {
+  cursor: pointer;
+  color: #ff0000;
+}

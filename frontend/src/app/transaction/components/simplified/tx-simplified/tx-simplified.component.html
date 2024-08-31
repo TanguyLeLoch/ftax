@@ -21,10 +21,24 @@
              type="number" class="minimal-input number-input"
              [ngClass]="{'input-error': invalidAndTouched('amount'),
               'missing-input': invalidAndNotTouched('amount')}">
-      <!--      oldToken-->
-      <input formControlName="oldToken" type="text" class="minimal-input"
-             [ngClass]="{'input-error': invalidAndTouched('oldToken'),
-              'missing-input': invalidAndNotTouched('oldToken')}">
+      <!--      Token-->
+      <!--      <input formControlName="token" type="text" class="minimal-input"-->
+      <!--             [ngClass]="{'input-error': invalidAndTouched('token'),-->
+      <!--              'missing-input': invalidAndNotTouched('token')}">-->
+
+      <mat-form-field class="example-full-width">
+        <div class="input-container">
+          <input type="text" matInput formControlName="token" [formControl]="tokenControl" [matAutocomplete]="auto">
+          <fa-icon class="add-token"
+                   *ngIf="txForm.get('token')?.hasError('invalidString')"
+                   [icon]="faPlus" (click)="addToken()"></fa-icon>
+        </div>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option">{{ option.name }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
 
       <br class="mobile-break">
 
@@ -55,7 +69,7 @@
         <span>{{ txForm.value.date }}</span>
         <div class="second-line">
           <span> {{ txForm.value.type === 'BUY' ? 'Buy' : 'Sell' }}</span>
-          <span> {{ txForm.value.amount }} {{ txForm.value.oldToken }}</span>
+          <span> {{ txForm.value.amount }} {{ txForm.value.token?.name }} ({{ txForm.value.token?.ticker }})</span>
         </div>
       </div>
       <div class="far-right-colapsed-content">

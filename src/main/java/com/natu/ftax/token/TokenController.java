@@ -43,7 +43,7 @@ public class TokenController {
     @GetMapping(
             produces = "application/json"
     )
-    public List<Token> getAll() {
+    public List<Token> getAllTokens() {
         return tokenRepo.findAll();
     }
 
