@@ -15,8 +15,8 @@ export class TxSimplifiedComponent implements OnInit {
   date!: string;
   time!: string;
 
-  isValid = false;
-  isCollapsed: boolean = true;
+  isValid!: boolean;
+  isCollapsed!: boolean;
 
   open(): void {
     this.isCollapsed = false
@@ -24,8 +24,6 @@ export class TxSimplifiedComponent implements OnInit {
 
 
   constructor(private service: TransactionSimplifiedControllerService, private fb: FormBuilder) {
-
-
   }
 
   ngOnInit(): void {
@@ -33,6 +31,7 @@ export class TxSimplifiedComponent implements OnInit {
     this.date = this.transaction.localDateTime.slice(0, 10)
     this.time = this.transaction.localDateTime.slice(11, 23);
     this.isValid = this.transaction.valid;
+    this.isCollapsed = this.transaction.valid
 
     this.txForm = this.fb.group({
       date: [this.date, Validators.required,],
@@ -55,7 +54,18 @@ export class TxSimplifiedComponent implements OnInit {
     this.service.post(this.transaction).subscribe(tx => {
       this.transaction = tx
       this.isCollapsed = true;
+      this.isValid = this.transaction.valid;
     });
+
+
+  }
+
+  invalidAndTouched(field: string): boolean {
+    return this.txForm.get(field)!.invalid && this.txForm.get(field)!.touched;
+  }
+
+  invalidAndNotTouched(field: string): boolean {
+    return this.txForm.get(field)!.invalid && !this.txForm.get(field)!.touched;
   }
 
   protected readonly faTrash = faTrash;

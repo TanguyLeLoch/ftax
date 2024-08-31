@@ -78,14 +78,14 @@
 
   .number-input {
     width: 50px;
-    text-align: end;
+    text-align: center;
   }
 
   .mobile-break {
     display: none; /* Hide on non mobile devices */
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 768px) {
     .mobile-break {
       display: block; /* Show on mobile devices */
     }
@@ -102,6 +102,13 @@
     background-color: #fff;
   }
 
+  .input-error {
+    border-bottom: 1px solid red;
+  }
+
+  .missing-input {
+    border-bottom: 1px solid #3e40f4;
+  }
 
   .check-icon {
     margin-left: 20px;
@@ -154,3 +161,5 @@ textarea:focus {
   outline: none; /* Remove the default outline */
   border: none; /* Remove the border */
 }
+
+

@@ -15,15 +15,25 @@
         <option value="SELL">sold</option>
       </select>
 
+      <!--      amount-->
       <input formControlName="amount"
-             type="number" class="minimal-input number-input">
-      <input formControlName="token" type="text" class="minimal-input">
+             type="number" class="minimal-input number-input"
+             [ngClass]="{'input-error': invalidAndTouched('amount'),
+              'missing-input': invalidAndNotTouched('amount')}">
+      <!--      token-->
+      <input formControlName="token" type="text" class="minimal-input"
+             [ngClass]="{'input-error': invalidAndTouched('token'),
+              'missing-input': invalidAndNotTouched('token')}">
 
       <br class="mobile-break">
 
       <label for="dollarValue">for</label>
+
+      <!--      dollarValue-->
       <input id="dollarValue" formControlName="dollarValue"
-             type="number" class="minimal-input number-input">
+             type="number" class="minimal-input number-input"
+             [ngClass]="{'input-error': invalidAndTouched('dollarValue'),
+              'missing-input': invalidAndNotTouched('dollarValue')}">
 
       <label>USD</label>
 
@@ -51,7 +61,6 @@
       </div>
 
     </div>
-    <!--    </ng-template>-->
 
   </div>
 
