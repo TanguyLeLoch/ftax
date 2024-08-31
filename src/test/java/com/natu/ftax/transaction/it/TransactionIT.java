@@ -1,7 +1,5 @@
 package com.natu.ftax.transaction.it;
 
-import com.natu.ftax.transaction.domain.Transaction;
-import com.natu.ftax.transaction.presentation.TransactionResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;

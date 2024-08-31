@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  basePath: 'https://129.150.37.136:8081'
+  basePath: 'http://138.2.78.187:8081'
 };

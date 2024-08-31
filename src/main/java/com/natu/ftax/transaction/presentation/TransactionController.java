@@ -42,16 +42,18 @@ public class TransactionController {
         return new TransactionResponse(draftTransaction);
     }
 
-//    @Operation(summary = "Submit a draft transaction")
-//    @PostMapping(
-//        value = "submit",
-//        consumes = "application/json"
-//    )
-//    public ResponseEntity<Void> submitDraftTransaction(@Valid @RequestBody SubmitTransactionRequest request) {
-//        LOGGER.info("Submitting draft transaction with id: {}", request.getId());
-//        service.submitDraftTransaction(request);
-//        return ResponseEntity.ok().build();
-//    }
+    @Operation(summary = "Submit a draft transaction")
+    @PostMapping(
+            value = "submit",
+            consumes = "application/json"
+    )
+    public ResponseEntity<Void> submitDraftTransaction(
+            @Valid @RequestBody SubmitTransactionRequest request) {
+        LOGGER.info("Submitting draft transaction with id: {}",
+                request.getId());
+        service.submitDraftTransaction(request);
+        return ResponseEntity.ok().build();
+    }
 
     @Operation(summary = "Submit a draft transaction")
     @PostMapping(
