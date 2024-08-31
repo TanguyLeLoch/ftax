@@ -1,7 +1,7 @@
 package com.natu.ftax.ledger.infrastructure;
 
 import com.natu.ftax.ledger.domain.Balance;
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -34,7 +34,7 @@ public class BalanceEntity {
     }
 
     public Balance toDomain() {
-        return new Balance(id, amount, new Token(token));
+        return new Balance(id, amount, new OldToken(token));
     }
 
 }

@@ -10,20 +10,21 @@
       <br class="mobile-break">
 
       <label for="type">I</label>
-      <select id="type" formControlName="type" class="minimal-input">
-        <option value="BUY">bought</option>
-        <option value="SELL">sold</option>
-      </select>
+      <app-dropdown id="type"
+                    [options]="[{value:'BUY', label:'bought'}, {value:'SELL', label:'sold'}]" formControlName="type"
+                    class="minimal-input">
+      </app-dropdown>
+
 
       <!--      amount-->
       <input formControlName="amount"
              type="number" class="minimal-input number-input"
              [ngClass]="{'input-error': invalidAndTouched('amount'),
               'missing-input': invalidAndNotTouched('amount')}">
-      <!--      token-->
-      <input formControlName="token" type="text" class="minimal-input"
-             [ngClass]="{'input-error': invalidAndTouched('token'),
-              'missing-input': invalidAndNotTouched('token')}">
+      <!--      oldToken-->
+      <input formControlName="oldToken" type="text" class="minimal-input"
+             [ngClass]="{'input-error': invalidAndTouched('oldToken'),
+              'missing-input': invalidAndNotTouched('oldToken')}">
 
       <br class="mobile-break">
 
@@ -54,7 +55,7 @@
         <span>{{ txForm.value.date }}</span>
         <div class="second-line">
           <span> {{ txForm.value.type === 'BUY' ? 'Buy' : 'Sell' }}</span>
-          <span> {{ txForm.value.amount }} {{ txForm.value.token }}</span>
+          <span> {{ txForm.value.amount }} {{ txForm.value.oldToken }}</span>
         </div>
       </div>
       <div class="far-right-colapsed-content">

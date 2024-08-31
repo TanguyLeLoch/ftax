@@ -1,7 +1,7 @@
 package com.natu.ftax.ledger.domain;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 import com.natu.ftax.transaction.domain.Transaction;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,11 +16,11 @@ public class LedgerEntry {
     @Getter
     private final String id;
     @NotNull
-    private final Map<Token, Balance> balances;
+    private final Map<OldToken, Balance> balances;
     @Getter
     private final Instant instant;
 
-    public LedgerEntry(String id, Map<Token, Balance> balances,
+    public LedgerEntry(String id, Map<OldToken, Balance> balances,
             Instant instant) {
         this.id = id;
         this.balances = balances;
@@ -28,7 +28,8 @@ public class LedgerEntry {
     }
 
     public static LedgerEntry create(String id, LedgerEntry previousEntry, Transaction tx, IdGenerator idGenerator) {
-        Map<Token, Balance> balances = new HashMap<>(previousEntry.getBalances());
+        Map<OldToken, Balance> balances = new HashMap<>(
+                previousEntry.getBalances());
         LedgerEntry ledgerEntry = new LedgerEntry(id, balances, tx.getInstant());
         ledgerEntry.adjustBalanceIn(tx, idGenerator.generate());
         ledgerEntry.adjustBalanceOut(tx, idGenerator.generate());
@@ -42,41 +43,50 @@ public class LedgerEntry {
 
     private void adjustBalanceIn(Transaction transaction, String balanceId) {
         if (BigDecimal.ZERO.compareTo(transaction.getAmountIn()) == 0) return;
-        Token tokenIn = transaction.getTokenIn();
-        BigDecimal oldBalanceTokenIn = balances.getOrDefault(tokenIn, new  Balance(balanceId, BigDecimal.ZERO, tokenIn)).getAmount();
+        OldToken oldTokenIn = transaction.getTokenIn();
+        BigDecimal oldBalanceTokenIn = balances.getOrDefault(
+                        oldTokenIn, new Balance(balanceId, BigDecimal.ZERO, oldTokenIn))
+                .getAmount();
         BigDecimal newBalanceTokenIn = oldBalanceTokenIn.add(transaction.getAmountIn());
         if (BigDecimal.ZERO.compareTo(newBalanceTokenIn) == 0) {
-            balances.remove(tokenIn);
+            balances.remove(oldTokenIn);
             return;
         }
-        balances.put(tokenIn, new Balance(balanceId, newBalanceTokenIn, tokenIn));
+        balances.put(oldTokenIn, new Balance(balanceId, newBalanceTokenIn,
+                oldTokenIn));
     }
 
     private void adjustBalanceOut(Transaction transaction, String balanceId) {
         if (BigDecimal.ZERO.compareTo(transaction.getAmountOut()) == 0) return;
-        Token tokenOut = transaction.getTokenOut();
-        BigDecimal oldBalanceTokenOut = balances.getOrDefault(tokenOut, new Balance(balanceId, BigDecimal.ZERO, tokenOut)).getAmount();
+        OldToken oldTokenOut = transaction.getTokenOut();
+        BigDecimal oldBalanceTokenOut = balances.getOrDefault(
+                oldTokenOut, new Balance(balanceId, BigDecimal.ZERO,
+                        oldTokenOut)).getAmount();
         BigDecimal newBalanceTokenOut = oldBalanceTokenOut.subtract(transaction.getAmountOut());
         if (BigDecimal.ZERO.compareTo(newBalanceTokenOut) == 0) {
-            balances.remove(tokenOut);
+            balances.remove(oldTokenOut);
             return;
         }
-        balances.put(tokenOut, new Balance(balanceId, newBalanceTokenOut, tokenOut));
+        balances.put(oldTokenOut, new Balance(balanceId, newBalanceTokenOut,
+                oldTokenOut));
     }
 
     private void adjustBalanceFee(Transaction transaction, String balanceId) {
         if (BigDecimal.ZERO.compareTo(transaction.getAmountFee()) == 0) return;
-        Token tokenFee = transaction.getTokenFee();
-        BigDecimal oldBalanceTokenFee = balances.getOrDefault(tokenFee, new Balance(balanceId, BigDecimal.ZERO, tokenFee)).getAmount();
+        OldToken oldTokenFee = transaction.getTokenFee();
+        BigDecimal oldBalanceTokenFee = balances.getOrDefault(
+                oldTokenFee, new Balance(balanceId, BigDecimal.ZERO,
+                        oldTokenFee)).getAmount();
         BigDecimal newBalanceTokenFee = oldBalanceTokenFee.add(transaction.getAmountFee());
         if (BigDecimal.ZERO.compareTo(newBalanceTokenFee) == 0) {
-            balances.remove(tokenFee);
+            balances.remove(oldTokenFee);
             return;
         }
-        balances.put(tokenFee, new Balance(balanceId, newBalanceTokenFee, tokenFee));
+        balances.put(oldTokenFee, new Balance(balanceId, newBalanceTokenFee,
+                oldTokenFee));
     }
 
-    public Map<Token, Balance> getBalances() {
+    public Map<OldToken, Balance> getBalances() {
         return Collections.unmodifiableMap(balances);
     }
 

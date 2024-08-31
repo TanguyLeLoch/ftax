@@ -1,0 +1,11 @@
+<div class="dropdown">
+  <button (click)="toggleDropdown()" class="dropdown-toggle minimal-input">
+    {{ selectedOption || placeholder }}
+    <fa-icon [icon]="faChevronDown"></fa-icon>
+  </button>
+  <ul *ngIf="isOpen" class="dropdown-menu">
+    <li *ngFor="let option of options" (click)="selectOption(option.value)">
+      {{ option.label }}
+    </li>
+  </ul>
+</div>

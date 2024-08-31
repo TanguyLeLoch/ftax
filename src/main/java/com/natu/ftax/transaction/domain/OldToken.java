@@ -6,12 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @EqualsAndHashCode
-public class Token {
+public class OldToken {
 
     @Getter
     private final String symbol;
 
-    public Token(String symbol) {
+    public OldToken(String symbol) {
         this.symbol = symbol;
     }
 

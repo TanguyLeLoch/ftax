@@ -30,9 +30,9 @@ public class SubmitTransactionCommand {
         this.id = id;
         this.transactionType = TransactionType.from(transactionType);
         this.instant = instant;
-        this.valueIn = new Value(new Token(tokenIn), amountIn);
-        this.valueOut = new Value(new Token(tokenOut), amountOut);
-        this.valueFee = new Value(new Token(tokenFee), amountFee);
+        this.valueIn = new Value(new OldToken(tokenIn), amountIn);
+        this.valueOut = new Value(new OldToken(tokenOut), amountOut);
+        this.valueFee = new Value(new OldToken(tokenFee), amountFee);
         this.externalId = externalId;
     }
 }

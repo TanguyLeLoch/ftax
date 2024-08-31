@@ -1,18 +1,18 @@
 package com.natu.ftax.ledger.domain;
 
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 
 import java.math.BigDecimal;
 
 public class Balance {
     private final String id;
     private final BigDecimal amount;
-    private final Token token;
+    private final OldToken oldToken;
 
-    public Balance(String id, BigDecimal amount, Token token) {
+    public Balance(String id, BigDecimal amount, OldToken oldToken) {
         this.id = id;
         this.amount = amount;
-        this.token = token;
+        this.oldToken = oldToken;
     }
 
     public String getId() {
@@ -23,7 +23,7 @@ public class Balance {
         return amount;
     }
 
-    public Token getToken() {
-        return token;
+    public OldToken getToken() {
+        return oldToken;
     }
 }

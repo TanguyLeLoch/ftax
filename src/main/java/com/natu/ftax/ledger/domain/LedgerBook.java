@@ -1,6 +1,6 @@
 package com.natu.ftax.ledger.domain;
 
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -37,7 +37,7 @@ public class LedgerBook {
     }
 
     @NotNull
-    public Set<Token> getTokens() {
+    public Set<OldToken> getTokens() {
         return ledgerEntries.stream()
                 .map(LedgerEntry::getBalances)
                 .map(Map::keySet)

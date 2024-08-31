@@ -34,7 +34,7 @@
 
   <input [(ngModel)]="valueInField.value!.token"
          [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueInField.isTokenInvalid()}"
-         [readonly]="!editMode" class="token" id="tokenIn" name="tokenIn" required type="text"
+         [readonly]="!editMode" class="oldToken" id="oldTokenIn" name="oldTokenIn" required type="text"
          (blur)="save(valueInField)">
 </div>
 <div class="value">
@@ -45,7 +45,7 @@
 
   <input [(ngModel)]="valueOutField.value!.token"
          [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueOutField.isTokenInvalid()}"
-         [readonly]="!editMode" class="token" id="tokenOut" name="tokenOut" required type="text"
+         [readonly]="!editMode" class="oldToken" id="oldTokenOut" name="oldTokenOut" required type="text"
          (blur)="save(valueOutField)">
 </div>
 <div class="value">
@@ -56,7 +56,7 @@
 
   <input [(ngModel)]="valueFeeField.value!.token"
          [ngClass]="{'read-only': !editMode, 'edit-mode': editMode, 'invalid':valueFeeField.isTokenInvalid()}"
-         [readonly]="!editMode" class="token" id="tokenFee" name="tokenFee" required type="text"
+         [readonly]="!editMode" class="oldToken" id="oldTokenFee" name="oldTokenFee" required type="text"
          (blur)="save(valueFeeField)">
 </div>
 <input [(ngModel)]="externalIdField.value"

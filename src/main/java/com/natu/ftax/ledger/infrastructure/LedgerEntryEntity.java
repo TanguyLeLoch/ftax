@@ -1,7 +1,7 @@
 package com.natu.ftax.ledger.infrastructure;
 
 import com.natu.ftax.ledger.domain.LedgerEntry;
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -57,7 +57,9 @@ public class LedgerEntryEntity {
     public LedgerEntry toDomain() {
         return new LedgerEntry(
             id,
-                balances.stream().collect(Collectors.toMap(e -> new Token(e.getToken()), BalanceEntity::toDomain)),
+                balances.stream().collect(
+                        Collectors.toMap(e -> new OldToken(e.getToken()),
+                                BalanceEntity::toDomain)),
                 instant
         );
     }

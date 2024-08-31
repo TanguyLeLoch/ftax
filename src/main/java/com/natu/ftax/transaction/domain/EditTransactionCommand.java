@@ -48,7 +48,7 @@ public class EditTransactionCommand {
             return null;
         }
 
-        return new Value(new Token(token), amount);
+        return new Value(new OldToken(token), amount);
     }
 
     private static void checkValue(String tokenIn, BigDecimal amountIn,

@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/ledgerBookController.service.ts
+api/tokenController.service.ts
 api/transactionController.service.ts
 api/transactionSimplifiedController.service.ts
 configuration.ts
@@ -15,7 +16,9 @@ model/exceptionResponse.ts
 model/ledgerBook.ts
 model/ledgerEntry.ts
 model/models.ts
+model/submitTransactionRequest.ts
 model/timelineItem.ts
+model/token.ts
 model/transaction.ts
 model/transactionSimplified.ts
 param.ts

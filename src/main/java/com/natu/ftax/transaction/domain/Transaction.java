@@ -92,16 +92,16 @@ public class Transaction {
     }
 
 
-    public Token getTokenIn() {
-        return valueIn.getToken();
+    public OldToken getTokenIn() {
+        return valueIn.getOldToken();
     }
 
-    public Token getTokenOut() {
-        return valueOut.getToken();
+    public OldToken getTokenOut() {
+        return valueOut.getOldToken();
     }
 
-    public Token getTokenFee() {
-        return valueFee.getToken();
+    public OldToken getTokenFee() {
+        return valueFee.getOldToken();
     }
 
 

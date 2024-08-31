@@ -3,7 +3,7 @@ package com.natu.ftax.ledger.domain;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.IDgenerator.infrastructure.SequentialIdGenerator;
 import com.natu.ftax.transaction.TransactionTestUtils;
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 import com.natu.ftax.transaction.domain.Transaction;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,9 +52,11 @@ class LedgerEntryTest {
 
         Assertions.assertThat(ledgerEntry.getId()).isEqualTo("second");
         Assertions.assertThat(ledgerEntry.getBalances().size()).isEqualTo(2);
-        Assertions.assertThat(ledgerEntry.getBalances().get(new Token("BTC")).getAmount())
+        Assertions.assertThat(
+                        ledgerEntry.getBalances().get(new OldToken("BTC")).getAmount())
                 .isEqualTo(BigDecimal.valueOf(1.1));
-        Assertions.assertThat(ledgerEntry.getBalances().get(new Token("ETH")).getAmount())
+        Assertions.assertThat(
+                        ledgerEntry.getBalances().get(new OldToken("ETH")).getAmount())
                 .isEqualTo(BigDecimal.valueOf(-5.0));
     }
 
@@ -72,9 +74,11 @@ class LedgerEntryTest {
 
         Assertions.assertThat(ledgerEntry2.getId()).isEqualTo("third");
         Assertions.assertThat(ledgerEntry2.getBalances().size()).isEqualTo(2);
-        Assertions.assertThat(ledgerEntry2.getBalances().get(new Token("BTC")).getAmount())
+        Assertions.assertThat(
+                        ledgerEntry2.getBalances().get(new OldToken("BTC")).getAmount())
                 .isEqualTo(BigDecimal.valueOf(2.2));
-        Assertions.assertThat(ledgerEntry2.getBalances().get(new Token("ETH")).getAmount())
+        Assertions.assertThat(
+                        ledgerEntry2.getBalances().get(new OldToken("ETH")).getAmount())
                 .isEqualTo(BigDecimal.valueOf(-10.0));
     }
 

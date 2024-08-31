@@ -2,6 +2,7 @@ package com.natu.ftax.token;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.common.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class TokenController {
             consumes = "application/json",
             produces = "application/json"
     )
+    @Transactional
     public Token post(@RequestBody Token token) {
         if (token.getId() == null) {
             token.setId(idGenerator.generate());

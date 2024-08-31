@@ -6,7 +6,7 @@ import {faCheck, faEdit, faTrash, faWarning} from "@fortawesome/free-solid-svg-i
 @Component({
   selector: 'app-tx-simplified',
   templateUrl: './tx-simplified.component.html',
-  styleUrl: './tx-simplified.component.scss'
+  styleUrl: './tx-simplified.component.scss',
 })
 export class TxSimplifiedComponent implements OnInit {
   @Input() transaction!: TransactionSimplified;
@@ -53,8 +53,8 @@ export class TxSimplifiedComponent implements OnInit {
     this.transaction.dollarValue = this.txForm.get('dollarValue')!.value;
     this.service.post(this.transaction).subscribe(tx => {
       this.transaction = tx
-      this.isCollapsed = true;
       this.isValid = this.transaction.valid;
+      this.isCollapsed = this.transaction.valid;
     });
 
 

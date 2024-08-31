@@ -8,24 +8,24 @@ import java.math.BigDecimal;
 @Getter
 public class Value {
 
-    private final Token token;
+    private final OldToken oldToken;
     private final BigDecimal amount;
 
 
-    public Value(Token token, BigDecimal amount) {
+    public Value(OldToken oldToken, BigDecimal amount) {
         if (BigDecimal.ZERO.compareTo(amount) > 0) {
             throw new FunctionalException("Value cannot be negative: {0} {1}",
-                    amount, token);
+                    amount, oldToken);
         }
-        this.token = token;
+        this.oldToken = oldToken;
         this.amount = amount;
     }
 
     public String getSymbol() {
-        return token.getSymbol();
+        return oldToken.getSymbol();
     }
 
     public static Value dummyValue() {
-        return new Value(new Token("DUM"), BigDecimal.ZERO);
+        return new Value(new OldToken("DUM"), BigDecimal.ZERO);
     }
 }

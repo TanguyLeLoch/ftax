@@ -1,6 +1,6 @@
 package com.natu.ftax.transaction.infrastructure;
 
-import com.natu.ftax.transaction.domain.Token;
+import com.natu.ftax.transaction.domain.OldToken;
 import com.natu.ftax.transaction.domain.Transaction;
 import com.natu.ftax.transaction.domain.Value;
 import jakarta.persistence.Column;
@@ -93,13 +93,13 @@ public class TransactionEntity {
                 transactionType,
                 instant,
                 tokenIn != null && amountIn != null ?
-                        new Value(new Token(tokenIn), amountIn) : null,
+                        new Value(new OldToken(tokenIn), amountIn) : null,
                 tokenOut != null && amountOut != null ?
-                        new Value(new Token(tokenOut), amountOut) : null,
+                        new Value(new OldToken(tokenOut), amountOut) : null,
                 tokenFee != null && amountFee != null ?
-                        new Value(new Token(tokenFee), amountFee) : null,
+                        new Value(new OldToken(tokenFee), amountFee) : null,
                 tokenFiat != null && amountFiat != null ?
-                        new Value(new Token(tokenFiat), amountFiat) : null,
+                        new Value(new OldToken(tokenFiat), amountFiat) : null,
                 externalId
         );
     }
