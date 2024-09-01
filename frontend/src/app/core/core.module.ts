@@ -11,6 +11,7 @@ import {ToastComponent} from "./components/toast/toast.component";
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {ModalComponent} from "./components/modal/modal.component";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {ModalComponent} from "./components/modal/modal.component";
     ToastComponent,
     FileUploadComponent,
     ModalComponent,
+    MatExpansionModule
   ],
   providers: [provideNativeDateAdapter()],
 })

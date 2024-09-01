@@ -1,10 +1,27 @@
 <form [formGroup]="txForm" (ngSubmit)="onSubmit()" class="tx-simplified">
 
-  <div class="foldable-container" (click)="open()" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">
-    <div class="not-collapsed-content" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">
+  <mat-accordion>
+    <mat-expansion-panel [(expanded)]="isExpanded" >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="title">
+            <ng-container *ngIf="!isValid; else placeholder">
+              <fa-icon class="warning-icon" [icon]="faWarning"></fa-icon>
+            </ng-container>
+            <ng-template #placeholder>
+              <div class="icon-placeholder"></div>
+            </ng-template>
+            <span>{{ txForm.value.date.toLocaleDateString() }}</span>
+          </div>
+        </mat-panel-title>
+        <mat-panel-description>
+          <span> {{ txForm.value.type === 'BUY' ? 'Buy ' : 'Sell ' }}{{ txForm.value.amount }} {{ txForm.value.token?.name }}
+            ({{ txForm.value.token?.ticker }})</span></mat-panel-description>
+      </mat-expansion-panel-header>
+
       <span>On</span>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Date</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="date">
         <span matTextPrefix (click)="picker.open()">
@@ -17,12 +34,11 @@
       <!--                        -->
       <!--         TIME           -->
       <!--                        -->
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Time</mat-label>
 
         <input formControlName="time" matInput id="settime" type="time" step="1" placeholder="start date"/>
       </mat-form-field>
-
 
 
       <span>I</span>
@@ -30,7 +46,7 @@
       <!--                        -->
       <!--         ACTION         -->
       <!--                        -->
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Action</mat-label>
         <mat-select formControlName="type" id="">
           @for (action of actions; track action) {
@@ -43,19 +59,21 @@
       <!--                        -->
       <!--         AMOUNT         -->
       <!--                        -->
-      <mat-form-field floatLabel="auto" >
-        <mat-label>Amount</mat-label>
-        <input formControlName="amount"
-               matInput type="number" class="right-align" placeholder="0.00"/>
-        <mat-error *ngIf="txForm.get('amount')?.hasError('notNegative')">
-          Cannot be negative
-        </mat-error>
-      </mat-form-field>
+<!--      <div class="amount2">-->
+        <mat-form-field floatLabel="auto" appearance="outline">
+          <mat-label>Amount</mat-label>
+          <input formControlName="amount"
+                 matInput type="number" class="right-align" placeholder="0.00"/>
+          <mat-error *ngIf="txForm.get('amount')?.hasError('notNegative')">
+            Cannot be negative
+          </mat-error>
+        </mat-form-field>
+<!--      </div>-->
 
       <!--                        -->
       <!--         TOKEN          -->
       <!--                        -->
-      <mat-form-field floatLabel="auto">
+      <mat-form-field floatLabel="auto" appearance="outline">
         <mat-label>Token</mat-label>
 
         <div class="input-container">
@@ -83,7 +101,7 @@
       <!--                        -->
       <!--      DOLLAR VALUE      -->
       <!--                        -->
-      <mat-form-field floatLabel="auto" class="form-field">
+      <mat-form-field floatLabel="auto" class="form-field" appearance="outline">
         <mat-label>Fiat value</mat-label>
         <input formControlName="dollarValue"
                matInput type="number" class="right-align" placeholder="0.00"/>
@@ -96,32 +114,143 @@
       </mat-form-field>
 
 
-      <button class="btn-transparent" type="submit" [disabled]="txForm.invalid">
-        I confirm
+      <!--                        -->
+      <!--       SUBMIT           -->
+      <!--                        -->
+      <button mat-raised-button
+              aria-label="submit"
+              type="submit" [disabled]="txForm.invalid">
+        <mat-icon>check_circle</mat-icon>
+        Confirm
       </button>
-    </div>
-    <div class="colapsed-content" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">
-      <div class="left-colapsed-content">
-        <ng-container *ngIf="!isValid; else placeholder">
-          <fa-icon class="warning-icon" [icon]="faWarning"></fa-icon>
-        </ng-container>
-        <ng-template #placeholder>
-          <div class="icon-placeholder"></div>
-        </ng-template>
-      </div>
-      <div class="right-colapsed-content">
-        <span>{{ txForm.value.date.toLocaleDateString() }}</span>
-        <div class="second-line">
-          <span> {{ txForm.value.type === 'BUY' ? 'Buy' : 'Sell' }}</span>
-          <span> {{ txForm.value.amount }} {{ txForm.value.token?.name }} ({{ txForm.value.token?.ticker }})</span>
-        </div>
-      </div>
-      <div class="far-right-colapsed-content">
-      </div>
+      <!--      <button class="btn-transparent" type="submit" [disabled]="txForm.invalid">-->
+      <!--        I confirm-->
+      <!--      </button>-->
 
-    </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 
-  </div>
+  <!--  <div class="foldable-container" (click)="open()" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">-->
+  <!--    <div class="not-collapsed-content" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">-->
+  <!--      <span>On</span>-->
+
+  <!--      <mat-form-field>-->
+  <!--        <mat-label>Date</mat-label>-->
+  <!--        <input matInput [matDatepicker]="picker" formControlName="date">-->
+  <!--        <span matTextPrefix (click)="picker.open()">-->
+  <!--          <mat-icon aria-hidden="false" aria-label="Open picker" fontIcon="event"></mat-icon>-->
+  <!--        </span>-->
+  <!--        <mat-datepicker #picker></mat-datepicker>-->
+  <!--      </mat-form-field>-->
+  <!--      <span>at</span>-->
+
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      &lt;!&ndash;         TIME           &ndash;&gt;-->
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      <mat-form-field>-->
+  <!--        <mat-label>Time</mat-label>-->
+
+  <!--        <input formControlName="time" matInput id="settime" type="time" step="1" placeholder="start date"/>-->
+  <!--      </mat-form-field>-->
+
+
+  <!--      <span>I</span>-->
+
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      &lt;!&ndash;         ACTION         &ndash;&gt;-->
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      <mat-form-field>-->
+  <!--        <mat-label>Action</mat-label>-->
+  <!--        <mat-select formControlName="type" id="">-->
+  <!--          @for (action of actions; track action) {-->
+  <!--            <mat-option [value]="action.value">{{ action.text }}</mat-option>-->
+  <!--          }-->
+  <!--        </mat-select>-->
+  <!--      </mat-form-field>-->
+
+
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      &lt;!&ndash;         AMOUNT         &ndash;&gt;-->
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      <mat-form-field floatLabel="auto" >-->
+  <!--        <mat-label>Amount</mat-label>-->
+  <!--        <input formControlName="amount"-->
+  <!--               matInput type="number" class="right-align" placeholder="0.00"/>-->
+  <!--        <mat-error *ngIf="txForm.get('amount')?.hasError('notNegative')">-->
+  <!--          Cannot be negative-->
+  <!--        </mat-error>-->
+  <!--      </mat-form-field>-->
+
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      &lt;!&ndash;         TOKEN          &ndash;&gt;-->
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      <mat-form-field floatLabel="auto">-->
+  <!--        <mat-label>Token</mat-label>-->
+
+  <!--        <div class="input-container">-->
+  <!--          <input type="text" matInput formControlName="token"-->
+  <!--                 [formControl]="tokenControl" [matAutocomplete]="auto">-->
+  <!--          &lt;!&ndash;                 placeholder="Token"&ndash;&gt;-->
+
+  <!--          <fa-icon class="add-token"-->
+  <!--                   *ngIf="txForm.get('token')?.hasError('invalidString')"-->
+  <!--                   [icon]="faPlus" (click)="addToken()"></fa-icon>-->
+  <!--        </div>-->
+  <!--        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">-->
+  <!--          @for (option of filteredOptions | async; track option) {-->
+  <!--            <mat-option [value]="option">{{ option.name }}</mat-option>-->
+  <!--          }-->
+  <!--        </mat-autocomplete>-->
+  <!--        <mat-error *ngIf="txForm.get('amount')?.hasError('notNegative')">-->
+  <!--          Cannot be negative-->
+  <!--        </mat-error>-->
+  <!--      </mat-form-field>-->
+
+
+  <!--      <span>for</span>-->
+
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      &lt;!&ndash;      DOLLAR VALUE      &ndash;&gt;-->
+  <!--      &lt;!&ndash;                        &ndash;&gt;-->
+  <!--      <mat-form-field floatLabel="auto" class="form-field">-->
+  <!--        <mat-label>Fiat value</mat-label>-->
+  <!--        <input formControlName="dollarValue"-->
+  <!--               matInput type="number" class="right-align" placeholder="0.00"/>-->
+  <!--        <mat-error *ngIf="txForm.get('dollarValue')?.hasError('notNegative')">-->
+  <!--          Cannot be negative-->
+  <!--        </mat-error>-->
+  <!--        <span matTextPrefix>-->
+  <!--          <mat-icon aria-hidden="false" aria-label="Dollar symbol" fontIcon="attach_money"></mat-icon>-->
+  <!--        </span>-->
+  <!--      </mat-form-field>-->
+
+
+  <!--      <button class="btn-transparent" type="submit" [disabled]="txForm.invalid">-->
+  <!--        I confirm-->
+  <!--      </button>-->
+  <!--    </div>-->
+  <!--    <div class="colapsed-content" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">-->
+  <!--      <div class="left-colapsed-content">-->
+  <!--        <ng-container *ngIf="!isValid; else placeholder">-->
+  <!--          <fa-icon class="warning-icon" [icon]="faWarning"></fa-icon>-->
+  <!--        </ng-container>-->
+  <!--        <ng-template #placeholder>-->
+  <!--          <div class="icon-placeholder"></div>-->
+  <!--        </ng-template>-->
+  <!--      </div>-->
+  <!--      <div class="right-colapsed-content">-->
+  <!--        <span>{{ txForm.value.date.toLocaleDateString() }}</span>-->
+  <!--        <div class="second-line">-->
+  <!--          <span> {{ txForm.value.type === 'BUY' ? 'Buy' : 'Sell' }}</span>-->
+  <!--          <span> {{ txForm.value.amount }} {{ txForm.value.token?.name }} ({{ txForm.value.token?.ticker }})</span>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--      <div class="far-right-colapsed-content">-->
+  <!--      </div>-->
+
+  <!--    </div>-->
+
+  <!--  </div>-->
 
 </form>
 

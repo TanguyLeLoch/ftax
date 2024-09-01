@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.natu.ftax.transaction.simplified.TransactionSimplified.Type.BUY;
 
@@ -57,6 +58,15 @@ public class TransactionSimplifiedController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TransactionSimplified> getAll() {
         return repository.findAll();
+    }
+
+    @PostMapping(value = "computePnl")
+    public List<Pnl> computePnl(@RequestParam("method") String method){
+       var txs = getAll();
+       var compute = new Compute(txs);
+       return compute.execute();
+       return compute.execute()
+        return List.of();
     }
 
 

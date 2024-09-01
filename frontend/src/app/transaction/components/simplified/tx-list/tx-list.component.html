@@ -1,6 +1,9 @@
 <div container>
   <button class="btn-transparent" (click)="newTx()"> add a transaction</button>
-
+  <button mat-raised-button (click)="computePnL()" >
+    <mat-icon>check_circle</mat-icon>
+    compute PnL
+  </button>
   <div class="tx-list">
     <div *ngFor="let tx of txs" class="tx-item">
       <app-tx-simplified [transaction]="tx"></app-tx-simplified>

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, signal} from '@angular/core';
 import {Token, TransactionSimplified, TransactionSimplifiedControllerService} from "../../../../core/model";
 import {
   AbstractControl,
@@ -17,9 +17,14 @@ import {TokenService} from "../../../../core/services/token.service";
   selector: 'app-tx-simplified',
   templateUrl: './tx-simplified.component.html',
   styleUrl: './tx-simplified.component.scss',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TxSimplifiedComponent implements OnInit {
   @Input() transaction!: TransactionSimplified;
+
+  isExpanded: boolean = false;
+
+
 
   txForm!: FormGroup;
   date!: Date;
@@ -121,10 +126,9 @@ export class TxSimplifiedComponent implements OnInit {
     this.service.post(this.transaction).subscribe(tx => {
       this.transaction = tx
       this.isValid = this.transaction.valid;
-      this.isCollapsed = this.transaction.valid;
+      console.log('is valid ? ' ,this.transaction.valid)
+      this.isExpanded = false;
     });
-
-
   }
 
 
@@ -177,12 +181,10 @@ function noStringValidator(): ValidatorFn {
 }
 
 export function notNegativeValidator(): ValidatorFn {
-  console.log('not negativ validator')
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
 
     // Check if the value is not negative (>= 0)
-    console.log('is it called ? ')
     if (value >= 0) {
       return null; // Valid, no error
     } else {

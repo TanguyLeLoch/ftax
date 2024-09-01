@@ -101,6 +101,10 @@
   padding: 0;
 
 }
+.title {
+  display: flex;
+  flex-direction: row;
+}
 .icon-placeholder {
   width: 18px;
   height: 18px;
@@ -128,3 +132,4 @@
 mat-form-field {
   width: 150px;
 }
+
