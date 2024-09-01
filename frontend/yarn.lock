@@ -210,10 +210,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/material@17.2.2":
-  version "17.2.2"
-  resolved "https://registry.npmjs.org/@angular/material/-/material-17.2.2.tgz"
-  integrity sha512-ToUp8gARTvdze9L7jhEuKqdos221jUCMRD6qzhl07XZRlxVbf/5VXUq2Nn7ei9uN11Ii1UY5pC0GS2XtlyHp4A==
+"@angular/material@18.0.1":
+  version "18.0.1"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-18.0.1.tgz#83b8e6a7998e0c5c0579b26527dfc183e798b01e"
+  integrity sha512-y8OaESXw32P74Jh2FEr3n7QjqjTlo2Jf+XdgOvp5dd1yxpJ20vnK7ZCEQqCpxdxGAzXqR+2DccKk9tebB9egZw==
   dependencies:
     "@material/animation" "15.0.0-canary.7f224ddd4.0"
     "@material/auto-init" "15.0.0-canary.7f224ddd4.0"
@@ -258,6 +258,7 @@
     "@material/tab-scroller" "15.0.0-canary.7f224ddd4.0"
     "@material/textfield" "15.0.0-canary.7f224ddd4.0"
     "@material/theme" "15.0.0-canary.7f224ddd4.0"
+    "@material/tokens" "15.0.0-canary.7f224ddd4.0"
     "@material/tooltip" "15.0.0-canary.7f224ddd4.0"
     "@material/top-app-bar" "15.0.0-canary.7f224ddd4.0"
     "@material/touch-target" "15.0.0-canary.7f224ddd4.0"

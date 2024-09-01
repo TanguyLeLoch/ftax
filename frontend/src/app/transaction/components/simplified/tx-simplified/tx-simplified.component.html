@@ -79,5 +79,23 @@
 
   </div>
 
-
 </form>
+
+<app-modal [isOpen]="addTokenOpen" (close)="addTokenOpen = false">
+  <form [formGroup]="tokenForm" (ngSubmit)="onSubmitToken()"
+        class="token-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Bitcoin" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ticker</mat-label>
+      <input matInput placeholder="BTC" formControlName="ticker">
+    </mat-form-field>
+
+    <button mat-button type="submit">Create</button>
+
+  </form>
+
+</app-modal>

@@ -171,3 +171,8 @@ textarea:focus {
   cursor: pointer;
   color: #ff0000;
 }
+
+.token-form {
+  display: flex;
+  flex-direction: column;
+}

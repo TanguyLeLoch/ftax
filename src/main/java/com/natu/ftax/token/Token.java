@@ -12,7 +12,6 @@ import lombok.Setter;
 public class Token {
 
     @Id
-    @NotNull
     private String id;
     @NotNull
     private String ticker;

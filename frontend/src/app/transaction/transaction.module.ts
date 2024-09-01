@@ -11,7 +11,7 @@ import {TransactionListHeaderComponent} from "./components/transaction-list-head
 import {TxSimplifiedComponent} from "./components/simplified/tx-simplified/tx-simplified.component";
 import {TxListComponent} from "./components/simplified/tx-list/tx-list.component";
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -44,6 +44,7 @@ import {MatInputModule} from "@angular/material/input";
     MatInputModule,
     MatAutocompleteModule,
     AsyncPipe,
+    MatButton,
   ]
 })
 export class TransactionModule {

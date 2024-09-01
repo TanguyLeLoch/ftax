@@ -48,7 +48,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
 
   ],
   providers: [

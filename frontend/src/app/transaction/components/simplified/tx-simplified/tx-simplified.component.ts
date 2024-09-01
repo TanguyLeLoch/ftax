@@ -10,7 +10,7 @@ import {
   Validators
 } from "@angular/forms";
 import {faAdd, faCheck, faEdit, faPlus, faTrash, faWarning} from "@fortawesome/free-solid-svg-icons";
-import {map, Observable, startWith, Subscription} from "rxjs";
+import {map, Observable, startWith} from "rxjs";
 import {TokenService} from "../../../../core/services/token.service";
 
 @Component({
@@ -29,10 +29,11 @@ export class TxSimplifiedComponent implements OnInit {
   isCollapsed!: boolean;
 
   tokenControl!: FormControl<string | Token | null>;
-  options!: Token[]
   filteredOptions!: Observable<Token[]>;
-  tokens!: Token[];
-  private tokensSub!: Subscription;
+  addTokenOpen = false;
+
+  tokenForm!: FormGroup;
+
 
   open(): void {
     this.isCollapsed = false
@@ -44,7 +45,6 @@ export class TxSimplifiedComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let tokens = this.tokenService.getTokens();
     this.tokenService.fetchAllTokens();
 
     this.tokenControl = new FormControl<string | Token | null>(
@@ -64,7 +64,6 @@ export class TxSimplifiedComponent implements OnInit {
         );
       }
     );
-    this.options = tokens
 
 
     this.date = this.transaction.localDateTime.slice(0, 10)
@@ -80,7 +79,10 @@ export class TxSimplifiedComponent implements OnInit {
       token: this.tokenControl,
       dollarValue: [this.transaction.dollarValue, Validators.required,],
     });
-    // token: [this.transaction.token, Validators.required],
+    this.tokenForm = this.fb.group({
+      name: ['', Validators.required],
+      ticker: ['', Validators.required],
+    });
   }
 
   private replaceStringByToken(tokens: Token[]) {
@@ -144,7 +146,25 @@ export class TxSimplifiedComponent implements OnInit {
   protected readonly faPlus = faPlus;
 
   addToken() {
-    console.log('add token')
+    this.addTokenOpen = true;
+    const threeFirstChars = this.txForm.get('token')!.value.substring(0, 3).toUpperCase();
+
+    this.tokenForm.setValue({
+      name: this.txForm.get('token')!.value,
+      ticker: threeFirstChars
+    });
+  }
+
+  onSubmitToken() {
+    const token: Token = {
+      name: this.tokenForm.get('name')!.value,
+      ticker: this.tokenForm.get('ticker')!.value,
+    };
+    this.tokenService.createToken(token).subscribe(token => {
+        this.addTokenOpen = false;
+        this.txForm.get('token')!.setValue(token);
+      }
+    )
   }
 }
 

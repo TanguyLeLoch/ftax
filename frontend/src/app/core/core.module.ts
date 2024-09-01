@@ -11,10 +11,15 @@ import {ToastComponent} from "./components/toast/toast.component";
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {DropdownComponent} from "./components/dropdown/dropdown.component";
+import {ModalComponent} from "./components/modal/modal.component";
 
 
 @NgModule({
-  declarations: [ToastComponent, FileUploadComponent, DropdownComponent],
+  declarations: [
+    ToastComponent,
+    FileUploadComponent,
+    DropdownComponent,
+    ModalComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -33,7 +38,8 @@ import {DropdownComponent} from "./components/dropdown/dropdown.component";
     MatInputModule,
     ToastComponent,
     FileUploadComponent,
-    DropdownComponent
+    DropdownComponent,
+    ModalComponent,
   ],
   providers: [provideNativeDateAdapter()],
 })

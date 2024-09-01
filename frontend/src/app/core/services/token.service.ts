@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Token, TokenControllerService} from "../model";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +25,13 @@ export class TokenService {
     return this.allTokens;
   }
 
+  createToken(token: Token): Observable<Token> {
+    return this.controller.post1(token)
+      .pipe(
+        tap(token => {
+          this.allTokens.push(token);
+          this.tokens.next(this.allTokens);
+        })
+      );
+  }
 }

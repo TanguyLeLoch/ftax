@@ -12,7 +12,7 @@
 
 
 export interface Token { 
-    id: string;
+    id?: string;
     ticker: string;
     name: string;
 }
