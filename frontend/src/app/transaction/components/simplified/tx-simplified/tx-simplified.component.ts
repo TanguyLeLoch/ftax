@@ -53,7 +53,7 @@ export class TxSimplifiedComponent implements OnInit {
 
     this.tokenControl = new FormControl<string | Token | null>(
       this.transaction.token ? this.transaction.token : '',
-      [noStringValidator()]
+      [Validators.required,noStringValidator()]
     );
 
     this.tokenService.tokens$.subscribe(

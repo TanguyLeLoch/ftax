@@ -52,8 +52,7 @@
     flex-direction: row;
   }
 
-  .not-collapsed-content {
-  }
+
 
   .left-colapsed-content {
     width: 10%;
@@ -90,15 +89,8 @@
       display: block; /* Show on mobile devices */
     }
   }
-
-
-
-
-
-
-
-
-
+}
+.not-collapsed-content {
 }
 
 .warning-icon {
@@ -131,4 +123,8 @@
 
 .right-align {
   text-align: right;
+}
+
+mat-form-field {
+  width: 150px;
 }
