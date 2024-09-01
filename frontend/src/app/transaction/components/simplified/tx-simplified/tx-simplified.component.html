@@ -2,33 +2,67 @@
 
   <div class="foldable-container" (click)="open()" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">
     <div class="not-collapsed-content" [ngClass]="{'open': !isCollapsed, 'closed': isCollapsed}">
-      <label for="date">On</label>
-      <input id="date" formControlName="date" type="date" class="minimal-input">
-      <label for="time">at</label>
-      <input id="time" formControlName="time" type="time" step="1" class="minimal-input">
+      <span>On</span>
+
+      <mat-form-field >
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date">
+        <span matTextPrefix (click)="picker.open()" >
+          <mat-icon aria-hidden="false" aria-label="Open picker" fontIcon="event"></mat-icon>
+        </span>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <span>at</span>
+
+      <!--                        -->
+      <!--         TIME           -->
+      <!--                        -->
+            <mat-form-field>
+              <mat-label>Time</mat-label>
+
+              <input formControlName="time" matInput id="settime" type="time" step="1" placeholder="start date" />
+            </mat-form-field>
+
 
       <br class="mobile-break">
 
-      <label for="type">I</label>
-      <app-dropdown id="type"
-                    [options]="[{value:'BUY', label:'bought'}, {value:'SELL', label:'sold'}]" formControlName="type"
-                    class="minimal-input">
-      </app-dropdown>
+      <span>I</span>
+
+      <!--                        -->
+      <!--         ACTION         -->
+      <!--                        -->
+      <mat-form-field>
+        <mat-label>Action</mat-label>
+        <mat-select formControlName="type" id="">
+          @for (action of actions; track action) {
+            <mat-option [value]="action.value">{{action.text}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
 
 
-      <!--      amount-->
-      <input formControlName="amount"
-             type="number" class="minimal-input number-input"
-             [ngClass]="{'input-error': invalidAndTouched('amount'),
-              'missing-input': invalidAndNotTouched('amount')}">
-      <!--      Token-->
-      <!--      <input formControlName="token" type="text" class="minimal-input"-->
-      <!--             [ngClass]="{'input-error': invalidAndTouched('token'),-->
-      <!--              'missing-input': invalidAndNotTouched('token')}">-->
+      <!--                        -->
+      <!--         AMOUNT         -->
+      <!--                        -->
+      <mat-form-field floatLabel="always" [style.width.px]=120>
+        <mat-label>Amount</mat-label>
+        <input formControlName="amount"
+               matInput type="number" class="right-align" placeholder="0.00"  />
+        <mat-error *ngIf="txForm.get('amount')?.hasError('notNegative')">
+          Cannot be negative
+        </mat-error>
+      </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <!--                        -->
+      <!--         TOKEN          -->
+      <!--                        -->
+      <mat-form-field class="example-full-width" floatLabel="always">
+        <mat-label>Token</mat-label>
+
         <div class="input-container">
-          <input type="text" matInput formControlName="token" [formControl]="tokenControl" [matAutocomplete]="auto">
+          <input type="text" matInput formControlName="token"
+                 [formControl]="tokenControl" [matAutocomplete]="auto"
+                 placeholder="Token">
           <fa-icon class="add-token"
                    *ngIf="txForm.get('token')?.hasError('invalidString')"
                    [icon]="faPlus" (click)="addToken()"></fa-icon>
@@ -42,15 +76,21 @@
 
       <br class="mobile-break">
 
-      <label for="dollarValue">for</label>
+      <span>for</span>
 
-      <!--      dollarValue-->
-      <input id="dollarValue" formControlName="dollarValue"
-             type="number" class="minimal-input number-input"
-             [ngClass]="{'input-error': invalidAndTouched('dollarValue'),
-              'missing-input': invalidAndNotTouched('dollarValue')}">
+      <!--                        -->
+      <!--      DOLLAR VALUE      -->
+      <!--                        -->
+      <mat-form-field floatLabel="always" [style.width.px]=120 class="form-field">
+        <mat-label>Fiat value</mat-label>
+        <input formControlName="dollarValue"
+               matInput type="number" class="right-align" placeholder="0.00"  />
+        <mat-error *ngIf="txForm.get('dollarValue')?.hasError('notNegative')">
+          Cannot be negative
+        </mat-error>
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
 
-      <label>USD</label>
 
       <button class="btn-transparent" type="submit" [disabled]="txForm.invalid">
         I confirm
@@ -66,7 +106,7 @@
         </ng-template>
       </div>
       <div class="right-colapsed-content">
-        <span>{{ txForm.value.date }}</span>
+        <span>{{ txForm.value.date.toLocaleDateString() }}</span>
         <div class="second-line">
           <span> {{ txForm.value.type === 'BUY' ? 'Buy' : 'Sell' }}</span>
           <span> {{ txForm.value.amount }} {{ txForm.value.token?.name }} ({{ txForm.value.token?.ticker }})</span>

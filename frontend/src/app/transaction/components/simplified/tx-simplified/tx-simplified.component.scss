@@ -90,77 +90,29 @@
       display: block; /* Show on mobile devices */
     }
   }
-  label {
-    padding: 0 8px
-  }
 
-  input, select {
-    font-size: 12px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    border-radius: 4px;
-  }
 
-  .input-error {
-    border-bottom: 1px solid red;
-  }
 
-  .missing-input {
-    border-bottom: 1px solid #3e40f4;
-  }
 
-  .check-icon {
-    margin-left: 20px;
-    color: #0f7300;
-    font-size: 20px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 0;
-  }
 
-  .warning-icon {
-    color: #ff7a2d;
-    font-size: 18px;
-    border: none;
-    background-color: transparent;
-    padding: 0;
 
-  }
 
-  .icon-placeholder {
-    width: 18px;
-    height: 18px;
-  }
+
 
 }
 
+.warning-icon {
+  color: #ff7a2d;
+  font-size: 18px;
+  border: none;
+  background-color: transparent;
+  padding: 0;
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
-
-input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
+.icon-placeholder {
+  width: 18px;
+  height: 18px;
 }
-
-select {
-  -webkit-appearance: none; /* Chrome, Safari, Opera */
-  -moz-appearance: none; /* Firefox */
-  appearance: none; /* Default */
-  background: none; /* Remove background */
-  padding-right: 20px; /* Ensure space for custom arrow, if needed */
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none; /* Remove the default outline */
-  border: none; /* Remove the border */
-}
-
 
 .input-container {
   display: flex;
@@ -169,10 +121,14 @@ textarea:focus {
 
 .add-token {
   cursor: pointer;
-  color: #ff0000;
+  color: #0048ff;
 }
 
 .token-form {
   display: flex;
   flex-direction: column;
+}
+
+.right-align {
+  text-align: right;
 }

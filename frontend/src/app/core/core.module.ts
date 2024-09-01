@@ -10,7 +10,6 @@ import {FormsModule} from "@angular/forms";
 import {ToastComponent} from "./components/toast/toast.component";
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {DropdownComponent} from "./components/dropdown/dropdown.component";
 import {ModalComponent} from "./components/modal/modal.component";
 
 
@@ -18,7 +17,6 @@ import {ModalComponent} from "./components/modal/modal.component";
   declarations: [
     ToastComponent,
     FileUploadComponent,
-    DropdownComponent,
     ModalComponent],
   imports: [
     CommonModule,
@@ -38,7 +36,6 @@ import {ModalComponent} from "./components/modal/modal.component";
     MatInputModule,
     ToastComponent,
     FileUploadComponent,
-    DropdownComponent,
     ModalComponent,
   ],
   providers: [provideNativeDateAdapter()],

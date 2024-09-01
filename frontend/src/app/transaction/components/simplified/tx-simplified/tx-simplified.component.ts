@@ -22,7 +22,7 @@ export class TxSimplifiedComponent implements OnInit {
   @Input() transaction!: TransactionSimplified;
 
   txForm!: FormGroup;
-  date!: string;
+  date!: Date;
   time!: string;
 
   isValid!: boolean;
@@ -33,6 +33,10 @@ export class TxSimplifiedComponent implements OnInit {
   addTokenOpen = false;
 
   tokenForm!: FormGroup;
+  actions = [
+    {value: 'BUY', text: 'bought'},
+    {value: 'SELL', text: 'sold'}
+  ]
 
 
   open(): void {
@@ -65,9 +69,9 @@ export class TxSimplifiedComponent implements OnInit {
       }
     );
 
-
-    this.date = this.transaction.localDateTime.slice(0, 10)
-    this.time = this.transaction.localDateTime.slice(11, 23);
+    const dateStr = this.transaction.localDateTime.slice(0, 10);
+    this.date = new Date(dateStr + 'T00:00:00Z')
+    this.time = this.transaction.localDateTime.slice(11, 19);
     this.isValid = this.transaction.valid;
     this.isCollapsed = this.transaction.valid
 
@@ -75,9 +79,9 @@ export class TxSimplifiedComponent implements OnInit {
       date: [this.date, Validators.required,],
       time: [this.time, Validators.required,],
       type: [this.transaction.type, Validators.required,],
-      amount: [this.transaction.amount, Validators.required,],
+      amount: [this.transaction.amount, [Validators.required, notNegativeValidator()]],
       token: this.tokenControl,
-      dollarValue: [this.transaction.dollarValue, Validators.required,],
+      dollarValue: [this.transaction.dollarValue, [Validators.required, notNegativeValidator()]],
     });
     this.tokenForm = this.fb.group({
       name: ['', Validators.required],
@@ -105,7 +109,9 @@ export class TxSimplifiedComponent implements OnInit {
 
   onSubmit(): void {
     // yyyy-MM-dd HH:mm:ss.SSS without timezone
-    this.transaction.localDateTime = this.date + ' ' + this.time;
+    const date: Date = this.txForm.get('date')!.value;
+    const dateStr = date.toISOString().slice(0, 10)
+    this.transaction.localDateTime = dateStr + ' ' + this.time;
     this.transaction.type = this.txForm.get('type')!.value;
     this.transaction.amount = this.txForm.get('amount')!.value;
     this.transaction.token = this.txForm.get('token')!.value.id
@@ -121,13 +127,6 @@ export class TxSimplifiedComponent implements OnInit {
 
   }
 
-  invalidAndTouched(field: string): boolean {
-    return this.txForm.get(field)!.invalid && this.txForm.get(field)!.touched;
-  }
-
-  invalidAndNotTouched(field: string): boolean {
-    return this.txForm.get(field)!.invalid && !this.txForm.get(field)!.touched;
-  }
 
   displayFn(token: Token): string {
     return token && token.name ? token.name : '';
@@ -174,5 +173,20 @@ function noStringValidator(): ValidatorFn {
       return {'invalidString': true};
     }
     return null;
+  };
+}
+
+export function notNegativeValidator(): ValidatorFn {
+  console.log('not negativ validator')
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    // Check if the value is not negative (>= 0)
+    console.log('is it called ? ')
+    if (value >= 0) {
+      return null; // Valid, no error
+    } else {
+      return { notNegative: true }; // Invalid, return error
+    }
   };
 }
