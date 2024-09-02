@@ -64,9 +64,7 @@ public class TransactionSimplifiedController {
     public List<Pnl> computePnl(@RequestParam("method") String method){
        var txs = getAll();
        var compute = new Compute(txs);
-       return compute.execute();
-       return compute.execute()
-        return List.of();
+       return compute.execute(method);
     }
 
 
