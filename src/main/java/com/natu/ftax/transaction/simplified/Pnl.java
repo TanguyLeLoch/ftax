@@ -1,11 +1,12 @@
 package com.natu.ftax.transaction.simplified;
 
-import com.natu.ftax.transaction.domain.Transaction;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 
 @AllArgsConstructor
+@Getter
 public class Pnl {
     String tokenId;
     BigDecimal value;

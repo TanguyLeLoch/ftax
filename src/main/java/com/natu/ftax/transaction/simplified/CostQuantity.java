@@ -7,7 +7,7 @@ import java.math.MathContext;
 
 @Getter
 public class CostQuantity {
-    private BigDecimal cost;
+    private final BigDecimal cost;
     private BigDecimal quantity;
     private final BigDecimal price;
 
