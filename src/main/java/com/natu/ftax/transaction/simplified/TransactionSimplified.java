@@ -1,6 +1,7 @@
 package com.natu.ftax.transaction.simplified;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDateTime;
 
 @Data
@@ -53,6 +55,13 @@ public class TransactionSimplified {
             return false;
         }
         return type != null;
+    }
+
+    @NotNull
+    @Transient
+    @JsonIgnore
+    public BigDecimal getPrice() {
+        return this.dollarValue.divide(amount, MathContext.DECIMAL64);
     }
 
 
