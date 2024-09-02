@@ -1,14 +1,24 @@
 package com.natu.ftax.transaction.simplified;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 
 @AllArgsConstructor
-@Getter
 public class Pnl {
-    String tokenId;
-    BigDecimal value;
-    TransactionSimplified transaction;
+    @NotNull
+    @Getter
+    private String tokenId;
+    @NotNull
+    @Getter
+    private BigDecimal value;
+
+    private TransactionSimplified transaction;
+
+    
+    public String getTransactionId() {
+        return transaction.getId();
+    }
 }

@@ -16,6 +16,7 @@ model/exceptionResponse.ts
 model/ledgerBook.ts
 model/ledgerEntry.ts
 model/models.ts
+model/pnl.ts
 model/submitTransactionRequest.ts
 model/timelineItem.ts
 model/token.ts

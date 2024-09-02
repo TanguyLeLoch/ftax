@@ -41,9 +41,9 @@ class ComputeTest {
         var compute = new Compute(txs);
         var pnls = compute.execute("fifo");
 
-        assertEquals(BigDecimal.ZERO, pnls.get(0).value);
-        assertEquals(BigDecimal.ZERO, pnls.get(1).value);
-        assertEquals(0, BigDecimal.valueOf(15).compareTo(pnls.get(2).value));
+        assertEquals(BigDecimal.ZERO, pnls.get(0).getValue());
+        assertEquals(BigDecimal.ZERO, pnls.get(1).getValue());
+        assertEquals(0, BigDecimal.valueOf(15).compareTo(pnls.get(2).getValue()));
 
     }
 
@@ -77,10 +77,10 @@ class ComputeTest {
         var pnls = compute.execute("average");
 
         // Check that buy transactions result in zero PnL
-        assertEquals(BigDecimal.ZERO, pnls.get(0).value);
-        assertEquals(BigDecimal.ZERO, pnls.get(1).value);
+        assertEquals(BigDecimal.ZERO, pnls.get(0).getValue());
+        assertEquals(BigDecimal.ZERO, pnls.get(1).getValue());
 
         // Check that the calculated PnL matches the expected PnL
-        assertEquals(0, BigDecimal.ZERO.compareTo(pnls.get(2).value));
+        assertEquals(0, BigDecimal.ZERO.compareTo(pnls.get(2).getValue()));
     }
 }

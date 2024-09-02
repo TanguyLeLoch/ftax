@@ -3,6 +3,7 @@ export * from './editFieldRequest';
 export * from './exceptionResponse';
 export * from './ledgerBook';
 export * from './ledgerEntry';
+export * from './pnl';
 export * from './submitTransactionRequest';
 export * from './timelineItem';
 export * from './token';
