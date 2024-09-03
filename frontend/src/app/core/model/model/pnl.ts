@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TransactionSimplified } from './transactionSimplified';
 
 
 export interface Pnl { 
+    txId?: string;
     tokenId: string;
     value: number;
-    transactionId?: string;
+    transactionSimplified?: TransactionSimplified;
 }
 

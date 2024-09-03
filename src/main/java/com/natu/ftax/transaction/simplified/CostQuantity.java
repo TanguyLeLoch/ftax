@@ -21,4 +21,13 @@ public class CostQuantity {
     public void reduceQuantity(BigDecimal remaining) {
         quantity = quantity.subtract(remaining);
     }
+
+    @Override
+    public String toString() {
+        return "CostQuantity{" +
+                "cost=" + cost +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
+    }
 }

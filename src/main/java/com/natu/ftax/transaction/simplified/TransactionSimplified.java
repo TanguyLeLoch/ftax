@@ -2,10 +2,7 @@ package com.natu.ftax.transaction.simplified;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +36,9 @@ public class TransactionSimplified {
     @Column(precision = 64, scale = 30)
     private BigDecimal dollarValue;
 
+    @OneToOne(mappedBy = "transactionSimplified", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Pnl pnl;
+
     @NotNull
     @Transient
     public boolean isValid() {
@@ -57,10 +57,14 @@ public class TransactionSimplified {
         return type != null;
     }
 
+
     @NotNull
     @Transient
     @JsonIgnore
     public BigDecimal getPrice() {
+        if (dollarValue == null || amount == null) {
+            return BigDecimal.ZERO;
+        }
         return this.dollarValue.divide(amount, MathContext.DECIMAL64);
     }
 

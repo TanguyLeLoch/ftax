@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Pnl } from './pnl';
 
 
 export interface TransactionSimplified { 
@@ -18,6 +19,7 @@ export interface TransactionSimplified {
     amount?: number;
     token?: string;
     dollarValue?: number;
+    pnl?: Pnl;
     valid: boolean;
 }
 export namespace TransactionSimplified {

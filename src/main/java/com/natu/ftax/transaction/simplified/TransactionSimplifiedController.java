@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.natu.ftax.transaction.simplified.TransactionSimplified.Type.BUY;
 
@@ -18,13 +17,16 @@ import static com.natu.ftax.transaction.simplified.TransactionSimplified.Type.BU
 public class TransactionSimplifiedController {
     private final TransactionSimplifiedRepositoryJpa repository;
     private final IdGenerator idGenerator;
+    private final PnlRepo pnlRepo;
 
 
     public TransactionSimplifiedController(
             IdGenerator idGenerator,
-            TransactionSimplifiedRepositoryJpa repository) {
+            TransactionSimplifiedRepositoryJpa repository,
+            PnlRepo pnlRepo) {
         this.repository = repository;
         this.idGenerator = idGenerator;
+        this.pnlRepo = pnlRepo;
     }
 
 
@@ -60,11 +62,15 @@ public class TransactionSimplifiedController {
         return repository.findAll();
     }
 
-    @PostMapping(value = "computePnl")
-    public List<Pnl> computePnl(@RequestParam("method") String method){
-       var txs = getAll();
-       var compute = new Compute(txs);
-       return compute.execute(method);
+    @PostMapping(value = "computePnl",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void computePnl(@RequestParam("method") String method) {
+        var txs = getAll();
+        var compute = new Compute(txs);
+        List<Pnl> pnls = compute.execute(method).stream().filter(Pnl::isNotDummy).toList();
+
+
+        pnlRepo.saveAll(pnls);
     }
 
 
