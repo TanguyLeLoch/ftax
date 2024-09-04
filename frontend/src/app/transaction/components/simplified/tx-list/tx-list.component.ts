@@ -13,35 +13,33 @@ interface txNPnL {
 })
 export class TxListComponent {
   txs: TransactionSimplified[] = [];
-  pnls: Pnl[] = [];
 
-  txPnls: txNPnL[] = []
 
 
   constructor(private service: TransactionSimplifiedControllerService) {
     this.service.getAll().subscribe(txs => {
       txs.sort((a, b) => b.localDateTime.localeCompare(a.localDateTime));
       this.txs = txs
-      this.txPnls = txs.map(tx => {
-        return {tx, pnl: undefined}
-      })
     });
   }
+
 
   newTx() {
     console.log(this.txs);
     const txSimplified = {} as TransactionSimplified;
     this.service.post(txSimplified).subscribe(tx => {
       this.txs = [tx, ...this.txs];
-      this.txPnls = [{
-        tx: tx,
-        pnl: undefined
-      }, ...this.txPnls]
     });
   }
 
   computePnL() {
     this.service.computePnl("fifo").subscribe(
+        txs => {
+          if (txs) {
+            this.service.getAll()
+          }
+        }
+
       // pnls => {
       //   console.log(pnls)
       //   this.pnls = pnls;

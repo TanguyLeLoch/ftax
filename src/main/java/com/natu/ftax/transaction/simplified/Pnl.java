@@ -1,6 +1,8 @@
 package com.natu.ftax.transaction.simplified;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.natu.ftax.IDgenerator.domain.IdGenerator;
+import com.natu.ftax.IDgenerator.infrastructure.SnowflakeIDGenerator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,8 +22,9 @@ import java.math.BigDecimal;
 @Entity
 public class Pnl {
 
+
     @Transient
-    static final Pnl DUMMY_PNL = new Pnl(new TransactionSimplified(), null, null);
+    static final Pnl DUMMY_PNL = new Pnl();
 
     @Id
     private String txId;
@@ -26,20 +34,15 @@ public class Pnl {
     @NotNull
     private BigDecimal value;
 
-    @OneToOne
-    @JoinColumn(name = "txId", referencedColumnName = "id")
-    private TransactionSimplified transactionSimplified;
 
 
     public Pnl(TransactionSimplified tx, String tokenId, BigDecimal value) {
-
         this.txId = tx.getId();
         this.tokenId = tokenId;
         this.value = value;
-        this.transactionSimplified = tx;
         tx.setPnl(this);
-
     }
+
 
     @Transient
     @JsonIgnore

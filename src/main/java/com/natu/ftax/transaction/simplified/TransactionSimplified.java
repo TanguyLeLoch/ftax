@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TransactionSimplified {
 
-
     @Id
     @NotNull
     private String id;
@@ -36,7 +35,8 @@ public class TransactionSimplified {
     @Column(precision = 64, scale = 30)
     private BigDecimal dollarValue;
 
-    @OneToOne(mappedBy = "transactionSimplified", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "pnl_id")
     private Pnl pnl;
 
     @NotNull
@@ -57,7 +57,6 @@ public class TransactionSimplified {
         return type != null;
     }
 
-
     @NotNull
     @Transient
     @JsonIgnore
@@ -68,9 +67,7 @@ public class TransactionSimplified {
         return this.dollarValue.divide(amount, MathContext.DECIMAL64);
     }
 
-
     enum Type {
         BUY, SELL
     }
-
 }

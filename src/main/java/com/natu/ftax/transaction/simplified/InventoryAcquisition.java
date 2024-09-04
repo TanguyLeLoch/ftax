@@ -11,6 +11,7 @@ public class InventoryAcquisition {
     private final String tokenId;
     private final LinkedList<CostQuantity> costQuantities;
 
+
     public InventoryAcquisition(String tokenId) {
         this.tokenId = tokenId;
         costQuantities = new LinkedList<>();

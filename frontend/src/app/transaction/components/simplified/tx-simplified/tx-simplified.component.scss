@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   align-items: center;
   font-family: Pacifico, "Roboto Light", serif;
-  font-size: 1rem;
+  font-size: calc(5px + 2vmin);
 
   .foldable-container {
     background-color: #fffdfd;
@@ -131,5 +131,22 @@
 
 mat-form-field {
   width: 150px;
+}
+
+.tx-overview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: calc(5px + 2vmin);
+}
+.pnl-container{
+  width: 80px;
+}
+.positive {
+  color: #059f00;
+}
+
+.negative {
+  color: #a80000;
 }
 

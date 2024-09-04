@@ -22,20 +22,19 @@ public class Compute {
 
     }
 
-    List<Pnl> execute(String method) {
-        var pnls = new ArrayList<Pnl>();
+    List<TransactionSimplified> execute(String method) {
         for (var tx : txs) {
             var invAcqui = inventoryAcquisitions.get(tx.getToken());
 
-            Pnl pnl;
+
             if (method.equals("fifo")) {
-                pnl = invAcqui.fifo(tx);
+                invAcqui.fifo(tx);
             } else if (method.equals("average")) {
-                pnl = invAcqui.average(tx);
+                invAcqui.average(tx);
             } else throw new RuntimeException("not supported method");
-            pnls.add(pnl);
         }
 
-        return pnls;
+        return txs.stream().filter(tx -> tx.getPnl() != null).toList();
+
     }
 }

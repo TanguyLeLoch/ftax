@@ -9,7 +9,16 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {faAdd, faCheck, faEdit, faPlus, faTrash, faWarning} from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faArrowDown,
+  faArrowUp,
+  faCheck,
+  faEdit,
+  faPlus,
+  faTrash,
+  faWarning
+} from "@fortawesome/free-solid-svg-icons";
 import {map, Observable, startWith} from "rxjs";
 import {TokenService} from "../../../../core/services/token.service";
 
@@ -39,8 +48,8 @@ export class TxSimplifiedComponent implements OnInit {
 
   tokenForm!: FormGroup;
   actions = [
-    {value: 'BUY', text: 'bought'},
-    {value: 'SELL', text: 'sold'}
+    {value: 'BUY', text: 'Buy'},
+    {value: 'SELL', text: 'Sell'}
   ]
 
 
@@ -169,6 +178,9 @@ export class TxSimplifiedComponent implements OnInit {
       }
     )
   }
+
+  protected readonly faArrowUp = faArrowUp;
+  protected readonly faArrowDown = faArrowDown;
 }
 
 function noStringValidator(): ValidatorFn {

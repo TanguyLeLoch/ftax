@@ -5,12 +5,8 @@
     compute PnL
   </button>
   <div class="tx-list">
-    <div *ngFor="let txPnl of txPnls" class="tx-item">
-      <app-tx-simplified [transaction]="txPnl.tx"></app-tx-simplified>
-      <div *ngIf="txPnl.pnl !== undefined"
-      >
-        {{ txPnl.pnl.value }}
-      </div>
+    <div *ngFor="let tx of txs" class="tx-item">
+      <app-tx-simplified [transaction]="tx"></app-tx-simplified>
     </div>
   </div>
 
