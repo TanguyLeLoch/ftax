@@ -178,6 +178,13 @@ export class TxSimplifiedComponent implements OnInit {
 
   protected readonly faArrowUp = faArrowUp;
   protected readonly faArrowDown = faArrowDown;
+
+  getDateTimeAtLocalFormat() {
+    const date = new Date(this.transaction.localDateTime);
+    date.toLocaleDateString();
+
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+  }
 }
 
 function noStringValidator(): ValidatorFn {

@@ -80,15 +80,6 @@
     text-align: center;
   }
 
-  .mobile-break {
-    display: none; /* Hide on non mobile devices */
-  }
-
-  @media (max-width: 768px) {
-    .mobile-break {
-      display: block; /* Show on mobile devices */
-    }
-  }
 }
 .not-collapsed-content {
 }
@@ -98,15 +89,16 @@
   font-size: 18px;
   border: none;
   background-color: transparent;
-  padding: 0;
+  padding: 0 5px 0 0;
 
 }
 .title {
   display: flex;
   flex-direction: row;
+  width: 80px
 }
 .icon-placeholder {
-  width: 18px;
+  width: 23px;
   height: 18px;
 }
 
@@ -136,21 +128,43 @@ mat-form-field {
 .tx-overview {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   font-size: calc(5px + 2vmin);
-  position: absolute;
   width: 100%;
-
 }
 .pnl-container{
-  position: relative;
-  right: -20px
+}
+
+.Buy {
+  color: #059f00;
+}
+
+.Sell {
+  color: #a80000;
 }
 .positive {
   color: #059f00;
 }
-
 .negative {
   color: #a80000;
 }
 
+.value-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.tx-description-left {
+  display: flex;
+  flex-direction: column;
+
+  .date {
+    font-size: calc(5px + 1vmin);
+  }
+
+}
+
+.fiat-value {
+  font-size: calc(5px + 1vmin);
+}
