@@ -1,17 +1,13 @@
-import {Component} from '@angular/core';
-import {Pnl, TransactionSimplified, TransactionSimplifiedControllerService} from "../../../../core/model";
+import {Component, OnInit} from '@angular/core';
+import {TransactionSimplified, TransactionSimplifiedControllerService} from "../../../../core/model";
 
-interface txNPnL {
-  tx: TransactionSimplified,
-  pnl: undefined | Pnl
-}
 
 @Component({
   selector: 'app-tx-list',
   templateUrl: './tx-list.component.html',
   styleUrl: './tx-list.component.scss'
 })
-export class TxListComponent {
+export class TxListComponent implements OnInit {
   txs: TransactionSimplified[] = [];
 
 
@@ -23,6 +19,17 @@ export class TxListComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.fetchTxs();
+  }
+
+
+  private fetchTxs() {
+    this.service.getAll().subscribe(txs => {
+      txs.sort((a, b) => b.localDateTime.localeCompare(a.localDateTime));
+      this.txs = txs
+    });
+  }
 
   newTx() {
     console.log(this.txs);
@@ -36,7 +43,7 @@ export class TxListComponent {
     this.service.computePnl("fifo").subscribe(
         txs => {
           if (txs) {
-            this.service.getAll()
+            this.fetchTxs();
           }
         }
 
@@ -52,4 +59,6 @@ export class TxListComponent {
       // }
     )
   }
+
+
 }

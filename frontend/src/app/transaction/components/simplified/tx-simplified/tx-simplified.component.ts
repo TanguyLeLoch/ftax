@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, signal} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Token, TransactionSimplified, TransactionSimplifiedControllerService} from "../../../../core/model";
 import {
   AbstractControl,
@@ -33,14 +33,11 @@ export class TxSimplifiedComponent implements OnInit {
 
   isExpanded: boolean = false;
 
-
-
   txForm!: FormGroup;
   date!: Date;
   time!: string;
 
   isValid!: boolean;
-  isCollapsed!: boolean;
 
   tokenControl!: FormControl<string | Token | null>;
   filteredOptions!: Observable<Token[]>;
@@ -52,10 +49,6 @@ export class TxSimplifiedComponent implements OnInit {
     {value: 'SELL', text: 'Sell'}
   ]
 
-
-  open(): void {
-    this.isCollapsed = false
-  }
 
 
   constructor(private service: TransactionSimplifiedControllerService, private fb: FormBuilder,
@@ -87,7 +80,7 @@ export class TxSimplifiedComponent implements OnInit {
     this.date = new Date(dateStr + 'T00:00:00Z')
     this.time = this.transaction.localDateTime.slice(11, 19);
     this.isValid = this.transaction.valid;
-    this.isCollapsed = this.transaction.valid
+    this.isExpanded = !this.transaction.valid
 
     this.txForm = this.fb.group({
       date: [this.date, Validators.required,],
@@ -95,7 +88,7 @@ export class TxSimplifiedComponent implements OnInit {
       type: [this.transaction.type, Validators.required,],
       amount: [this.transaction.amount, [Validators.required, notNegativeValidator()]],
       token: this.tokenControl,
-      dollarValue: [this.transaction.dollarValue, [Validators.required, notNegativeValidator()]],
+      price: [this.transaction.price, [Validators.required, notNegativeValidator()]],
     });
     this.tokenForm = this.fb.group({
       name: ['', Validators.required],
@@ -131,7 +124,7 @@ export class TxSimplifiedComponent implements OnInit {
     this.transaction.token = this.txForm.get('token')!.value.id
 
 
-    this.transaction.dollarValue = this.txForm.get('dollarValue')!.value;
+    this.transaction.price = this.txForm.get('price')!.value;
     this.service.post(this.transaction).subscribe(tx => {
       this.transaction = tx
       this.isValid = this.transaction.valid;
@@ -186,7 +179,7 @@ export class TxSimplifiedComponent implements OnInit {
 function noStringValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (typeof control.value === 'string' && control.value.length > 0) {
-      return {'invalidString': true};
+      return {'noString': true};
     }
     return null;
   };

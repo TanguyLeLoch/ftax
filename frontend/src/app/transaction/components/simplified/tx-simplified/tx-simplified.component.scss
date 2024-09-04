@@ -138,9 +138,13 @@ mat-form-field {
   flex-direction: row;
   align-items: center;
   font-size: calc(5px + 2vmin);
+  position: absolute;
+  width: 100%;
+
 }
 .pnl-container{
-  width: 80px;
+  position: relative;
+  right: -20px
 }
 .positive {
   color: #059f00;
