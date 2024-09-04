@@ -1,7 +1,6 @@
 package com.natu.ftax.transaction.simplified;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDateTime;
 
 @Data
@@ -33,39 +31,40 @@ public class TransactionSimplified {
     private BigDecimal amount;
     private String token;
     @Column(precision = 64, scale = 30)
-    private BigDecimal dollarValue;
+    private BigDecimal price;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pnl_id")
     private Pnl pnl;
 
+    @Transient
+    private String errorMessage;
+
     @NotNull
     @Transient
     public boolean isValid() {
         if (localDateTime == null) {
+            errorMessage = "Date is invalid";
             return false;
         }
         if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
+            errorMessage = "Amount is invalid";
             return false;
         }
         if (token == null) {
+            errorMessage = "Token is invalid";
             return false;
         }
-        if (dollarValue == null || dollarValue.compareTo(BigDecimal.ZERO) < 0) {
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            errorMessage = "Price is invalid";
             return false;
         }
-        return type != null;
+        if (type == null) {
+            errorMessage = "Action is invalid";
+        }
+        return true;
     }
 
-    @NotNull
-    @Transient
-    @JsonIgnore
-    public BigDecimal getPrice() {
-        if (dollarValue == null || amount == null) {
-            return BigDecimal.ZERO;
-        }
-        return this.dollarValue.divide(amount, MathContext.DECIMAL64);
-    }
 
     enum Type {
         BUY, SELL

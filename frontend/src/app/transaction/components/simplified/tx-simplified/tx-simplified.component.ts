@@ -21,6 +21,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {map, Observable, startWith} from "rxjs";
 import {TokenService} from "../../../../core/services/token.service";
+import {ToastService} from "../../../../core/services/toast.service";
 
 @Component({
   selector: 'app-tx-simplified',
@@ -52,7 +53,7 @@ export class TxSimplifiedComponent implements OnInit {
 
 
   constructor(private service: TransactionSimplifiedControllerService, private fb: FormBuilder,
-              private tokenService: TokenService) {
+              private tokenService: TokenService, private toast: ToastService) {
   }
 
   ngOnInit(): void {
@@ -128,6 +129,9 @@ export class TxSimplifiedComponent implements OnInit {
     this.service.post(this.transaction).subscribe(tx => {
       this.transaction = tx
       this.isValid = this.transaction.valid;
+      if (!this.transaction.valid) {
+        this.toast.showToast('error', tx.errorMessage!);
+      }
       console.log('is valid ? ' ,this.transaction.valid)
       this.isExpanded = false;
     });

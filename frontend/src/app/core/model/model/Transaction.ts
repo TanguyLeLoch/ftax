@@ -20,18 +20,18 @@ export interface Transaction {
      * The state of the transaction
      */
     state: Transaction.StateEnum;
+    amountIn?: number;
+    amountOut?: number;
+    amountFee?: number;
+    externalId?: string;
+    tokenIn?: string;
+    tokenOut?: string;
+    tokenFee?: string;
     dateTime: string;
     /**
      * The type of the transaction
      */
     transactionType: Transaction.TransactionTypeEnum;
-    amountIn?: number;
-    amountOut?: number;
-    amountFee?: number;
-    externalId?: string;
-    tokenOut?: string;
-    tokenFee?: string;
-    tokenIn?: string;
 }
 export namespace Transaction {
     export type StateEnum = 'draft' | 'submitted';

@@ -3,6 +3,7 @@ package com.natu.ftax.transaction.simplified;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.common.exception.NotFoundException;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class TransactionSimplifiedController {
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public TransactionSimplified post(
             @RequestBody TransactionSimplified transactionSimplified) {
         defaultValue(transactionSimplified);

@@ -3,18 +3,15 @@ package com.natu.ftax.transaction.simplified;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 @Getter
 public class CostQuantity {
-    private final BigDecimal cost;
     private BigDecimal quantity;
     private final BigDecimal price;
 
-    CostQuantity(BigDecimal cost, BigDecimal quantity) {
-        this.cost = cost;
+    CostQuantity(BigDecimal price, BigDecimal quantity) {
         this.quantity = quantity;
-        this.price = cost.divide(quantity, MathContext.DECIMAL64);
+        this.price = price;
     }
 
 
@@ -25,8 +22,7 @@ public class CostQuantity {
     @Override
     public String toString() {
         return "CostQuantity{" +
-                "cost=" + cost +
-                ", quantity=" + quantity +
+                " quantity=" + quantity +
                 ", price=" + price +
                 '}';
     }

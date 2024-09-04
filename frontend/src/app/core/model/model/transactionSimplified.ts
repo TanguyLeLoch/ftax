@@ -18,8 +18,9 @@ export interface TransactionSimplified {
     type: TransactionSimplified.TypeEnum;
     amount?: number;
     token?: string;
-    dollarValue?: number;
+    price?: number;
     pnl?: Pnl;
+    errorMessage?: string;
     valid: boolean;
 }
 export namespace TransactionSimplified {
