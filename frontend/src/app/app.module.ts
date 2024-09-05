@@ -21,6 +21,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {basePathProvider} from "../config/basePathProvider";
+import { MatToolbar } from "@angular/material/toolbar";
 
 
 const routes: Routes = [
@@ -35,22 +36,23 @@ const routes: Routes = [
     AppComponent,
     NavbarComponent
   ],
-  imports: [
-    BrowserModule,
-    TransactionModule,
-    LedgerModule,
-    FontAwesomeModule,
-    RouterModule.forRoot(routes),
-    CoreModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatIconModule,
+    imports: [
+        BrowserModule,
+        TransactionModule,
+        LedgerModule,
+        FontAwesomeModule,
+        RouterModule.forRoot(routes),
+        CoreModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatToolbar,
 
-  ],
+    ],
   providers: [
     provideAnimationsAsync(),
     provideCharts(withDefaultRegisterables()),

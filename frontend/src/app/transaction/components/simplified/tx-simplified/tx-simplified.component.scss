@@ -1,78 +1,9 @@
+
 .tx-simplified {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   font-family: Pacifico, "Roboto Light", serif;
-  font-size: calc(5px + 2vmin);
-
-  .foldable-container {
-    background-color: #fffdfd;
-    border-radius: 15px;
-    box-shadow: #000000 0 0 5px 0;
-    padding: 5px;
-    opacity: 1;
-    transition: width 0.5s ease-in-out;
-
-
-    &.open {
-      width: 80vw;
-    }
-
-    &.closed {
-      width: 50vw;
-    }
-  }
-
-  .colapsed-content {
-
-    &.closed {
-      visibility: visible;
-    }
-
-    &.open {
-      visibility: hidden;
-      height: 0;
-    }
-  }
-
-  .not-collapsed-content {
-    &.closed {
-      visibility: hidden;
-      height: 0;
-    }
-
-    &.open {
-      display: block;
-    }
-  }
-
-
-  .colapsed-content {
-    display: flex;
-    flex-direction: row;
-  }
-
-
-
-  .left-colapsed-content {
-    width: 10%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .right-colapsed-content {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .far-right-colapsed-content {
-    width: 10%;
-  }
 
 
   .number-input {
@@ -81,8 +12,7 @@
   }
 
 }
-.not-collapsed-content {
-}
+
 
 .warning-icon {
   color: #ff7a2d;
@@ -92,11 +22,13 @@
   padding: 0 5px 0 0;
 
 }
+
 .title {
   display: flex;
   flex-direction: row;
   width: 80px
 }
+
 .icon-placeholder {
   width: 23px;
   height: 18px;
@@ -126,15 +58,17 @@ mat-form-field {
 }
 
 .tx-overview {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: calc(5px + 2vmin);
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  font-size: min(calc(5px + 2vmin), 20px);
   width: 100%;
 }
-.pnl-container{
-}
+
 
 .Buy {
   color: #059f00;
@@ -143,16 +77,20 @@ mat-form-field {
 .Sell {
   color: #a80000;
 }
+
 .positive {
   color: #059f00;
 }
+
 .negative {
   color: #a80000;
 }
 
-.value-container {
+.tx-description-center {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .tx-description-left {
@@ -163,6 +101,14 @@ mat-form-field {
     font-size: calc(5px + 1vmin);
   }
 
+}
+
+.tx-description-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
 }
 
 .fiat-value {
