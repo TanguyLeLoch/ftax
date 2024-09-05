@@ -12,24 +12,40 @@ import {FileUploadComponent} from "./components/file-upload/file-upload.componen
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {ModalComponent} from "./components/modal/modal.component";
 import {MatExpansionModule} from "@angular/material/expansion";
+import { SidenavComponent } from "./components/sidenav/sidenav.component";
+import { MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatIcon } from "@angular/material/icon";
+import { RouterOutlet } from "@angular/router";
+import { MatDivider } from "@angular/material/divider";
 
 
 @NgModule({
   declarations: [
     ToastComponent,
     FileUploadComponent,
-    ModalComponent],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    FaIconComponent,
+    ModalComponent,
+    SidenavComponent],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        FaIconComponent,
+        MatDrawerContainer,
+        MatSidenavModule,
+        MatCheckboxModule,
+        FormsModule,
+        MatButtonModule,
+        MatIcon,
+        RouterOutlet,
+        MatDivider
 
-  ],
+    ],
   exports: [
     MatSelectModule,
     MatDatepickerModule,
@@ -38,7 +54,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
     ToastComponent,
     FileUploadComponent,
     ModalComponent,
-    MatExpansionModule
+    MatExpansionModule,
+    SidenavComponent
   ],
   providers: [provideNativeDateAdapter()],
 })

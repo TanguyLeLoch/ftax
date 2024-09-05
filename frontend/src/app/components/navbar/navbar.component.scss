@@ -5,9 +5,13 @@ h1 {
   margin: auto;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .mat-toolbar {
-  border-bottom: 1px solid #0048ff;
-  border-radius: 50px;
+
 }
 
 
