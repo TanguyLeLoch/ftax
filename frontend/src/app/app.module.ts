@@ -23,7 +23,6 @@ import {MatIconModule} from "@angular/material/icon";
 import {basePathProvider} from "../config/basePathProvider";
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatDrawer, MatDrawerContainer, MatSidenavContainer } from "@angular/material/sidenav";
-import { SidenavComponent } from "./core/components/sidenav/sidenav.component";
 
 
 const routes: Routes = [
