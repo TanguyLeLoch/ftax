@@ -1,6 +1,5 @@
 package com.natu.ftax.transaction.simplified;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +24,9 @@ public class Compute {
     List<TransactionSimplified> execute(String method) {
         for (var tx : txs) {
             var invAcqui = inventoryAcquisitions.get(tx.getToken());
-
+            if (invAcqui.isStopped()) {
+                continue;
+            }
 
             if (method.equals("fifo")) {
                 invAcqui.fifo(tx);

@@ -1,6 +1,6 @@
 package com.natu.ftax.transaction.simplified;
 
-import com.natu.ftax.common.exception.FunctionalException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -11,6 +11,9 @@ import static java.math.BigDecimal.ZERO;
 public class InventoryAcquisition {
     private final String tokenId;
     private final LinkedList<CostQuantity> costQuantities;
+
+    @Getter
+    private boolean stopped = false;
 
 
     public InventoryAcquisition(String tokenId) {
@@ -39,7 +42,8 @@ public class InventoryAcquisition {
 
         while (remainingToSell.compareTo(ZERO) > 0) {
             if (costQuantities.isEmpty()) {
-                throw new FunctionalException("Insufficient quantity for this sell transaction");
+                this.stopped = true;
+                return new Pnl(tx, tokenId, null, "Your balance is insufficient");
             }
 
             CostQuantity firstIn = costQuantities.getFirst();
@@ -69,7 +73,8 @@ public class InventoryAcquisition {
     private Pnl sellAverage(TransactionSimplified tx) {
         // For a sell transaction, calculate PnL based on average cost
         if (costQuantities.isEmpty()) {
-            throw new IllegalStateException("No buy transactions recorded for this token");
+            this.stopped = true;
+            return new Pnl(tx, tokenId, null, "Your balance is empty");
         }
 
         CostQuantity averageCostQuantity = costQuantities.getFirst();
@@ -77,12 +82,13 @@ public class InventoryAcquisition {
         BigDecimal sellPrice = tx.getPrice();
 
         BigDecimal pnl = sellPrice.subtract(averagePrice)
-            .multiply(tx.getAmount());
+                .multiply(tx.getAmount());
 
         // Update the remaining quantity
         BigDecimal remainingQuantity = averageCostQuantity.getQuantity().subtract(tx.getAmount());
         if (remainingQuantity.compareTo(ZERO) < 0) {
-            throw new IllegalStateException("Insufficient quantity for this sell transaction");
+            this.stopped = true;
+            return new Pnl(tx, tokenId, null, "Your balance is insufficient");
         }
 
         if (remainingQuantity.compareTo(ZERO) == 0) {
@@ -90,7 +96,7 @@ public class InventoryAcquisition {
         } else {
             costQuantities.clear();
             costQuantities.add(
-                new CostQuantity(averagePrice, remainingQuantity));
+                    new CostQuantity(averagePrice, remainingQuantity));
         }
 
         return new Pnl(tx, tokenId, pnl);
@@ -111,11 +117,10 @@ public class InventoryAcquisition {
 
         costQuantities.clear();
         costQuantities.add(new CostQuantity(
-            totalCost.divide(totalQuantity, MathContext.DECIMAL64),
-            totalQuantity));
+                totalCost.divide(totalQuantity, MathContext.DECIMAL64),
+                totalQuantity));
 
         return Pnl.DUMMY_PNL;
     }
-
 
 }
