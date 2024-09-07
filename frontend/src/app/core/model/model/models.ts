@@ -1,4 +1,6 @@
+export * from './authResponse';
 export * from './balance';
+export * from './client';
 export * from './editFieldRequest';
 export * from './exceptionResponse';
 export * from './ledgerBook';

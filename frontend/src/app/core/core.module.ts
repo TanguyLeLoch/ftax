@@ -12,6 +12,7 @@ import { RouterOutlet } from "@angular/router";
 import { LoginComponent } from "./components/login/login.component";
 import { MaterialModule } from "../material/material.module";
 import { NavbarComponent } from "../components/navbar/navbar.component";
+import { AuthComponent } from "./components/auth/auth.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { NavbarComponent } from "../components/navbar/navbar.component";
     ModalComponent,
     SidenavComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    AuthComponent
   ],
   imports: [
     CommonModule,
@@ -40,6 +42,7 @@ import { NavbarComponent } from "../components/navbar/navbar.component";
     ModalComponent,
     SidenavComponent,
     LoginComponent,
+    AuthComponent
   ],
   providers: [provideNativeDateAdapter()],
 })

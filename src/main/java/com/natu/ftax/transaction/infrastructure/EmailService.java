@@ -17,7 +17,7 @@ public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    @Value("${base.url}")
+    @Value("${frontend.base.url}")
     private String baseUrl;
 
     private final JavaMailSender mailSender;

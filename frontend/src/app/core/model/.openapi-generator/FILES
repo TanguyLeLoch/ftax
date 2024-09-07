@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/authController.service.ts
 api/ledgerBookController.service.ts
 api/tokenController.service.ts
 api/transactionController.service.ts
@@ -10,7 +11,9 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/authResponse.ts
 model/balance.ts
+model/client.ts
 model/editFieldRequest.ts
 model/exceptionResponse.ts
 model/ledgerBook.ts

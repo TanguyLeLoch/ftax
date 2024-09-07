@@ -14,11 +14,14 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { TxListComponent } from "./transaction/components/simplified/tx-list/tx-list.component";
 import { basePathProvider } from "../config/basePathProvider";
 import { LoginComponent } from "./core/components/login/login.component";
+import { AuthComponent } from "./core/components/auth/auth.component";
+import { AuthGuard } from "./auth.guard";
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'simplified', component: TxListComponent},
+  {path: 'auth', component: AuthComponent},
+  {path: 'simplified', component: TxListComponent, canActivate: [AuthGuard]},
   {path: 'transactions', component: TransactionListComponent},
   {path: 'ledger', component: LedgerBookComponent},
   {path: '', redirectTo: '/simplified', pathMatch: 'full'} // default route

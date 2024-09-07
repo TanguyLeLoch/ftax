@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -9,8 +10,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class LoginComponent {
   isLoginMode = true;
   form: FormGroup;
+  isSubmitted = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       name: ['']
@@ -30,8 +32,11 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log(this.form.value);
-      // Here you would typically call your authentication service
+      this.authService.sendMagicLink(this.form.value.email, this.form.value.name).subscribe(
+        () => {
+          this.isSubmitted = true;
+        }
+      );
     }
   }
 }

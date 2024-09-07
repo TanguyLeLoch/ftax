@@ -36,7 +36,7 @@ public class AuthController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     @Transactional
     public AuthResponse createHashAndSendMagicLink(@RequestBody Client client) {
 

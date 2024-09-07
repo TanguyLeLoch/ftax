@@ -1,30 +1,29 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { AuthControllerService, Client } from "../model";
+import { map, Observable, tap } from "rxjs";
+import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private tokenKey = 'auth-token';  // Key for storing token in local storage
 
-  constructor(private http: HttpClient) {
-  }
-
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<{ token: string }>('/api/auth/login', {username, password})
-      .pipe(map(response => {
-        if (response.token) {
-          localStorage.setItem(this.tokenKey, response.token);
-        }
-        return response;
-      }));
+  constructor(private authController: AuthControllerService, private cookieService: CookieService) {
   }
 
 
-  sendMagicLink(email: string): Observable<string> {
-    throw new Error('Not implemented');
-  }
+  sendMagicLink(email: string, name: string | undefined): Observable<void> {
+    const client: Client = {
+      email,
+      username: name
+    }
 
+    return this.authController.createHashAndSendMagicLink(client).pipe(
+      tap(response => {
+        console.log(response);
+        this.cookieService.set("token", response.hash, {expires: new Date(Date.now() + (3 * 365 * 24 * 60 * 60 * 1000))});
+      }),
+      map(() => void 0)
+    );
+  }
 }

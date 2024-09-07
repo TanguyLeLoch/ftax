@@ -4,6 +4,23 @@ mat-card {
   text-align: center;
 }
 
+mat-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Pacifico, cursive;
+}
+
+mat-card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-family: Helvetica, cursive;
+}
+
 mat-form-field {
   display: block;
   margin: 1em 0;
@@ -11,4 +28,8 @@ mat-form-field {
 
 mat-slide-toggle {
   margin: 1em 0;
+}
+
+.message {
+  padding: 20px;
 }
