@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,4 +9,7 @@ export class SidenavComponent {
   events: string[] = [];
   opened: boolean = true;
 
+  openProfile() {
+    console.log('openProfile');
+  }
 }

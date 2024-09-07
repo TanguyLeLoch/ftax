@@ -1,9 +1,9 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"
-    (closed)="events.push('close!')">
+               (closed)="events.push('close!')">
 
     <!--        profile-->
-    <div class="profile-container">
+    <div class="profile-container" (click)="openProfile()">
       <mat-icon class="profile-icon">account_circle</mat-icon>
       <span>Profile</span>
     </div>
@@ -12,9 +12,11 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <button class="toggle-button"  (click)="sidenav.toggle()">
-      <mat-icon class="toggle-button-icon" [ngClass]="{'toggle-button-icon-open': opened , 'toggle-button-icon-close': !opened}"
-      >keyboard_double_arrow_left</mat-icon>
+    <button class="toggle-button" (click)="sidenav.toggle()">
+      <mat-icon class="toggle-button-icon"
+                [ngClass]="{'toggle-button-icon-open': opened , 'toggle-button-icon-close': !opened}"
+      >keyboard_double_arrow_left
+      </mat-icon>
     </button>
     <div class="sidenav-content">
       <router-outlet></router-outlet>

@@ -1,6 +1,5 @@
 package com.natu.ftax.common.exception;
 
-import com.natu.ftax.IDgenerator.infrastructure.SnowflakeIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,13 @@ public class GlobalExceptionHandler {
         ExceptionResponse response = new ExceptionResponse(exception.getMessage());
         LOGGER.error(exception.getMessage(), exception);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TechnicalException.class)
+    public ResponseEntity<ExceptionResponse> handleTechnicalException(TechnicalException exception) {
+        ExceptionResponse response = new ExceptionResponse(exception.getMessage());
+        LOGGER.error(exception.getMessage(), exception);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

@@ -1,0 +1,9 @@
+<div>
+  <h2>Login</h2>
+  <form (ngSubmit)="sendMagicLink()">
+    <label for="email-input">Email</label>
+    <input id="email-input" [(ngModel)]="email" name="email" required>
+    <button type="submit">Send Magic Link</button>
+  </form>
+  <p *ngIf="message">{{ message }}</p>
+</div>

@@ -53,3 +53,5 @@ bin/
 ftax.db
 test-ftax.db
 
+test.env
+
