@@ -15,7 +15,6 @@ public class InventoryAcquisition {
     @Getter
     private boolean stopped = false;
 
-
     public InventoryAcquisition(String tokenId) {
         this.tokenId = tokenId;
         costQuantities = new LinkedList<>();

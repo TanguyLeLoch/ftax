@@ -1,25 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from "@angular/common/http";
-import { MatSelectModule } from "@angular/material/select";
-import { MatDatepickerModule } from "@angular/material/datepicker";
 import { provideNativeDateAdapter } from "@angular/material/core";
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ToastComponent } from "./components/toast/toast.component";
 import { FileUploadComponent } from "./components/file-upload/file-upload.component";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ModalComponent } from "./components/modal/modal.component";
-import { MatExpansionModule } from "@angular/material/expansion";
 import { SidenavComponent } from "./components/sidenav/sidenav.component";
-import { MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatIcon } from "@angular/material/icon";
 import { RouterOutlet } from "@angular/router";
-import { MatDivider } from "@angular/material/divider";
 import { LoginComponent } from "./components/login/login.component";
+import { MaterialModule } from "../material/material.module";
+import { NavbarComponent } from "../components/navbar/navbar.component";
 
 
 @NgModule({
@@ -28,36 +20,26 @@ import { LoginComponent } from "./components/login/login.component";
     FileUploadComponent,
     ModalComponent,
     SidenavComponent,
-    LoginComponent],
+    LoginComponent,
+    NavbarComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
     FormsModule,
     FaIconComponent,
-    MatDrawerContainer,
-    MatSidenavModule,
-    MatCheckboxModule,
+    ReactiveFormsModule,
     FormsModule,
-    MatButtonModule,
-    MatIcon,
     RouterOutlet,
-    MatDivider
-
+    MaterialModule,
   ],
   exports: [
-    MatSelectModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
+    NavbarComponent,
     ToastComponent,
     FileUploadComponent,
     ModalComponent,
-    MatExpansionModule,
-    SidenavComponent
+    SidenavComponent,
+    LoginComponent,
   ],
   providers: [provideNativeDateAdapter()],
 })

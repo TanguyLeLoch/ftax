@@ -1,9 +1,32 @@
-<div>
-  <h2>Login</h2>
-  <form (ngSubmit)="sendMagicLink()">
-    <label for="email-input">Email</label>
-    <input id="email-input" [(ngModel)]="email" name="email" required>
-    <button type="submit">Send Magic Link</button>
-  </form>
-  <p *ngIf="message">{{ message }}</p>
-</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ isLoginMode ? 'Login' : 'Register' }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-slide-toggle (change)="toggleMode()">
+        {{ isLoginMode ? 'Switch to Register' : 'Switch to Login' }}
+      </mat-slide-toggle>
+
+      <ng-container *ngIf="!isLoginMode">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="form.get('name')?.invalid">Name is required</mat-error>
+        </mat-form-field>
+      </ng-container>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required type="email">
+        <mat-error *ngIf="form.get('email')?.invalid">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ isLoginMode ? 'Login' : 'Register' }}
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

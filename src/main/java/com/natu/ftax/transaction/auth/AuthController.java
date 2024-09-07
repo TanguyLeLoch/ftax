@@ -38,7 +38,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Transactional
-    public AuthResponse createHashAndSendMagicLink(@RequestBody Client client) throws NoSuchAlgorithmException {
+    public AuthResponse createHashAndSendMagicLink(@RequestBody Client client) {
 
         String hash = generateHash(UUID.randomUUID().toString());
         Auth auth = new Auth(idGenerator.generate(), client, hash);
