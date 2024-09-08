@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { AuthControllerService } from "../../model";
+import { AuthControllerService, AuthResponse } from "../../model";
 import { catchError, of } from "rxjs";
 import { ToastService } from "../../services/toast.service";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: 'app-auth',
@@ -14,7 +15,8 @@ export class AuthComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private authController: AuthControllerService,
               private router: Router,
-              private toastService: ToastService
+              private toastService: ToastService,
+              private cookieService: CookieService
   ) {
   }
 
@@ -41,6 +43,13 @@ export class AuthComponent implements OnInit {
         if (result === 'error') {
           return;
         }
+        const response = result as AuthResponse
+        this.cookieService.set('email', email);
+        this.cookieService.set('hash', response.hash);
+
+        console.log('Email', email);
+        console.log('Hash', response.hash);
+        console.log(response);
         this.router.navigate(['/']);
       });
     });

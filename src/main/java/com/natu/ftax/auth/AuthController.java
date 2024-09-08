@@ -59,10 +59,10 @@ public class AuthController {
         return new AuthResponse(hash);
     }
 
-    @PostMapping("/verify")
+    @PostMapping(value = "/verify", produces = "application/json")
     @Transactional
     @ResponseStatus(value = HttpStatus.OK)
-    public void verifyHash(@RequestParam("email") String email, @RequestParam("hash") String hash) {
+    public AuthResponse verifyHash(@RequestParam("email") String email, @RequestParam("hash") String hash) {
         var auths = authRepo.findByClientEmail(email);
 
         if (auths.isEmpty()) {
@@ -84,6 +84,7 @@ public class AuthController {
         }
         found.setVerified(true);
         authRepo.save(found);
+        return new AuthResponse(found.getHash());
     }
 
 

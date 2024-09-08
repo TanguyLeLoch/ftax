@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Service
 public class EmailService {
 
@@ -34,7 +37,8 @@ public class EmailService {
         context.setVariable("username", username);
         context.setVariable("baseUrl", baseUrl);
         context.setVariable("hash", hash);
-        context.setVariable("email", toEmail);
+        String encodedUrl = URLEncoder.encode(toEmail, StandardCharsets.UTF_8);
+        context.setVariable("email", encodedUrl);
 
         String body = templateEngine.process("magic-link", context);
 
