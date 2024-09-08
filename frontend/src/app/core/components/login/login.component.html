@@ -13,14 +13,6 @@
         {{ isLoginMode ? 'Switch to Register' : 'Switch to Login' }}
       </mat-slide-toggle>
 
-      <ng-container *ngIf="!isLoginMode">
-        <mat-form-field appearance="fill">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name" required>
-          <mat-error *ngIf="form.get('name')?.invalid">Name is required</mat-error>
-        </mat-form-field>
-      </ng-container>
-
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" required type="email">
@@ -28,6 +20,14 @@
           Please enter a valid email address
         </mat-error>
       </mat-form-field>
+
+      <ng-container *ngIf="!isLoginMode">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="form.get('name')?.invalid">Name is required</mat-error>
+        </mat-form-field>
+      </ng-container>
 
       <button *ngIf="!isLoading" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
         {{ isLoginMode ? 'Login' : 'Register' }}
