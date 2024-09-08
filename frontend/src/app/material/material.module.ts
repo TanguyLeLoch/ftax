@@ -11,7 +11,7 @@ import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatDivider } from "@angular/material/divider";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { MatCard, MatCardContent, MatCardHeader, MatCardModule } from "@angular/material/card";
-import { MatNativeDateModule } from "@angular/material/core";
+import { MatNativeDateModule, provideNativeDateAdapter } from "@angular/material/core";
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -87,7 +87,11 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
   ]
+
 })
 export class MaterialModule {
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ToastComponent } from "./components/toast/toast.component";
@@ -13,6 +13,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { MaterialModule } from "../material/material.module";
 import { NavbarComponent } from "../components/navbar/navbar.component";
 import { AuthComponent } from "./components/auth/auth.component";
+import { HttpErrorInterceptor } from "./interceptors/HttpErrorInterceptor";
 
 
 @NgModule({
@@ -44,7 +45,12 @@ import { AuthComponent } from "./components/auth/auth.component";
     LoginComponent,
     AuthComponent
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideNativeDateAdapter(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }],
 })
 export class CoreModule {
 }

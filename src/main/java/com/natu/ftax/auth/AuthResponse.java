@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.auth;
+package com.natu.ftax.auth;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

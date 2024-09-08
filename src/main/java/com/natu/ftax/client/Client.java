@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.auth;
+package com.natu.ftax.client;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

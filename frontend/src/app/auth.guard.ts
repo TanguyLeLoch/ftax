@@ -16,8 +16,9 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
 
-    const cookie = this.cookieService.get('token');
+    const cookie = this.cookieService.get('hash');
     const isAuthenticated = !!cookie;
+    console.log('isAuthenticated', isAuthenticated);
 
     if (!isAuthenticated) {
       // Redirect to login page if the user is not authenticated

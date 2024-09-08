@@ -12,7 +12,7 @@ export class AuthService {
   }
 
 
-  sendMagicLink(email: string, name: string | undefined): Observable<void> {
+  sendMagicLink(email: string, name: string | undefined): Observable<boolean> {
     const client: Client = {
       email,
       username: name
@@ -20,10 +20,10 @@ export class AuthService {
 
     return this.authController.createHashAndSendMagicLink(client).pipe(
       tap(response => {
-        console.log(response);
-        this.cookieService.set("token", response.hash, {expires: new Date(Date.now() + (3 * 365 * 24 * 60 * 60 * 1000))});
+        this.cookieService.set("email", email, {expires: undefined});
+        this.cookieService.set("hash", response.hash, {expires: undefined});
       }),
-      map(() => void 0)
+      map(() => true)
     );
   }
 }

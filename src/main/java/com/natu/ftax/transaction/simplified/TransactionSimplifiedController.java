@@ -3,9 +3,11 @@ package com.natu.ftax.transaction.simplified;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.common.exception.NotFoundException;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -29,9 +31,10 @@ public class TransactionSimplifiedController {
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isConnected()")
     @Transactional
     public TransactionSimplified post(
-            @RequestBody TransactionSimplified transactionSimplified) {
+            @RequestBody TransactionSimplified transactionSimplified, Principal principal) {
         defaultValue(transactionSimplified);
         return repository.save(transactionSimplified);
     }
@@ -49,6 +52,7 @@ public class TransactionSimplifiedController {
         }
     }
 
+    @PreAuthorize("isConnected()")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public TransactionSimplified getById(
             @PathVariable(value = "id") String id) {
@@ -56,11 +60,13 @@ public class TransactionSimplifiedController {
                 () -> new NotFoundException("Transaction not found"));
     }
 
+    @PreAuthorize("isConnected()")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TransactionSimplified> getAll() {
         return repository.findAll();
     }
 
+    @PreAuthorize("isConnected()")
     @PostMapping(value = "computePnl",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TransactionSimplified> computePnl(@RequestParam("method") String method) {

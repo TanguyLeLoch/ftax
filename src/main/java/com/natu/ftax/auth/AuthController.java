@@ -1,10 +1,13 @@
-package com.natu.ftax.transaction.auth;
+package com.natu.ftax.auth;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
+import com.natu.ftax.client.Client;
+import com.natu.ftax.client.ClientRepo;
 import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.common.exception.NotFoundException;
 import com.natu.ftax.common.exception.TechnicalException;
 import com.natu.ftax.transaction.infrastructure.EmailService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Value("${hash.secret}")
+    private String hashSecret;
 
 
     private final IdGenerator idGenerator;
@@ -40,6 +46,10 @@ public class AuthController {
     @Transactional
     public AuthResponse createHashAndSendMagicLink(@RequestBody Client client) {
 
+        if (client.getUsername() == null || client.getUsername().isBlank()) {
+            client = clientRepo.findById(client.getEmail()).orElseThrow(() -> new NotFoundException("Client not found"));
+        }
+
         String hash = generateHash(UUID.randomUUID().toString());
         Auth auth = new Auth(idGenerator.generate(), client, hash);
 
@@ -53,12 +63,12 @@ public class AuthController {
     @Transactional
     @ResponseStatus(value = HttpStatus.OK)
     public void verifyHash(@RequestParam("email") String email, @RequestParam("hash") String hash) {
-        Client client = clientRepo.findById(email).orElseThrow(() -> new NotFoundException("Invalid email"));
-        var auths = authRepo.findByClient(client);
+        var auths = authRepo.findByClientEmail(email);
 
         if (auths.isEmpty()) {
             throw new FunctionalException("Invalid email");
         }
+
 
         Auth found = null;
         for (Auth auth : auths) {
@@ -80,8 +90,8 @@ public class AuthController {
     public String generateHash(String hash) {
         try {
 
-            String secret = "my super secret";
-            String combined = hash + secret;
+
+            String combined = hash + hashSecret;
 
             // Create SHA-256 MessageDigest instance
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

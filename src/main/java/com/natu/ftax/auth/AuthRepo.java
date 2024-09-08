@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.auth;
+package com.natu.ftax.auth;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,5 +10,7 @@ import java.util.List;
 public interface AuthRepo
         extends JpaRepository<Auth, String> {
 
-    List<Auth> findByClient(Client client);
+    List<Auth> findByClientEmail(String email);
+
+    boolean existsByClientEmailAndHashAndVerified(String email, String hash, boolean verified);
 }
