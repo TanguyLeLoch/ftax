@@ -30,6 +30,7 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/login']);
         return;
       }
+
       this.authController.verifyHash(email, hash).pipe(
         catchError((error) => {
           console.error('Error occurred during hash verification', error);
@@ -44,9 +45,9 @@ export class AuthComponent implements OnInit {
           return;
         }
         const response = result as AuthResponse
-        this.cookieService.set('email', email);
         this.cookieService.set('hash', response.hash);
-
+        this.cookieService.set('email', email);
+        console.log('set cookie' + email);
         console.log('Email', email);
         console.log('Hash', response.hash);
         console.log(response);

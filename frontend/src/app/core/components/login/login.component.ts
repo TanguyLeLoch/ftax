@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
-import { catchError, of } from "rxjs";
+import { catchError, finalize, of } from "rxjs";
 import { ToastService } from "../../services/toast.service";
 import { HttpErrorResponse } from "@angular/common/http";
 
@@ -14,6 +14,7 @@ export class LoginComponent {
   isLoginMode = true;
   form: FormGroup;
   isSubmitted = false;
+  isLoading = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private toastService: ToastService) {
     this.form = this.fb.group({
@@ -35,6 +36,8 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.form.valid) {
+      this.form.disable();
+      this.isLoading = true;
       this.authService.sendMagicLink(this.form.value.email, this.form.value.name)
         .pipe(
           catchError((error: HttpErrorResponse) => {
@@ -46,6 +49,10 @@ export class LoginComponent {
               this.toastService.showToast('error', 'An unexpected error occurred. Please try again.');
             }
             return of(false);
+          }),
+          finalize(() => {
+            this.form.enable();
+            this.isLoading = false;
           })
         )
         .subscribe(

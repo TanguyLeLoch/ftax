@@ -46,7 +46,6 @@ public class PrincipalInjectionFilter extends OncePerRequestFilter {
             return;
         }
 
-        email = URLDecoder.decode(email, StandardCharsets.UTF_8);
         var client = clientRepo.findById(email);
         if (client.isEmpty()) {
             filterChain.doFilter(request, response);
@@ -68,6 +67,7 @@ public class PrincipalInjectionFilter extends OncePerRequestFilter {
                 }
             }
         }
+        email = URLDecoder.decode(email, StandardCharsets.UTF_8);
         return email;
     }
 

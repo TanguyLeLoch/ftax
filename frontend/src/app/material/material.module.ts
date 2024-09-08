@@ -15,6 +15,7 @@ import { MatNativeDateModule, provideNativeDateAdapter } from "@angular/material
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
+    MatProgressSpinner
   ],
   exports: [
     MatAutocompleteModule,
@@ -87,6 +89,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
+    MatProgressSpinner
   ],
   providers: [
     provideNativeDateAdapter(),
