@@ -89,8 +89,9 @@ public class TransactionSimplifiedController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TransactionSimplified> computePnl(@RequestParam("method") String method, Principal principal) {
         var txs = getAll(principal);
+        txs.forEach(tx -> tx.setPnl(null));
         var compute = new Compute(txs);
-        List<TransactionSimplified> txToSave = compute.execute(method);
-        return repository.saveAll(txToSave);
+        compute.execute(method);
+        return repository.saveAll(txs);
     }
 }

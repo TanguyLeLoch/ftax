@@ -71,6 +71,12 @@ public class TransactionSimplified {
         }
         if (type == null) {
             errorMessage = "Action is invalid";
+            return false;
+        }
+
+        if (pnl != null && pnl.getErrorMessage() != null) {
+            errorMessage = pnl.getErrorMessage();
+            return false;
         }
         return true;
     }
