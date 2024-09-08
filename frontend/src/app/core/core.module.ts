@@ -14,6 +14,7 @@ import { MaterialModule } from "../material/material.module";
 import { NavbarComponent } from "../components/navbar/navbar.component";
 import { AuthComponent } from "./components/auth/auth.component";
 import { HttpErrorInterceptor } from "./interceptors/HttpErrorInterceptor";
+import { AuthInterceptor } from "./interceptors/AuthInterceptor";
 
 
 @NgModule({
@@ -50,7 +51,13 @@ import { HttpErrorInterceptor } from "./interceptors/HttpErrorInterceptor";
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true
-    }],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
 })
 export class CoreModule {
 }

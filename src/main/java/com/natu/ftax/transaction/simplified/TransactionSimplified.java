@@ -1,6 +1,8 @@
 package com.natu.ftax.transaction.simplified;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.natu.ftax.client.Client;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,14 @@ public class TransactionSimplified {
     @Id
     @NotNull
     private String id;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "email", nullable = false,
+            foreignKey = @ForeignKey(name = "FK_TX_CLIENT", foreignKeyDefinition = "FOREIGN KEY (email) REFERENCES client(email) ON DELETE CASCADE;"))
+    @JsonIgnore
+    private Client client;
+
     @NotNull
     //iso8601 format with milliseconds without timezone
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

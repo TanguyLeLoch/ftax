@@ -1,9 +1,11 @@
 package com.natu.ftax.transaction.simplified;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
+import com.natu.ftax.client.Client;
 import com.natu.ftax.common.exception.NotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,8 @@ public class TransactionSimplifiedController {
     public TransactionSimplified post(
             @RequestBody TransactionSimplified transactionSimplified, Principal principal) {
         defaultValue(transactionSimplified);
+        Client client = getClient(principal);
+        transactionSimplified.setClient(client);
         return repository.save(transactionSimplified);
     }
 
@@ -55,22 +59,36 @@ public class TransactionSimplifiedController {
     @PreAuthorize("isConnected()")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public TransactionSimplified getById(
-            @PathVariable(value = "id") String id) {
-        return repository.findById(id).orElseThrow(
+            @PathVariable(value = "id") String id, Principal principal) {
+        Client client = getClient(principal);
+
+        var tx = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Transaction not found"));
+        if (!tx.getClient().getEmail().equals(client.getEmail())) {
+            throw new NotFoundException("Transaction not found");
+        }
+        return tx;
+
     }
 
     @PreAuthorize("isConnected()")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TransactionSimplified> getAll() {
-        return repository.findAll();
+    public List<TransactionSimplified> getAll(Principal principal) {
+
+        Client client = getClient(principal);
+        return repository.findAllByClient(client);
+    }
+
+    private static Client getClient(Principal principal) {
+        UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) principal;
+        return (Client) upat.getPrincipal();
     }
 
     @PreAuthorize("isConnected()")
     @PostMapping(value = "computePnl",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TransactionSimplified> computePnl(@RequestParam("method") String method) {
-        var txs = getAll();
+    public List<TransactionSimplified> computePnl(@RequestParam("method") String method, Principal principal) {
+        var txs = getAll(principal);
         var compute = new Compute(txs);
         List<TransactionSimplified> txToSave = compute.execute(method);
         return repository.saveAll(txToSave);

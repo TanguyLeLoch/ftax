@@ -4,6 +4,8 @@ import com.natu.ftax.auth.AuthRepo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
@@ -24,9 +26,13 @@ import java.util.Collections;
 public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
 
     private final AuthRepo authRepo;
+    private final Environment env;
 
-    public CustomMethodSecurityExpressionHandler(AuthRepo authRepo) {
+    public CustomMethodSecurityExpressionHandler(
+            AuthRepo authRepo
+            , Environment env) {
         this.authRepo = authRepo;
+        this.env = env;
     }
 
     private final AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
@@ -51,6 +57,11 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
         }
 
         public boolean isConnected() {
+
+            if (env.acceptsProfiles(Profiles.of("dev"))) {
+                return true; // Always return true for dev profile
+            }
+
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             Cookie[] cookies = request.getCookies();
             String email = null;
