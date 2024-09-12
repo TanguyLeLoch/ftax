@@ -21,21 +21,22 @@ public class InventoryAcquisition {
         costQuantities = new LinkedList<>();
     }
 
-    public Pnl fifo(Transaction tx) {
-        return switch (tx.getType()) {
+    public void fifo(Transaction tx) {
+        switch (tx.getType()) {
             case BUY -> buyFifo(tx);
             case SELL -> sellFifo(tx);
-        };
+        }
     }
 
-    public Pnl average(Transaction tx) {
-        return switch (tx.getType()) {
+    public void average(Transaction tx) {
+        switch (tx.getType()) {
             case BUY -> buyAverage(tx);
             case SELL -> sellAverage(tx);
-        };
+        }
+        ;
     }
 
-    private Pnl sellFifo(Transaction tx) {
+    private void sellFifo(Transaction tx) {
         // SELL
         BigDecimal pnl = ZERO;
         BigDecimal remainingToSell = tx.getAmount();
@@ -43,7 +44,7 @@ public class InventoryAcquisition {
         while (remainingToSell.compareTo(ZERO) > 0) {
             if (costQuantities.isEmpty()) {
                 this.stopped = true;
-                return new Pnl(tx, tokenId, null, "Your balance is insufficient");
+                tx.attachPnl(tokenId, "Your balance is insufficient");
             }
 
             CostQuantity firstIn = costQuantities.getFirst();
@@ -60,21 +61,19 @@ public class InventoryAcquisition {
                 costQuantities.pollFirst();
             }
         }
-
-        return new Pnl(tx, tokenId, pnl);
+        tx.attachPnl(tokenId, pnl);
     }
 
-    private Pnl buyFifo(Transaction tx) {
+    private void buyFifo(Transaction tx) {
         costQuantities.add(new CostQuantity(tx.getPrice(), tx.getAmount()));
-        return Pnl.DUMMY_PNL;
     }
 
 
-    private Pnl sellAverage(Transaction tx) {
+    private void sellAverage(Transaction tx) {
         // For a sell transaction, calculate PnL based on average cost
         if (costQuantities.isEmpty()) {
             this.stopped = true;
-            return new Pnl(tx, tokenId, null, "Your balance is empty");
+            tx.attachPnl(tokenId, "Your balance is empty");
         }
 
         CostQuantity averageCostQuantity = costQuantities.getFirst();
@@ -88,7 +87,7 @@ public class InventoryAcquisition {
         BigDecimal remainingQuantity = averageCostQuantity.getQuantity().subtract(tx.getAmount());
         if (remainingQuantity.compareTo(ZERO) < 0) {
             this.stopped = true;
-            return new Pnl(tx, tokenId, null, "Your balance is insufficient");
+            tx.attachPnl(tokenId, "Your balance is insufficient");
         }
 
         if (remainingQuantity.compareTo(ZERO) == 0) {
@@ -99,10 +98,10 @@ public class InventoryAcquisition {
                     new CostQuantity(averagePrice, remainingQuantity));
         }
 
-        return new Pnl(tx, tokenId, pnl);
+        tx.attachPnl(tokenId, pnl);
     }
 
-    private Pnl buyAverage(Transaction tx) {
+    private void buyAverage(Transaction tx) {
         // For a buy transaction, update the average cost
         BigDecimal totalQuantity = ZERO;
         BigDecimal totalCost = ZERO;
@@ -119,8 +118,6 @@ public class InventoryAcquisition {
         costQuantities.add(new CostQuantity(
                 totalCost.divide(totalQuantity, MathContext.DECIMAL64),
                 totalQuantity));
-
-        return Pnl.DUMMY_PNL;
     }
 
 }

@@ -96,4 +96,12 @@ public class Transaction {
     public enum Type {
         BUY, SELL
     }
+
+    public void attachPnl(String tokenId, BigDecimal value) {
+        this.pnl = new Pnl(this.id, tokenId, value);
+    }
+
+    public void attachPnl(String tokenId, String errorMessage) {
+        this.pnl = new Pnl(this.id, tokenId, errorMessage);
+    }
 }
