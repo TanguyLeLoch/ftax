@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.infrastructure.mexc;
+package com.natu.ftax.transaction.importer.mexc;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
@@ -33,9 +33,9 @@ public class MexcImporter implements PlatformImporter {
 
     @Override
     public void importTransaction(MultipartFile file) {
-        List<com.natu.ftax.transaction.infrastructure.mexc.MexcData> mexcDatas = getMexcData(file);
+        List<MexcData> mexcDatas = getMexcData(file);
         List<Transaction> transactions = new ArrayList<>();
-        for (com.natu.ftax.transaction.infrastructure.mexc.MexcData mexcData : mexcDatas) {
+        for (MexcData mexcData : mexcDatas) {
             String id = idGenerator.generate();
             Transaction transaction = new Transaction();
             transaction.setId(id);
@@ -45,15 +45,15 @@ public class MexcImporter implements PlatformImporter {
 
     }
 
-    private static List<com.natu.ftax.transaction.infrastructure.mexc.MexcData> getMexcData(MultipartFile file) {
-        List<com.natu.ftax.transaction.infrastructure.mexc.MexcData> mexcDatas = new ArrayList<>();
+    private static List<MexcData> getMexcData(MultipartFile file) {
+        List<MexcData> mexcDatas = new ArrayList<>();
         try {
-            EasyExcel.read(file.getInputStream(), com.natu.ftax.transaction.infrastructure.mexc.MexcData.class,
-                    new ReadListener<com.natu.ftax.transaction.infrastructure.mexc.MexcData>() {
+            EasyExcel.read(file.getInputStream(), MexcData.class,
+                    new ReadListener<MexcData>() {
 
 
                         @Override
-                        public void invoke(com.natu.ftax.transaction.infrastructure.mexc.MexcData mexcData,
+                        public void invoke(MexcData mexcData,
                                            AnalysisContext analysisContext) {
                             mexcDatas.add(mexcData);
                         }

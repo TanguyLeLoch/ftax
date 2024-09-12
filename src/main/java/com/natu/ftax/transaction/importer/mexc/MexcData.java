@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.infrastructure.mexc;
+package com.natu.ftax.transaction.importer.mexc;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
