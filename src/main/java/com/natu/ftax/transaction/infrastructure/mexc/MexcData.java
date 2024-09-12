@@ -2,13 +2,12 @@ package com.natu.ftax.transaction.infrastructure.mexc;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.natu.ftax.transaction.domain.EditTransactionCommand;
+import com.natu.ftax.transaction.simplified.TransactionSimplified;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Getter
 @Setter
@@ -40,30 +39,7 @@ public class MexcData {
     private String role;
 
 
-    public EditTransactionCommand toCommand(String id) {
-        String tokenIn;
-        String tokenOut;
-        boolean buy = side.equals("BUY");
-        if (buy) {
-            tokenIn = pair.split("_")[1];
-            tokenOut = pair.split("_")[0];
-        } else {
-            tokenIn = pair.split("_")[0];
-            tokenOut = pair.split("_")[1];
-        }
-        return new EditTransactionCommand(
-                id,
-                "swap",
-                time.toInstant(ZoneOffset.UTC),
-                tokenIn,
-                tokenOut,
-                pair.split("_")[1],
-                null,
-                buy ? total : executedAmount,
-                buy ? executedAmount : total,
-                fee,
-                null,
-                null);
-
+    public TransactionSimplified toTransaction(String id) {
+        return null;
     }
 }

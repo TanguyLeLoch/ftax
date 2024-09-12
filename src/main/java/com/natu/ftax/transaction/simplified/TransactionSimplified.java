@@ -2,6 +2,7 @@ package com.natu.ftax.transaction.simplified;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.natu.ftax.client.Client;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -48,37 +49,45 @@ public class TransactionSimplified {
     private Pnl pnl;
 
     @Transient
+    @JsonIgnore
     private String errorMessage;
 
-    @NotNull
     @Transient
+    @JsonIgnore
+    private Boolean validationPerformed = false;
+
+    @JsonProperty("isValid")
     public boolean isValid() {
+        if (!validationPerformed) {
+            performValidation();
+        }
+        return errorMessage == null;
+    }
+
+    @JsonProperty("error")
+    public String getErrorMessage() {
+        if (!validationPerformed) {
+            performValidation();
+        }
+        return errorMessage;
+    }
+
+    @JsonIgnore
+    private void performValidation() {
         if (localDateTime == null) {
             errorMessage = "Date is invalid";
-            return false;
-        }
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
+        } else if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
             errorMessage = "Amount is invalid";
-            return false;
-        }
-        if (token == null) {
+        } else if (token == null) {
             errorMessage = "Token is invalid";
-            return false;
-        }
-        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+        } else if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
             errorMessage = "Price is invalid";
-            return false;
-        }
-        if (type == null) {
+        } else if (type == null) {
             errorMessage = "Action is invalid";
-            return false;
-        }
-
-        if (pnl != null && pnl.getErrorMessage() != null) {
+        } else if (pnl != null && pnl.getErrorMessage() != null) {
             errorMessage = pnl.getErrorMessage();
-            return false;
         }
-        return true;
+        validationPerformed = true;
     }
 
 

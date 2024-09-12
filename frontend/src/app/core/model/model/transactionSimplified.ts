@@ -20,8 +20,8 @@ export interface TransactionSimplified {
     token?: string;
     price?: number;
     pnl?: Pnl;
-    errorMessage?: string;
-    valid: boolean;
+    error?: string;
+    isValid?: boolean;
 }
 export namespace TransactionSimplified {
     export type TypeEnum = 'BUY' | 'SELL';

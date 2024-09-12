@@ -4,11 +4,9 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
-import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.transaction.application.PlatformImporter;
-import com.natu.ftax.transaction.application.TransactionRepository;
-import com.natu.ftax.transaction.domain.EditTransactionCommand;
-import com.natu.ftax.transaction.domain.Transaction;
+import com.natu.ftax.transaction.simplified.TransactionSimplified;
+import com.natu.ftax.transaction.simplified.TransactionSimplifiedRepositoryJpa;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,36 +22,27 @@ public class MexcImporter implements PlatformImporter {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             MexcImporter.class);
 
-    private final TransactionRepository transactionRepository;
     private final IdGenerator idGenerator;
+    private final TransactionSimplifiedRepositoryJpa transactionSimplifiedRepositoryJpa;
 
-    public MexcImporter(TransactionRepository transactionRepository,
-            IdGenerator idGenerator) {
-        this.transactionRepository = transactionRepository;
+    public MexcImporter(IdGenerator idGenerator, TransactionSimplifiedRepositoryJpa transactionSimplifiedRepositoryJpa) {
         this.idGenerator = idGenerator;
+        this.transactionSimplifiedRepositoryJpa = transactionSimplifiedRepositoryJpa;
     }
 
 
     @Override
     public void importTransaction(MultipartFile file) {
         List<MexcData> mexcDatas = getMexcData(file);
-        List<Transaction> transactions = new ArrayList<>();
+        List<TransactionSimplified> transactions = new ArrayList<>();
         for (MexcData mexcData : mexcDatas) {
             String id = idGenerator.generate();
-            Transaction transaction = Transaction.create(id);
-            EditTransactionCommand command = mexcData.toCommand(id);
-            command.execute(transaction);
-            try {
-                transaction.submit();
-            } catch (FunctionalException e) {
-                LOGGER.info("Transaction cannot be submitted: {}",
-                        e.getMessage());
-            }
-            transactions.add(transaction);
-        }
-        transactionRepository.saveAll(transactions);
+            TransactionSimplified transaction = new TransactionSimplified();
+            transaction.setId(id);
 
-        System.out.println(mexcDatas);
+        }
+        transactionSimplifiedRepositoryJpa.saveAll(transactions);
+
     }
 
     private static List<MexcData> getMexcData(MultipartFile file) {
@@ -65,7 +54,7 @@ public class MexcImporter implements PlatformImporter {
 
                         @Override
                         public void invoke(MexcData mexcData,
-                                AnalysisContext analysisContext) {
+                                           AnalysisContext analysisContext) {
                             mexcDatas.add(mexcData);
                         }
 
