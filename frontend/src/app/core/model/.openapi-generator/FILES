@@ -4,7 +4,7 @@ api.module.ts
 api/api.ts
 api/authController.service.ts
 api/tokenController.service.ts
-api/transactionSimplifiedController.service.ts
+api/transactionController.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -14,6 +14,6 @@ model/client.ts
 model/models.ts
 model/pnl.ts
 model/token.ts
-model/transactionSimplified.ts
+model/transaction.ts
 param.ts
 variables.ts

@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction.calculation;
 
 import lombok.Getter;
 

@@ -1,4 +1,6 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction.calculation;
+
+import com.natu.ftax.transaction.Transaction;
 
 import java.util.List;
 import java.util.Map;
@@ -6,13 +8,13 @@ import java.util.stream.Collectors;
 
 public class Compute {
 
-    private final List<TransactionSimplified> txs;
+    private final List<Transaction> txs;
     private final Map<String, InventoryAcquisition> inventoryAcquisitions;
 
-    Compute(List<TransactionSimplified> txs) {
+    public Compute(List<Transaction> txs) {
         this.txs = txs;
         this.inventoryAcquisitions = txs.stream()
-                .map(TransactionSimplified::getToken)
+                .map(Transaction::getToken)
                 .distinct()
                 .collect(Collectors.toMap(
                         token -> token,
@@ -21,7 +23,7 @@ public class Compute {
 
     }
 
-    List<TransactionSimplified> execute(String method) {
+    public List<Transaction> execute(String method) {
         for (var tx : txs) {
             var invAcqui = inventoryAcquisitions.get(tx.getToken());
             if (invAcqui.isStopped()) {

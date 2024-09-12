@@ -3,14 +3,14 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { CoreModule } from "../core/core.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FaIconComponent, FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { TxSimplifiedComponent } from "./components/simplified/tx-simplified/tx-simplified.component";
+import { TxEntryComponent } from "./components/simplified/tx-entry/tx-entry.component";
 import { TxListComponent } from "./components/simplified/tx-list/tx-list.component";
 import { MaterialModule } from "../material/material.module";
 
 
 @NgModule({
   declarations: [
-    TxSimplifiedComponent,
+    TxEntryComponent,
     TxListComponent
   ],
   exports: [

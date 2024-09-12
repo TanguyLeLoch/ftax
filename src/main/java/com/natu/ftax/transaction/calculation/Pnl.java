@@ -1,6 +1,7 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction.calculation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.natu.ftax.transaction.Transaction;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
@@ -33,7 +34,7 @@ public class Pnl {
     private String errorMessage;
 
 
-    public Pnl(TransactionSimplified tx, String tokenId, BigDecimal value) {
+    public Pnl(Transaction tx, String tokenId, BigDecimal value) {
         this.txId = tx.getId();
         this.tokenId = tokenId;
         this.value = value;
@@ -41,7 +42,7 @@ public class Pnl {
         tx.setPnl(this);
     }
 
-    public Pnl(TransactionSimplified tx, String tokenId, BigDecimal value, String errorMessage) {
+    public Pnl(Transaction tx, String tokenId, BigDecimal value, String errorMessage) {
         this(tx, tokenId, value);
         this.errorMessage = errorMessage;
     }

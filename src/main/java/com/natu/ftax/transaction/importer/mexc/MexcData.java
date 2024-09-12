@@ -2,7 +2,7 @@ package com.natu.ftax.transaction.infrastructure.mexc;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.natu.ftax.transaction.simplified.TransactionSimplified;
+import com.natu.ftax.transaction.Transaction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,7 +39,7 @@ public class MexcData {
     private String role;
 
 
-    public TransactionSimplified toTransaction(String id) {
+    public Transaction toTransaction(String id) {
         return null;
     }
 }

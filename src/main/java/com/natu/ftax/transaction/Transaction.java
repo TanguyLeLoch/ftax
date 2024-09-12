@@ -1,9 +1,10 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.natu.ftax.client.Client;
+import com.natu.ftax.transaction.calculation.Pnl;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionSimplified {
+public class Transaction {
 
     @Id
     @NotNull
@@ -56,7 +57,8 @@ public class TransactionSimplified {
     @JsonIgnore
     private Boolean validationPerformed = false;
 
-    @JsonProperty("isValid")
+    @JsonProperty("valid")
+    @NotNull
     public boolean isValid() {
         if (!validationPerformed) {
             performValidation();
@@ -91,7 +93,7 @@ public class TransactionSimplified {
     }
 
 
-    enum Type {
+    public enum Type {
         BUY, SELL
     }
 }

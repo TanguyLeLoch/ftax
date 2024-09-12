@@ -1,5 +1,6 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction.calculation;
 
+import com.natu.ftax.transaction.Transaction;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -20,21 +21,21 @@ public class InventoryAcquisition {
         costQuantities = new LinkedList<>();
     }
 
-    public Pnl fifo(TransactionSimplified tx) {
+    public Pnl fifo(Transaction tx) {
         return switch (tx.getType()) {
             case BUY -> buyFifo(tx);
             case SELL -> sellFifo(tx);
         };
     }
 
-    public Pnl average(TransactionSimplified tx) {
+    public Pnl average(Transaction tx) {
         return switch (tx.getType()) {
             case BUY -> buyAverage(tx);
             case SELL -> sellAverage(tx);
         };
     }
 
-    private Pnl sellFifo(TransactionSimplified tx) {
+    private Pnl sellFifo(Transaction tx) {
         // SELL
         BigDecimal pnl = ZERO;
         BigDecimal remainingToSell = tx.getAmount();
@@ -63,13 +64,13 @@ public class InventoryAcquisition {
         return new Pnl(tx, tokenId, pnl);
     }
 
-    private Pnl buyFifo(TransactionSimplified tx) {
+    private Pnl buyFifo(Transaction tx) {
         costQuantities.add(new CostQuantity(tx.getPrice(), tx.getAmount()));
         return Pnl.DUMMY_PNL;
     }
 
 
-    private Pnl sellAverage(TransactionSimplified tx) {
+    private Pnl sellAverage(Transaction tx) {
         // For a sell transaction, calculate PnL based on average cost
         if (costQuantities.isEmpty()) {
             this.stopped = true;
@@ -101,7 +102,7 @@ public class InventoryAcquisition {
         return new Pnl(tx, tokenId, pnl);
     }
 
-    private Pnl buyAverage(TransactionSimplified tx) {
+    private Pnl buyAverage(Transaction tx) {
         // For a buy transaction, update the average cost
         BigDecimal totalQuantity = ZERO;
         BigDecimal totalCost = ZERO;

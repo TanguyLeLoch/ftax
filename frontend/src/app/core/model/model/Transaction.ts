@@ -9,41 +9,25 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Pnl } from './pnl';
 
 
-/**
- * Transaction object
- */
 export interface Transaction { 
     id: string;
-    /**
-     * The state of the transaction
-     */
-    state: Transaction.StateEnum;
-    tokenIn?: string;
-    tokenOut?: string;
-    tokenFee?: string;
-    dateTime: string;
-    amountIn?: number;
-    amountOut?: number;
-    amountFee?: number;
-    /**
-     * The type of the transaction
-     */
-    transactionType: Transaction.TransactionTypeEnum;
-    externalId?: string;
+    localDateTime: string;
+    type: Transaction.TypeEnum;
+    amount?: number;
+    token?: string;
+    price?: number;
+    pnl?: Pnl;
+    error?: string;
+    valid: boolean;
 }
 export namespace Transaction {
-    export type StateEnum = 'draft' | 'submitted';
-    export const StateEnum = {
-        Draft: 'draft' as StateEnum,
-        Submitted: 'submitted' as StateEnum
-    };
-    export type TransactionTypeEnum = 'transfer' | 'swap' | 'none';
-    export const TransactionTypeEnum = {
-        Transfer: 'transfer' as TransactionTypeEnum,
-        Swap: 'swap' as TransactionTypeEnum,
-        None: 'none' as TransactionTypeEnum
+    export type TypeEnum = 'BUY' | 'SELL';
+    export const TypeEnum = {
+        Buy: 'BUY' as TypeEnum,
+        Sell: 'SELL' as TypeEnum
     };
 }
 

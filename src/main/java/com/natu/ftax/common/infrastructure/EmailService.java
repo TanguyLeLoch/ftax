@@ -1,4 +1,4 @@
-package com.natu.ftax.transaction.infrastructure;
+package com.natu.ftax.common.infrastructure;
 
 import com.natu.ftax.common.exception.TechnicalException;
 import jakarta.mail.MessagingException;

@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Token, TransactionSimplified, TransactionSimplifiedControllerService} from "../../../../core/model";
+import { Component, Input, OnInit } from '@angular/core';
+import { Token, Transaction, TransactionControllerService } from "../../../../core/model";
 import {
   AbstractControl,
   FormBuilder,
@@ -19,18 +19,19 @@ import {
   faTrash,
   faWarning
 } from "@fortawesome/free-solid-svg-icons";
-import {map, Observable, startWith} from "rxjs";
-import {TokenService} from "../../../../core/services/token.service";
-import {ToastService} from "../../../../core/services/toast.service";
+import { map, Observable, startWith } from "rxjs";
+import { TokenService } from "../../../../core/services/token.service";
+import { ToastService } from "../../../../core/services/toast.service";
+
 
 @Component({
   selector: 'app-tx-simplified',
-  templateUrl: './tx-simplified.component.html',
-  styleUrl: './tx-simplified.component.scss',
+  templateUrl: './tx-entry.component.html',
+  styleUrl: './tx-entry.component.scss',
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TxSimplifiedComponent implements OnInit {
-  @Input() transaction!: TransactionSimplified;
+export class TxEntryComponent implements OnInit {
+  @Input() transaction!: Transaction;
 
   isExpanded: boolean = false;
 
@@ -51,8 +52,7 @@ export class TxSimplifiedComponent implements OnInit {
   ]
 
 
-
-  constructor(private service: TransactionSimplifiedControllerService, private fb: FormBuilder,
+  constructor(private service: TransactionControllerService, private fb: FormBuilder,
               private tokenService: TokenService, private toast: ToastService) {
   }
 
@@ -61,7 +61,7 @@ export class TxSimplifiedComponent implements OnInit {
 
     this.tokenControl = new FormControl<string | Token | null>(
       this.transaction.token ? this.transaction.token : '',
-      [Validators.required,noStringValidator()]
+      [Validators.required, noStringValidator()]
     );
 
     this.tokenService.tokens$.subscribe(
@@ -130,9 +130,9 @@ export class TxSimplifiedComponent implements OnInit {
       this.transaction = tx
       this.isValid = this.transaction.valid;
       if (!this.transaction.valid) {
-        this.toast.showToast('error', tx.errorMessage!);
+        this.toast.showToast('error', tx.error!);
       }
-      console.log('is valid ? ' ,this.transaction.valid)
+      console.log('is valid ? ', this.transaction.valid)
       this.isExpanded = false;
     });
   }
@@ -204,7 +204,7 @@ export function notNegativeValidator(): ValidatorFn {
     if (value >= 0) {
       return null; // Valid, no error
     } else {
-      return { notNegative: true }; // Invalid, return error
+      return {notNegative: true}; // Invalid, return error
     }
   };
 }

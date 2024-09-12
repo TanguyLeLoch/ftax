@@ -1,8 +1,9 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.client.Client;
 import com.natu.ftax.common.exception.NotFoundException;
+import com.natu.ftax.transaction.calculation.Compute;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,19 +15,19 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-import static com.natu.ftax.transaction.simplified.TransactionSimplified.Type.BUY;
+import static com.natu.ftax.transaction.Transaction.Type.BUY;
 
 @RestController
-@RequestMapping("/api/transaction-simplified")
+@RequestMapping("/api/transactions")
 
-public class TransactionSimplifiedController {
-    private final TransactionSimplifiedRepositoryJpa repository;
+public class TransactionController {
+    private final TransactionRepo repository;
     private final IdGenerator idGenerator;
 
 
-    public TransactionSimplifiedController(
+    public TransactionController(
             IdGenerator idGenerator,
-            TransactionSimplifiedRepositoryJpa repository) {
+            TransactionRepo repository) {
         this.repository = repository;
         this.idGenerator = idGenerator;
     }
@@ -35,30 +36,30 @@ public class TransactionSimplifiedController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isConnected()")
     @Transactional
-    public TransactionSimplified post(
-            @RequestBody TransactionSimplified transactionSimplified, Principal principal) {
-        defaultValue(transactionSimplified);
+    public Transaction post(
+            @RequestBody Transaction transaction, Principal principal) {
+        defaultValue(transaction);
         Client client = getClient(principal);
-        transactionSimplified.setClient(client);
-        return repository.save(transactionSimplified);
+        transaction.setClient(client);
+        return repository.save(transaction);
     }
 
-    private void defaultValue(TransactionSimplified transactionSimplified) {
-        if (transactionSimplified.getId() == null) {
-            transactionSimplified.setId(idGenerator.generate());
+    private void defaultValue(Transaction transaction) {
+        if (transaction.getId() == null) {
+            transaction.setId(idGenerator.generate());
         }
-        if (transactionSimplified.getLocalDateTime() == null) {
-            transactionSimplified.setLocalDateTime(
+        if (transaction.getLocalDateTime() == null) {
+            transaction.setLocalDateTime(
                     LocalDateTime.now(ZoneId.of("UTC")));
         }
-        if (transactionSimplified.getType() == null) {
-            transactionSimplified.setType(BUY);
+        if (transaction.getType() == null) {
+            transaction.setType(BUY);
         }
     }
 
     @PreAuthorize("isConnected()")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public TransactionSimplified getById(
+    public Transaction getById(
             @PathVariable(value = "id") String id, Principal principal) {
         Client client = getClient(principal);
 
@@ -73,7 +74,7 @@ public class TransactionSimplifiedController {
 
     @PreAuthorize("isConnected()")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TransactionSimplified> getAll(Principal principal) {
+    public List<Transaction> getAll(Principal principal) {
 
         Client client = getClient(principal);
         return repository.findAllByClient(client);
@@ -87,7 +88,7 @@ public class TransactionSimplifiedController {
     @PreAuthorize("isConnected()")
     @PostMapping(value = "computePnl",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TransactionSimplified> computePnl(@RequestParam("method") String method, Principal principal) {
+    public List<Transaction> computePnl(@RequestParam("method") String method, Principal principal) {
         var txs = getAll(principal);
         txs.forEach(tx -> tx.setPnl(null));
         var compute = new Compute(txs);

@@ -2,4 +2,4 @@ export * from './authResponse';
 export * from './client';
 export * from './pnl';
 export * from './token';
-export * from './transactionSimplified';
+export * from './transaction';

@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {TransactionSimplified, TransactionSimplifiedControllerService} from "../../../../core/model";
+import { Component, OnInit } from '@angular/core';
+import { Transaction, TransactionControllerService } from "../../../../core/model";
 
 
 @Component({
@@ -8,11 +8,10 @@ import {TransactionSimplified, TransactionSimplifiedControllerService} from "../
   styleUrl: './tx-list.component.scss'
 })
 export class TxListComponent implements OnInit {
-  txs: TransactionSimplified[] = [];
+  txs: Transaction[] = [];
 
 
-
-  constructor(private service: TransactionSimplifiedControllerService) {
+  constructor(private service: TransactionControllerService) {
     this.service.getAll().subscribe(txs => {
       txs.sort((a, b) => b.localDateTime.localeCompare(a.localDateTime));
       this.txs = txs
@@ -33,7 +32,7 @@ export class TxListComponent implements OnInit {
 
   newTx() {
     console.log(this.txs);
-    const txSimplified = {} as TransactionSimplified;
+    const txSimplified = {} as Transaction;
     this.service.post(txSimplified).subscribe(tx => {
       this.txs = [tx, ...this.txs];
     });
@@ -41,11 +40,11 @@ export class TxListComponent implements OnInit {
 
   computePnL() {
     this.service.computePnl("fifo").subscribe(
-        txs => {
-          if (txs) {
-            this.fetchTxs();
-          }
+      txs => {
+        if (txs) {
+          this.fetchTxs();
         }
+      }
 
       // pnls => {
       //   console.log(pnls)

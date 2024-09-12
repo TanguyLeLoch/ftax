@@ -6,7 +6,7 @@ import com.natu.ftax.client.ClientRepo;
 import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.common.exception.NotFoundException;
 import com.natu.ftax.common.exception.TechnicalException;
-import com.natu.ftax.transaction.infrastructure.EmailService;
+import com.natu.ftax.common.infrastructure.EmailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
