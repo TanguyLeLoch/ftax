@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Transaction, TransactionControllerService } from "../../../../core/model";
+import { Transaction, TransactionControllerService } from "../../../core/model";
 
 
 @Component({
@@ -32,8 +32,8 @@ export class TxListComponent implements OnInit {
 
   newTx() {
     console.log(this.txs);
-    const txSimplified = {} as Transaction;
-    this.service.post(txSimplified).subscribe(tx => {
+    const tx = {} as Transaction;
+    this.service.post(tx).subscribe(tx => {
       this.txs = [tx, ...this.txs];
     });
   }

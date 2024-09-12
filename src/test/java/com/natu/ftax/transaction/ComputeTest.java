@@ -1,6 +1,5 @@
-package com.natu.ftax.transaction.simplified;
+package com.natu.ftax.transaction;
 
-import com.natu.ftax.transaction.Transaction;
 import com.natu.ftax.transaction.calculation.Compute;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

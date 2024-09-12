@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Token, Transaction, TransactionControllerService } from "../../../../core/model";
+import { Token, Transaction, TransactionControllerService } from "../../../core/model";
 import {
   AbstractControl,
   FormBuilder,
@@ -20,12 +20,12 @@ import {
   faWarning
 } from "@fortawesome/free-solid-svg-icons";
 import { map, Observable, startWith } from "rxjs";
-import { TokenService } from "../../../../core/services/token.service";
-import { ToastService } from "../../../../core/services/toast.service";
+import { TokenService } from "../../../core/services/token.service";
+import { ToastService } from "../../../core/services/toast.service";
 
 
 @Component({
-  selector: 'app-tx-simplified',
+  selector: 'app-tx-entry',
   templateUrl: './tx-entry.component.html',
   styleUrl: './tx-entry.component.scss',
   // changeDetection: ChangeDetectionStrategy.OnPush,
