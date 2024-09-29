@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/authController.service.ts
+api/clientController.service.ts
 api/tokenController.service.ts
 api/transactionController.service.ts
 configuration.ts
@@ -13,6 +14,7 @@ model/authResponse.ts
 model/client.ts
 model/models.ts
 model/pnl.ts
+model/profile.ts
 model/token.ts
 model/transaction.ts
 param.ts

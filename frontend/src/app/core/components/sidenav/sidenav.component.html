@@ -2,13 +2,24 @@
   <mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"
                (closed)="events.push('close!')">
 
-    <!--        profile-->
-    <div class="profile-container" (click)="openProfile()">
-      <mat-icon class="profile-icon">account_circle</mat-icon>
-      <span>Profile</span>
-    </div>
+
+    <button mat-button color="primary" (click)="openProfile()" class="action-button">
+      <mat-icon>account_circle</mat-icon>
+      Profile
+    </button>
+
     <mat-divider></mat-divider>
 
+    <button mat-button color="primary" (click)="goToTransactions()" class="action-button">
+      <mat-icon>list</mat-icon>
+      Transactions
+    </button>
+
+
+    <button mat-button color="primary" (click)="computePnL()" class="action-button">
+      <mat-icon>calculate</mat-icon>
+      Compute PnL
+    </button>
   </mat-sidenav>
 
   <mat-sidenav-content>

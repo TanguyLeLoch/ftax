@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
+import {PnlService} from "../../services/pnl.service";
 
 @Component({
   selector: 'app-sidenav',
@@ -11,7 +12,7 @@ export class SidenavComponent implements OnInit {
   opened: boolean = true;
   isLoginPage = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private pnlService: PnlService) {
   }
 
   ngOnInit(): void {
@@ -24,6 +25,14 @@ export class SidenavComponent implements OnInit {
   }
 
   openProfile() {
-    console.log('openProfile');
+    this.router.navigate(['/profile']);
+  }
+
+  computePnL() {
+    this.pnlService.computePnl().subscribe()
+  }
+
+  goToTransactions() {
+    this.router.navigate(['/transactions']);
   }
 }

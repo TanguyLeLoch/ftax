@@ -1,9 +1,15 @@
 <div class="container">
-  <button class="btn-transparent" (click)="newTx()"> add a transaction</button>
-  <button mat-raised-button (click)="computePnL()">
-    <mat-icon>check_circle</mat-icon>
-    compute PnL
-  </button>
+  <div class="button-group">
+    <button mat-raised-button color="primary" (click)="newTx()">
+      <mat-icon>add</mat-icon>
+      Add Transaction
+    </button>
+    <button mat-raised-button color="accent" (click)="importTx()">
+      <mat-icon>file_upload</mat-icon>
+      Import
+    </button>
+
+  </div>
   <div class="tx-list">
     <div *ngFor="let tx of txs" class="tx-item">
       <app-tx-entry [transaction]="tx"></app-tx-entry>

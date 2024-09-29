@@ -13,10 +13,12 @@ import { basePathProvider } from "../config/basePathProvider";
 import { LoginComponent } from "./core/components/login/login.component";
 import { AuthComponent } from "./core/components/auth/auth.component";
 import { AuthGuard } from "./auth.guard";
+import { ProfileComponent } from "./core/components/profile/profile.component";
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'profile', component: ProfileComponent},
   {path: 'auth', component: AuthComponent},
   {path: 'transactions', component: TxListComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: '/transactions', pathMatch: 'full'} // default route

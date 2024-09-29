@@ -15,6 +15,7 @@ import { NavbarComponent } from "../components/navbar/navbar.component";
 import { AuthComponent } from "./components/auth/auth.component";
 import { HttpErrorInterceptor } from "./interceptors/HttpErrorInterceptor";
 import { AuthInterceptor } from "./interceptors/AuthInterceptor";
+import { ProfileComponent } from "./components/profile/profile.component";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AuthInterceptor } from "./interceptors/AuthInterceptor";
     SidenavComponent,
     LoginComponent,
     NavbarComponent,
-    AuthComponent
+    AuthComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { AuthInterceptor } from "./interceptors/AuthInterceptor";
     ModalComponent,
     SidenavComponent,
     LoginComponent,
-    AuthComponent
+    AuthComponent,
+    ProfileComponent
   ],
   providers: [provideNativeDateAdapter(),
     {

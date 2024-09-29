@@ -16,6 +16,7 @@ mat-sidenav {
   position: absolute;
   top: 20px;
   background-color: #e6eded;
+  z-index: 1000;
 
   border-radius: 0 30px 30px 0;
   border: 2px solid rgba(183, 235, 255, 0.48);
@@ -48,3 +49,9 @@ mat-sidenav {
   transform: rotate(0deg);
   transition: transform 0.3s ease-in-out;
 }
+
+.action-button {
+  width: 100%;
+}
+
+

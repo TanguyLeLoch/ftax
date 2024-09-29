@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Transaction, TransactionControllerService } from "../../../core/model";
+import {Component, OnInit} from '@angular/core';
+import {Transaction, TransactionControllerService} from "../../../core/model";
 
 
 @Component({
@@ -38,25 +38,7 @@ export class TxListComponent implements OnInit {
     });
   }
 
-  computePnL() {
-    this.service.computePnl("fifo").subscribe(
-      txs => {
-        if (txs) {
-          this.fetchTxs();
-        }
-      }
-
-      // pnls => {
-      //   console.log(pnls)
-      //   this.pnls = pnls;
-      //   pnls.forEach(e => {
-      //     const txPnl = this.txPnls.find(it => it.tx.id === e.transactionId);
-      //     if (txPnl) {
-      //       txPnl.pnl = e
-      //     }
-      //   });
-      // }
-    )
+  importTx() {
   }
 
 

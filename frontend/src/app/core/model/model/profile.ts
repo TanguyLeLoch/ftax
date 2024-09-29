@@ -9,12 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Profile } from './profile';
 
 
-export interface Client { 
-    email: string;
-    username?: string;
-    profile?: Profile;
+export interface Profile { 
+    clientEmail: string;
+    calculationMethod: Profile.CalculationMethodEnum;
 }
+export namespace Profile {
+    export type CalculationMethodEnum = 'fifo' | 'average';
+    export const CalculationMethodEnum = {
+        Fifo: 'fifo' as CalculationMethodEnum,
+        Average: 'average' as CalculationMethodEnum
+    };
+}
+
 
