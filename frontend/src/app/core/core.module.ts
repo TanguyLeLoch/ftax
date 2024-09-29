@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ToastComponent } from "./components/toast/toast.component";
@@ -18,49 +18,41 @@ import { AuthInterceptor } from "./interceptors/AuthInterceptor";
 import { ProfileComponent } from "./components/profile/profile.component";
 
 
-@NgModule({
-  declarations: [
-    ToastComponent,
-    FileUploadComponent,
-    ModalComponent,
-    SidenavComponent,
-    LoginComponent,
-    NavbarComponent,
-    AuthComponent,
-    ProfileComponent
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    FaIconComponent,
-    ReactiveFormsModule,
-    FormsModule,
-    RouterOutlet,
-    MaterialModule,
-  ],
-  exports: [
-    NavbarComponent,
-    ToastComponent,
-    FileUploadComponent,
-    ModalComponent,
-    SidenavComponent,
-    LoginComponent,
-    AuthComponent,
-    ProfileComponent
-  ],
-  providers: [provideNativeDateAdapter(),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }
-  ],
-})
+@NgModule({ declarations: [
+        ToastComponent,
+        FileUploadComponent,
+        ModalComponent,
+        SidenavComponent,
+        LoginComponent,
+        NavbarComponent,
+        AuthComponent,
+        ProfileComponent
+    ],
+    exports: [
+        NavbarComponent,
+        ToastComponent,
+        FileUploadComponent,
+        ModalComponent,
+        SidenavComponent,
+        LoginComponent,
+        AuthComponent,
+        ProfileComponent
+    ], imports: [CommonModule,
+        FormsModule,
+        FaIconComponent,
+        ReactiveFormsModule,
+        FormsModule,
+        RouterOutlet,
+        MaterialModule], providers: [provideNativeDateAdapter(),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        }, provideHttpClient(withInterceptorsFromDi())] })
 export class CoreModule {
 }
