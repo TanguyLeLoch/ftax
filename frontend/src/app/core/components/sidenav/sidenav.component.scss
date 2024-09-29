@@ -5,7 +5,6 @@ mat-sidenav-container {
 }
 mat-sidenav {
   width: 250px;
-  background-color: #e6eded;
   border-radius: 0;
   border: 2px solid rgba(183, 235, 255, 0.48);
 }
@@ -15,7 +14,6 @@ mat-sidenav {
 .toggle-button {
   position: absolute;
   top: 20px;
-  background-color: #e6eded;
   z-index: 1000;
 
   border-radius: 0 30px 30px 0;

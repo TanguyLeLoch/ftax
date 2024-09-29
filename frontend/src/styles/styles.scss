@@ -1,3 +1,8 @@
+@use '@angular/material' as mat;
+@use './m3-theme.scss' as theme;
+
+$theme: theme.$light-theme;
+
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import 'variables';
 * {
@@ -73,3 +78,8 @@ input[type=number] {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.btn-primary {
+  @include mat.button-color($theme, $color-variant: tertiary);
+}
