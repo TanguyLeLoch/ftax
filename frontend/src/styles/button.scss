@@ -1,0 +1,31 @@
+//// button.scss
+//@use 'button-theme.scss';
+//
+//.btn-primary {
+//  color: #0081ff !important;
+//}
+//
+//@use '@angular/material' as mat;
+//@use 'button-theme.scss' as button;
+//@use 'm3-theme.scss' as theme;
+//
+//$theme: theme.$light-theme;
+//
+//
+//@include mat.core();
+//
+//$my-theme: mat.define-theme((
+//  color: (
+//    theme-type: light,
+//    primary: $theme.$primary,
+//  ),
+//  typography: (
+//    brand-family: 'helvetica neue',
+//    bold-weight: 900,
+//  ),
+//));
+//
+//html {
+//  @include mat.all-component-themes($my-theme);
+//  @include carousel.theme($my-theme);
+//}

@@ -1,0 +1,26 @@
+// _nav-theme.scss
+
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  mat-sidenav {
+    background-color: mat.get-theme-color($theme, secondary, 98) !important;
+    border-right: 1px solid mat.get-theme-color($theme, secondary, 90) !important;
+  }
+  mat-sidenav-content {
+    background-color: mat.get-theme-color($theme, secondary, 99) !important;
+  }
+
+  mat-toolbar {
+    background-color: mat.get-theme-color($theme, secondary, 98) !important;
+    border-bottom: 1px solid mat.get-theme-color($theme, secondary, 90) !important;
+  }
+}
+
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

@@ -2,11 +2,17 @@
 
 $theme: mat.define-theme();
 
+.container {
+  margin-right: 40px;
+  margin-top: 10px;
+}
+
 .button-group {
   display: flex;
   flex-wrap: wrap;
   gap: 16px; /* Space between buttons */
-  margin-bottom: 24px; /* Space below the button group */
+  margin-bottom: 10px; /* Space below the button group */
+  justify-content: flex-end;
 }
 
 .btn-secondary {

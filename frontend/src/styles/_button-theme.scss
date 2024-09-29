@@ -1,0 +1,26 @@
+// _button-theme.scss
+
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  .btn-secondary {
+    color: mat.get-theme-color($theme, secondary, 50) !important;
+  }
+  .btn-basic-primary {
+    color: mat.get-theme-color($theme, primary, 40) !important;
+    font-size: calc(10px + 0.5vw);
+
+    &:hover {
+      background-color: mat.get-theme-color($theme, secondary, 95) !important;
+    }
+
+  }
+}
+
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

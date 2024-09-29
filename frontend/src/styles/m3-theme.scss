@@ -3,6 +3,11 @@
 
 @use 'sass:map';
 @use '@angular/material' as mat;
+@use 'button-theme.scss' as button-theme;
+@use 'nav-theme.scss' as nav-theme;
+
+@include mat.core();
+
 
 // Note: Color palettes are generated from primary: 364F6B, secondary: 3FC1C9, tertiary: F5F5F5, neutral: FC5185
 $palettes: (
@@ -146,12 +151,7 @@ $light-theme: mat.define-theme((
 // Apply the theme globally
 html {
   @include mat.all-component-themes($light-theme);
+  @include button-theme.theme($light-theme);
+  @include nav-theme.theme($light-theme);
 }
 
-mat-sidenav-content {
-  background-color: map.get(map.get($palettes, neutral), 94) !important;
-}
-
-mat-sidenav {
-  background-color: map.get(map.get($palettes, neutral), 87) !important;
-}

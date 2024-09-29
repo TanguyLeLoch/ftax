@@ -78,8 +78,3 @@ input[type=number] {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-.btn-primary {
-  @include mat.button-color($theme, $color-variant: tertiary);
-}
