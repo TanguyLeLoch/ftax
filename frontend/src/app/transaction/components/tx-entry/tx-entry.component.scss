@@ -1,3 +1,5 @@
+@import 'variables';
+
 mat-accordion {
   width: 100%;
 }
@@ -44,7 +46,7 @@ mat-accordion {
 
 .add-token {
   cursor: pointer;
-  color: #0048ff;
+  color: $green-from-theme
 }
 
 .token-form {
@@ -74,21 +76,21 @@ mat-form-field {
 
 
 .Buy {
-  color: #059f00;
+  color: $green-from-theme;
   font-size: min(calc(10px + 1vw), 16px);
 }
 
 .Sell {
-  color: #a80000;
+  color: $red-from-theme;
   font-size: min(calc(10px + 1vw), 16px);
 }
 
 .positive {
-  color: #059f00;
+  color: $green-from-theme;
 }
 
 .negative {
-  color: #a80000;
+  color: $red-from-theme;
 }
 
 .pnl-value {

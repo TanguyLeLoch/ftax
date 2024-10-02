@@ -32,8 +32,7 @@
             ],
             "styles": [
               "src/styles/m3-theme.scss",
-              "src/styles/styles.scss",
-              "src/styles/button.scss"
+              "src/styles/styles.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -106,8 +105,7 @@
             ],
             "styles": [
               "src/styles/m3-theme.scss",
-              "src/styles/styles.scss",
-              "src/styles/button.scss"
+              "src/styles/styles.scss"
             ],
             "scripts": []
           }

@@ -1,0 +1,18 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+
+  mat-option {
+    &[aria-selected="true"] {
+      background-color: mat.get-theme-color($theme, primary, 80) !important;
+    }
+  }
+}
+
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

@@ -5,11 +5,13 @@
 @use '@angular/material' as mat;
 @use 'button-theme.scss' as button-theme;
 @use 'nav-theme.scss' as nav-theme;
+@use 'expansion-panel-theme.scss' as expansion-panel-theme;
+@use 'form-field-theme.scss' as form-field-theme;
 
 @include mat.core();
 
 
-// Note: Color palettes are generated from primary: 364F6B, secondary: 3FC1C9, tertiary: F5F5F5, neutral: FC5185
+// Note: Color palettes are generated from primary: 364F6B, secondary: 3FC1C9, tertiary: F5F5F5, neutral: ECDFCC
 $palettes: (
   primary: (
     0: #000000,
@@ -67,6 +69,52 @@ $palettes: (
   ),
   neutral: (
     0: #000000,
+    4: #0d0b06,
+    6: #141009,
+    10: #211b0f,
+    12: #251f13,
+    17: #30291d,
+    20: #372f23,
+    22: #3b3327,
+    24: #40382b,
+    25: #423a2d,
+    30: #4e4638,
+    35: #5a5143,
+    40: #665d4e,
+    50: #807666,
+    60: #9a8f7f,
+    70: #b5aa98,
+    80: #d1c5b3,
+    87: #e5d9c6,
+    90: #eee1ce,
+    92: #f4e7d4,
+    94: #f9ecd9,
+    95: #fcefdc,
+    96: #fdf2e3,
+    98: #fff8f2,
+    99: #fffbff,
+    100: #ffffff,
+  ),
+  neutral-variant: (
+    0: #000000,
+    10: #181c21,
+    20: #2d3136,
+    25: #383c42,
+    30: #43474d,
+    35: #4f5359,
+    40: #5b5f65,
+    50: #74777e,
+    60: #8d9198,
+    70: #a8abb2,
+    80: #c3c6ce,
+    90: #e0e2ea,
+    95: #eef1f8,
+    98: #f8f9ff,
+    99: #fdfcff,
+    100: #ffffff,
+  ),
+  error: (
+    0: #000000,
     4: #190009,
     6: #26000e,
     10: #3f0017,
@@ -93,42 +141,6 @@ $palettes: (
     99: #fffbff,
     100: #ffffff,
   ),
-  neutral-variant: (
-    0: #000000,
-    10: #181c21,
-    20: #2d3136,
-    25: #383c42,
-    30: #43474d,
-    35: #4f5359,
-    40: #5b5f65,
-    50: #74777e,
-    60: #8d9198,
-    70: #a8abb2,
-    80: #c3c6ce,
-    90: #e0e2ea,
-    95: #eef1f8,
-    98: #f8f9ff,
-    99: #fdfcff,
-    100: #ffffff,
-  ),
-  error: (
-    0: #000000,
-    10: #410002,
-    20: #690005,
-    25: #7e0007,
-    30: #93000a,
-    35: #a80710,
-    40: #ba1a1a,
-    50: #de3730,
-    60: #ff5449,
-    70: #ff897d,
-    80: #ffb4ab,
-    90: #ffdad6,
-    95: #ffedea,
-    98: #fff8f7,
-    99: #fffbff,
-    100: #ffffff,
-  ),
 );
 
 $_rest: (
@@ -148,10 +160,15 @@ $light-theme: mat.define-theme((
   ),
 ));
 
+$green_from_theme: mat.get-theme-color($light-theme, secondary, 50);
+$red_from_theme: mat.get-theme-color($light-theme, error, 50);
+
 // Apply the theme globally
 html {
   @include mat.all-component-themes($light-theme);
   @include button-theme.theme($light-theme);
   @include nav-theme.theme($light-theme);
+  @include expansion-panel-theme.theme($light-theme);
+  @include form-field-theme.theme($light-theme);
 }
 
