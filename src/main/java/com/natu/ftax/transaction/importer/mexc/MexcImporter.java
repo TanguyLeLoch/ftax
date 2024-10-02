@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
+import com.natu.ftax.client.Client;
 import com.natu.ftax.transaction.Transaction;
 import com.natu.ftax.transaction.TransactionRepo;
 import com.natu.ftax.transaction.importer.PlatformImporter;
@@ -32,14 +33,13 @@ public class MexcImporter implements PlatformImporter {
 
 
     @Override
-    public void importTransaction(MultipartFile file) {
+    public void importTransaction(MultipartFile file, Client client) {
         List<MexcData> mexcDatas = getMexcData(file);
         List<Transaction> transactions = new ArrayList<>();
         for (MexcData mexcData : mexcDatas) {
             String id = idGenerator.generate();
-            Transaction transaction = new Transaction();
-            transaction.setId(id);
-
+            Transaction transaction = mexcData.toTransaction(id, client);
+            transactions.add(transaction);
         }
         transactionRepo.saveAll(transactions);
 

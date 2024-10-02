@@ -2,6 +2,7 @@ package com.natu.ftax.transaction.importer.mexc;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.natu.ftax.client.Client;
 import com.natu.ftax.transaction.Transaction;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class MexcData {
 
     @ExcelProperty("Time")
     @DateTimeFormat("yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime time;
+    private LocalDateTime localDateTime;
 
     @ExcelProperty("Side")
     private String side;
@@ -39,7 +40,16 @@ public class MexcData {
     private String role;
 
 
-    public Transaction toTransaction(String id) {
-        return null;
+    public Transaction toTransaction(String id, Client client) {
+        return new Transaction(id,
+            client,
+            localDateTime,
+            Transaction.Type.valueOf(side),
+            executedAmount,
+            pair.split("_")[0],
+            filledPrice,
+            null,
+            null,
+            false);
     }
 }

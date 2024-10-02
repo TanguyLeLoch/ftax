@@ -2,13 +2,20 @@ package com.natu.ftax.transaction;
 
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.client.Client;
+import com.natu.ftax.common.SuccessResponse;
 import com.natu.ftax.common.exception.NotFoundException;
 import com.natu.ftax.transaction.calculation.Compute;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -22,13 +29,16 @@ import static com.natu.ftax.transaction.Transaction.Type.BUY;
 
 public class TransactionController {
     private final TransactionRepo repository;
+    private final TransactionService service;
     private final IdGenerator idGenerator;
 
 
     public TransactionController(
             IdGenerator idGenerator,
+        TransactionService service,
             TransactionRepo repository) {
         this.repository = repository;
+        this.service = service;
         this.idGenerator = idGenerator;
     }
 
@@ -94,5 +104,31 @@ public class TransactionController {
         var compute = new Compute(txs);
         compute.execute(method);
         return repository.saveAll(txs);
+    }
+
+    @Operation(summary = "Import transactions from files")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Transactions imported successfully",
+            content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid input",
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+            content = @Content)
+    })
+    @PostMapping(
+        value = "file-import",
+        consumes = "multipart/form-data"
+
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    public SuccessResponse importTransactions(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("platform") String platform,
+        Principal principal
+    ) {
+        Client client = getClient(principal);
+        service.importTransactions(platform, file, client);
+
+        return new SuccessResponse(true);
     }
 }
