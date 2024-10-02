@@ -4,17 +4,27 @@
 @use '@angular/material' as mat;
 
 @mixin color($theme) {
-  .btn-secondary {
-    color: mat.get-theme-color($theme, secondary, 50) !important;
-  }
-  .btn-basic-primary {
-    color: mat.get-theme-color($theme, primary, 40) !important;
-    font-size: calc(10px + 0.5vw);
+  button {
 
-    &:hover {
-      background-color: mat.get-theme-color($theme, secondary, 95) !important;
+    &[mat-button] {
+      &[color="primary"] {
+        color: mat.get-theme-color($theme, primary, 20) !important;
+
+        &:hover {
+          background-color: mat.get-theme-color($theme, primary, 90) !important;
+        }
+      }
     }
 
+    &[mat-raised-button] {
+      &[color="secondary"] {
+        color: mat.get-theme-color($theme, secondary, 50) !important;
+
+        &:disabled {
+          color: mat.get-theme-color($theme, neutral-variant, 40) !important;
+        }
+      }
+    }
   }
 }
 

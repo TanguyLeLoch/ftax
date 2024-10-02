@@ -29,10 +29,10 @@
         </mat-form-field>
       </ng-container>
 
-      <button *ngIf="!isLoading" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      <button *ngIf="!isLoading" mat-raised-button color="secondary" type="submit" [disabled]="form.invalid">
         {{ isLoginMode ? 'Login' : 'Register' }}
       </button>
-      <button *ngIf="isLoading" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      <button *ngIf="isLoading" mat-raised-button color="secondary" type="submit" [disabled]="form.invalid">
         <mat-spinner diameter="20"></mat-spinner>
       </button>
     </form>

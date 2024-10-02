@@ -5,16 +5,16 @@
 
 @mixin color($theme) {
   mat-sidenav {
-    background-color: mat.get-theme-color($theme, secondary, 98) !important;
-    border-right: 1px solid mat.get-theme-color($theme, secondary, 90) !important;
+    background-color: mat.get-theme-color($theme, primary, 95) !important;
+    border-right: 1px solid mat.get-theme-color($theme, primary, 90) !important;
   }
   mat-sidenav-content {
-    background-color: mat.get-theme-color($theme, secondary, 99) !important;
+    background-color: mat.get-theme-color($theme, primary, 98) !important;
   }
 
   mat-toolbar {
-    background-color: mat.get-theme-color($theme, secondary, 98) !important;
-    border-bottom: 1px solid mat.get-theme-color($theme, secondary, 90) !important;
+    background-color: mat.get-theme-color($theme, primary, 95) !important;
+    border-bottom: 1px solid mat.get-theme-color($theme, primary, 90) !important;
   }
 }
 
