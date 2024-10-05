@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Transaction, TransactionControllerService } from "../../../core/model";
 import { MatDialog } from "@angular/material/dialog";
 import { TxImportComponent } from "../tx-import/tx-import.component";
+import { TokenService } from "../../../core/services/token.service";
 
 
 @Component({
@@ -11,25 +12,33 @@ import { TxImportComponent } from "../tx-import/tx-import.component";
 })
 export class TxListComponent implements OnInit {
   txs: Transaction[] = [];
+  isLoading = true;
+  startTime = new Date().getTime();
 
 
   constructor(private service: TransactionControllerService,
-              private dialog: MatDialog) {
-    this.service.getAll().subscribe(txs => {
-      txs.sort((a, b) => b.localDateTime.localeCompare(a.localDateTime));
-      this.txs = txs
-    });
+              private dialog: MatDialog,
+              private tokenService: TokenService,
+  ) {
+
   }
 
   ngOnInit(): void {
-    this.fetchTxs();
+    this.tokenService.fetchAllTokens().subscribe(
+        () => {
+          this.fetchTxs();
+        }
+    )
   }
 
 
   private fetchTxs() {
+    console.log('fetchTxs', new Date().getTime() - this.startTime);
     this.service.getAll().subscribe(txs => {
       txs.sort((a, b) => b.localDateTime.localeCompare(a.localDateTime));
       this.txs = txs
+      this.isLoading = false;
+      console.log('fetchTxs', new Date().getTime() - this.startTime);
     });
   }
 

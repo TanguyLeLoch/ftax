@@ -15,4 +15,7 @@ $theme: mat.define-theme();
   justify-content: flex-end;
 }
 
-
+mat-progress-bar {
+  margin: 100px auto auto;
+  width: 60%;
+}

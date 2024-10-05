@@ -57,7 +57,6 @@ export class TxEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tokenService.fetchAllTokens();
 
     this.tokenControl = new FormControl<string | Token | null>(
       this.transaction.token ? this.transaction.token : '',

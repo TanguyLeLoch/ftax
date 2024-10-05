@@ -15,11 +15,12 @@ import { MatNativeDateModule, provideNativeDateAdapter } from "@angular/material
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MatProgressSpinner, MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatNavList } from "@angular/material/list";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatDialogActions, MatDialogContainer, MatDialogContent } from "@angular/material/dialog";
 import { MatGridList, MatGridTile } from "@angular/material/grid-list";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 
 @NgModule({
@@ -66,6 +67,8 @@ import { MatGridList, MatGridTile } from "@angular/material/grid-list";
     MatGridList,
     MatGridTile,
     MatDialogContainer,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   exports: [
     MatAutocompleteModule,
@@ -108,7 +111,8 @@ import { MatGridList, MatGridTile } from "@angular/material/grid-list";
     MatGridList,
     MatGridTile,
     MatDialogContainer,
-
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   providers: [
     provideNativeDateAdapter(),

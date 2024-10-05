@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Token, TokenControllerService} from "../model";
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import { Injectable } from '@angular/core';
+import { Token, TokenControllerService } from "../model";
+import { BehaviorSubject, Observable, tap } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,13 @@ export class TokenService {
   constructor(private controller: TokenControllerService) {
   }
 
-  fetchAllTokens(): void {
-    this.controller.getAllTokens()
-      .subscribe((tokens: Token[]) => {
+  fetchAllTokens(): Observable<Token[]> {
+    return this.controller.getAllTokens().pipe(
+      tap((tokens: Token[]) => {
         this.allTokens = tokens;
         this.tokens.next(tokens);
-      });
+      })
+    );
   }
 
   getTokens(): Token[] {
