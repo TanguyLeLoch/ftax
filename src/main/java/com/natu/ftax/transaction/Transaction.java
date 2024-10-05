@@ -34,7 +34,6 @@ public class Transaction {
     private Client client;
 
     @NotNull
-    //iso8601 format with milliseconds without timezone
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime localDateTime;
     @NotNull

@@ -1,0 +1,56 @@
+<mat-dialog-content>
+  <form [formGroup]="importForm">
+    <div class="import-options" *ngIf="showCards">
+      <mat-grid-list cols="2" rowHeight="200px" gutterSize="16px">
+        <mat-grid-tile *ngFor="let type of ['mexc', 'Ethereum', 'Base chain']">
+          <mat-card class="import-card" (click)="selectImportType(type)">
+            <mat-card-title>{{ type | titlecase }} Import</mat-card-title>
+            <mat-card-content>
+              <p *ngIf="type === 'mexc'">Import your data using a CSV file for MEXC.</p>
+              <p *ngIf="type === 'Ethereum'">Enter your Ethereum address for import.</p>
+              <p *ngIf="type === 'Base chain'">Enter your Base chain address for import.</p>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+
+    <ng-container *ngIf="!showCards">
+      <div *ngIf="importForm.value.importType === 'mexc'">
+        <div>
+          <label for="csvFile">CSV File</label>
+          <input id="csvFile" type="file" (change)="onFileSelected($event)" [required]="importForm.value.importType === 'mexc'" />
+        </div>
+      </div>
+      <div *ngIf="importForm.value.importType === 'Ethereum'">
+        <mat-form-field appearance="fill">
+          <mat-label>Ethereum Address</mat-label>
+          <input matInput formControlName="ethAddress" [required]="importForm.value.importType === 'Ethereum'" />
+        </mat-form-field>
+      </div>
+      <div *ngIf="importForm.value.importType === 'Base chain'">
+        <mat-form-field appearance="fill">
+          <mat-label>Ethereum Address</mat-label>
+          <input matInput formControlName="baseChainAddress" [required]="importForm.value.importType === 'Base chain'" />
+        </mat-form-field>
+      </div>
+      <!-- Add similar blocks for 'binance' and 'coinbase' if needed -->
+    </ng-container>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="dialog-actions">
+    <div class="dialog-actions-left">
+      <button mat-button *ngIf="!showCards" (click)="resetSelection()">Return</button>
+    </div>
+    <div class="dialog-actions-right">
+      <button mat-button (click)="closeDialog()">Cancel</button>
+      <button mat-raised-button color="secondary"
+              [disabled]="showCards || importForm.invalid"
+              (click)="importData()">
+        Import
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>

@@ -4,7 +4,6 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@a
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ToastComponent } from "./components/toast/toast.component";
-import { FileUploadComponent } from "./components/file-upload/file-upload.component";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ModalComponent } from "./components/modal/modal.component";
 import { SidenavComponent } from "./components/sidenav/sidenav.component";
@@ -20,7 +19,6 @@ import { ProfileComponent } from "./components/profile/profile.component";
 
 @NgModule({ declarations: [
         ToastComponent,
-        FileUploadComponent,
         ModalComponent,
         SidenavComponent,
         LoginComponent,
@@ -31,7 +29,6 @@ import { ProfileComponent } from "./components/profile/profile.component";
     exports: [
         NavbarComponent,
         ToastComponent,
-        FileUploadComponent,
         ModalComponent,
         SidenavComponent,
         LoginComponent,

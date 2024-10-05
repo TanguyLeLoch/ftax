@@ -6,12 +6,14 @@ import { FaIconComponent, FontAwesomeModule } from "@fortawesome/angular-fontawe
 import { TxEntryComponent } from "./components/tx-entry/tx-entry.component";
 import { TxListComponent } from "./components/tx-list/tx-list.component";
 import { MaterialModule } from "../material/material.module";
+import { TxImportComponent } from "./components/tx-import/tx-import.component";
 
 
 @NgModule({
   declarations: [
     TxEntryComponent,
-    TxListComponent
+    TxListComponent,
+    TxImportComponent
   ],
   exports: [
     TxListComponent

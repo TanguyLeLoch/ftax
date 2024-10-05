@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+
+.import-options {
+  padding: 16px;
+}
+
+.import-card {
+  width: 90%;
+  height: 90%;
+  padding: 24px;
+  cursor: pointer;
+}
+
+mat-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+mat-card-content {
+  font-size: 0.9rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+

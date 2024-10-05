@@ -6,6 +6,24 @@
   mat-expansion-panel {
     background-color: mat.get-theme-color($theme, tertiary, 95) !important;
   }
+
+  mat-dialog-content {
+    background-color: mat.get-theme-color($theme, primary, 98) !important;
+
+  }
+  mat-dialog-actions {
+    background-color: mat.get-theme-color($theme, primary, 98) !important;
+    border-top: 1px solid mat.get-theme-color($theme, primary, 95) !important;
+  }
+
+  mat-card {
+    background-color: mat.get-theme-color($theme, tertiary, 95) !important;
+
+    &:hover {
+      background-color: mat.get-theme-color($theme, tertiary, 90) !important;
+    }
+  }
+
 }
 
 
