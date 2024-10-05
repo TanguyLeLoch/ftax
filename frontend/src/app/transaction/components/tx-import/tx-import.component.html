@@ -17,21 +17,23 @@
 
     <ng-container *ngIf="!showCards">
       <div *ngIf="importForm.value.importType === 'mexc'">
-        <div>
-          <label for="csvFile">CSV File</label>
-          <input id="csvFile" type="file" (change)="onFileSelected($event)" [required]="importForm.value.importType === 'mexc'" />
-        </div>
+        <app-file-upload
+          acceptedFileTypes=".csv,.xlsx,.xls"
+          (fileSelected)="onFileSelected($event)"
+        ></app-file-upload>
       </div>
       <div *ngIf="importForm.value.importType === 'Ethereum'">
         <mat-form-field appearance="fill">
           <mat-label>Ethereum Address</mat-label>
-          <input matInput formControlName="ethAddress" [required]="importForm.value.importType === 'Ethereum'" />
+          <input matInput formControlName="ethAddress"
+                 [required]="importForm.value.importType === 'Ethereum'"/>
         </mat-form-field>
       </div>
       <div *ngIf="importForm.value.importType === 'Base chain'">
         <mat-form-field appearance="fill">
-          <mat-label>Ethereum Address</mat-label>
-          <input matInput formControlName="baseChainAddress" [required]="importForm.value.importType === 'Base chain'" />
+          <mat-label>Base chain Address</mat-label>
+          <input matInput formControlName="baseChainAddress"
+                 [required]="importForm.value.importType === 'Base chain'"/>
         </mat-form-field>
       </div>
       <!-- Add similar blocks for 'binance' and 'coinbase' if needed -->

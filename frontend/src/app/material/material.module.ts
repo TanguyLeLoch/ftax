@@ -18,7 +18,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { MatNavList } from "@angular/material/list";
 import { MatTooltip } from "@angular/material/tooltip";
-import { MatDialogActions, MatDialogContent } from "@angular/material/dialog";
+import { MatDialogActions, MatDialogContainer, MatDialogContent } from "@angular/material/dialog";
 import { MatGridList, MatGridTile } from "@angular/material/grid-list";
 
 
@@ -65,6 +65,7 @@ import { MatGridList, MatGridTile } from "@angular/material/grid-list";
     MatDialogContent,
     MatGridList,
     MatGridTile,
+    MatDialogContainer,
   ],
   exports: [
     MatAutocompleteModule,
@@ -106,6 +107,8 @@ import { MatGridList, MatGridTile } from "@angular/material/grid-list";
     MatDialogContent,
     MatGridList,
     MatGridTile,
+    MatDialogContainer,
+
   ],
   providers: [
     provideNativeDateAdapter(),

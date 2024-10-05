@@ -15,6 +15,7 @@ import { AuthComponent } from "./components/auth/auth.component";
 import { HttpErrorInterceptor } from "./interceptors/HttpErrorInterceptor";
 import { AuthInterceptor } from "./interceptors/AuthInterceptor";
 import { ProfileComponent } from "./components/profile/profile.component";
+import { FileUploadComponent } from "./components/file-upload/file-upload.component";
 
 
 @NgModule({ declarations: [
@@ -24,7 +25,8 @@ import { ProfileComponent } from "./components/profile/profile.component";
         LoginComponent,
         NavbarComponent,
         AuthComponent,
-        ProfileComponent
+    ProfileComponent,
+    FileUploadComponent
     ],
     exports: [
         NavbarComponent,
@@ -33,7 +35,8 @@ import { ProfileComponent } from "./components/profile/profile.component";
         SidenavComponent,
         LoginComponent,
         AuthComponent,
-        ProfileComponent
+      ProfileComponent,
+      FileUploadComponent
     ], imports: [CommonModule,
         FormsModule,
         FaIconComponent,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { TransactionControllerService } from "../../../core/model";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-tx-import',
@@ -9,29 +10,31 @@ import { TransactionControllerService } from "../../../core/model";
 })
 export class TxImportComponent {
 
+
   importForm: FormGroup;
   showCards: boolean = true;
 
-  constructor(private fb: FormBuilder, private transactionService: TransactionControllerService) {
+  constructor(
+    public dialogRef: MatDialogRef<TxImportComponent>,
+    private fb: FormBuilder, private transactionService: TransactionControllerService) {
     this.importForm = this.fb.group({
       importType: [''],
-      csvFile: [null],
+      file: [null],
       ethAddress: [''],
       baseChainAddress: ['']
     });
   }
 
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.importForm.patchValue({ csvFile: file });
-    }
+  onFileSelected(file: File | undefined) {
+    this.importForm.patchValue({file: file});
+    console.log(file)
   }
 
   importData(): void {
-    const { importType, csvFile, ethAddress, baseChainAddress } = this.importForm.value;
-    if (importType === 'mexc' && csvFile) {
-      this.transactionService.importTransactions('MEXC', csvFile).subscribe((response) => {
+    const {importType, file, ethAddress, baseChainAddress} = this.importForm.value;
+    if (importType === 'mexc' && file) {
+      console.log('MEXC import file:', file);
+      this.transactionService.importTransactions('Mexc', file).subscribe((response) => {
         console.log('MEXC import successful:', response);
       });
     } else if (importType === 'Ethereum' && ethAddress) {
@@ -39,6 +42,7 @@ export class TxImportComponent {
     } else if (importType === 'Base chain' && baseChainAddress) {
       console.log('Base chain address:', baseChainAddress);
     }
+    this.closeDialog();
   }
 
   resetSelection(): void {
@@ -47,7 +51,7 @@ export class TxImportComponent {
   }
 
   closeDialog() {
-
+    this.dialogRef.close();
   }
 
   selectImportType(type: string) {

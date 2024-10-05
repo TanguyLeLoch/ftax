@@ -1,0 +1,27 @@
+<div class="file-upload-container">
+  <div
+    class="drop-zone"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+    [class.drag-over]="isDragOver"
+  >
+    <mat-icon>cloud_upload</mat-icon>
+    <p>Drag and drop your file here, or click to select</p>
+    <input
+      #fileInput
+      type="file"
+      (change)="onFileSelected($event)"
+      [accept]="acceptedFileTypes"
+      hidden
+    />
+    <button mat-stroked-button color="primary" (click)="fileInput.click()">Select File</button>
+  </div>
+  <div *ngIf="selectedFile" class="file-info">
+    <mat-icon>insert_drive_file</mat-icon>
+    <span>{{ selectedFile.name }}</span>
+    <button mat-icon-button color="warn" (click)="removeFile()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

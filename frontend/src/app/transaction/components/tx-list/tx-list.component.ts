@@ -46,8 +46,6 @@ export class TxListComponent implements OnInit {
       height: '400px',
       width: '600px',
     });
-    console.log(dialogRef);
-
   }
 
 

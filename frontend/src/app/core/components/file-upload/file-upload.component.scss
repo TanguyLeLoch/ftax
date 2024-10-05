@@ -1,0 +1,62 @@
+.file-upload-container {
+  margin: 20px 0;
+}
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.drop-zone.drag-over {
+  background-color: #f0f0f0;
+  border-color: #2196F3;
+}
+
+.drop-zone mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #757575;
+}
+
+.drop-zone p {
+  margin: 10px 0;
+  color: #757575;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.file-info mat-icon {
+  margin-right: 10px;
+}
+
+.file-info span {
+  flex-grow: 1;
+}
+
+/* File type specific styles */
+.file-info[data-file-type="csv"] {
+  background-color: #e8f5e9;
+}
+
+.file-info[data-file-type="csv"] mat-icon {
+  color: #4caf50;
+}
+
+.file-info[data-file-type="excel"] {
+  background-color: #e8f4f8;
+}
+
+.file-info[data-file-type="excel"] mat-icon {
+  color: #2196f3;
+}

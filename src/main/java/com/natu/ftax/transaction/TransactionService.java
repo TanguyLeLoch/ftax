@@ -23,11 +23,10 @@ public class TransactionService {
         Client client) {
         PlatformImporter importer = platformImporters.get(
             platform + "Importer");
-        if (importer != null) {
-            importer.importTransaction(file, client);
-        } else {
+        if (importer == null) {
             throw new FunctionalException(
                 "Platform " + platform + " not supported");
         }
+        importer.importTransaction(file, client);
     }
 }
