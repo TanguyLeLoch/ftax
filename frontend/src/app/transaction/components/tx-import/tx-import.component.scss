@@ -28,4 +28,14 @@ mat-card-content {
   width: 100%;
 }
 
+.address-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
+mat-dialog-content > form {
+  height: 100%;
+}

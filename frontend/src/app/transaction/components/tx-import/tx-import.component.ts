@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TransactionControllerService } from "../../../core/model";
 import { MatDialogRef } from "@angular/material/dialog";
 
@@ -8,8 +8,7 @@ import { MatDialogRef } from "@angular/material/dialog";
   templateUrl: './tx-import.component.html',
   styleUrls: ['./tx-import.component.scss']
 })
-export class TxImportComponent {
-
+export class TxImportComponent implements OnInit {
 
   importForm: FormGroup;
   showCards: boolean = true;
@@ -25,10 +24,45 @@ export class TxImportComponent {
     });
   }
 
-  onFileSelected(file: File | undefined) {
-    this.importForm.patchValue({file: file});
-    console.log(file)
+  ngOnInit() {
+    this.importForm.get('importType')?.valueChanges.subscribe(value => {
+      this.updateValidators(value);
+    });
   }
+
+  updateValidators(importType: string) {
+    const fileControl = this.importForm.get('file');
+    const ethAddressControl = this.importForm.get('ethAddress');
+    const baseChainAddressControl = this.importForm.get('baseChainAddress');
+
+    if (importType === 'mexc') {
+      fileControl?.setValidators([Validators.required]);
+    } else {
+      fileControl?.clearValidators();
+    }
+
+    if (importType === 'Ethereum') {
+      ethAddressControl?.setValidators([Validators.required]);
+    } else {
+      ethAddressControl?.clearValidators();
+    }
+
+    if (importType === 'Base chain') {
+      baseChainAddressControl?.setValidators([Validators.required]);
+    } else {
+      baseChainAddressControl?.clearValidators();
+    }
+
+    fileControl?.updateValueAndValidity();
+    ethAddressControl?.updateValueAndValidity();
+    baseChainAddressControl?.updateValueAndValidity();
+  }
+
+  onFileSelected(file: File | null) {
+    this.importForm.patchValue({file: file});
+    this.importForm.get('file')?.updateValueAndValidity();
+  }
+
 
   importData(): void {
     const {importType, file, ethAddress, baseChainAddress} = this.importForm.value;

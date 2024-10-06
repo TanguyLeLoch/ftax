@@ -22,18 +22,22 @@
           (fileSelected)="onFileSelected($event)"
         ></app-file-upload>
       </div>
-      <div *ngIf="importForm.value.importType === 'Ethereum'">
+      <div *ngIf="importForm.value.importType === 'Ethereum'" class="address-input">
         <mat-form-field appearance="fill">
           <mat-label>Ethereum Address</mat-label>
-          <input matInput formControlName="ethAddress"
-                 [required]="importForm.value.importType === 'Ethereum'"/>
+          <input matInput formControlName="ethAddress"/>
+          <mat-error *ngIf="importForm.get('ethAddress')?.hasError('required')">
+            Ethereum address is required
+          </mat-error>
         </mat-form-field>
       </div>
-      <div *ngIf="importForm.value.importType === 'Base chain'">
+      <div *ngIf="importForm.value.importType === 'Base chain'" class="address-input">
         <mat-form-field appearance="fill">
           <mat-label>Base chain Address</mat-label>
-          <input matInput formControlName="baseChainAddress"
-                 [required]="importForm.value.importType === 'Base chain'"/>
+          <input matInput formControlName="baseChainAddress"/>
+          <mat-error *ngIf="importForm.get('baseChainAddress')?.hasError('required')">
+            Base chain address is required
+          </mat-error>
         </mat-form-field>
       </div>
       <!-- Add similar blocks for 'binance' and 'coinbase' if needed -->
