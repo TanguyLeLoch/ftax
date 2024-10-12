@@ -71,6 +71,7 @@ public class EthereumImporter implements OnChainImporter {
 
         // Process transactions as needed
         for (EtherscanApi.EthTx tx : ethTxes) {
+
             var ldt = convertToLocalDateTime(tx.timeStamp());
 
             if (!"0".equals(tx.value())) {
@@ -78,6 +79,8 @@ public class EthereumImporter implements OnChainImporter {
                 var amount = parseWei(tx.value());
                 var side = tx.from().equals(address) ? Transaction.Type.SELL : Transaction.Type.BUY;
                 var ethToken = tokenRepo.findByTicker("ETH").orElseThrow(() -> new FunctionalException("Cant find Eth Token"));
+
+                BigDecimal price = etherscanApi.getEtherPriceAt(tx.blockNumber());
                 //create eth tx
                 var ethTx = Transaction.builder()
                         .id(idGenerator.generate())
@@ -85,7 +88,7 @@ public class EthereumImporter implements OnChainImporter {
                         .amount(amount)
                         .type(side)
                         .localDateTime(ldt)
-                        .price(BigDecimal.valueOf(123))
+                        .price(price)
                         .token(ethToken.getId())
                         .build();
 
@@ -127,6 +130,7 @@ public class EthereumImporter implements OnChainImporter {
             }
 
         }
+
         transactionRepo.saveAll(txToSave);
 
     }

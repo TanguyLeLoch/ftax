@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.net.URI;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -94,6 +99,105 @@ public class EtherscanApi {
     private static boolean isAddressInTopics(EventLog log, String addr) {
         return log.topics().stream()
                 .anyMatch(topic -> topic.contains(addr));
+    }
+
+    /**
+     * Improvement: we should prorate the price depending on whether the event is a swapIn or swapOut
+     */
+    public BigDecimal getEtherPriceAt(String blockNumber) {
+        String usdtWethPair = "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852";
+        String swapTopic = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822";
+
+        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("module", "logs")
+                .queryParam("action", "getLogs")
+                .queryParam("address", usdtWethPair)
+                .queryParam("topic0", swapTopic)
+                .queryParam("fromBlock", blockNumber)
+                .queryParam("page", "1")
+                .queryParam("offset", "20")
+                .queryParam("apikey", apiKey)
+                .build()
+                .encode()
+                .toUri();
+
+
+        ResponseEntity<LogsResponse> response = restTemplate.getForEntity(
+                uri, LogsResponse.class);
+
+        if (response.getBody() == null || !"1".equals(response.getBody().status())) {
+            return null;
+        }
+
+        // average price
+        List<EventLog> logs = response.getBody().result();
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        int priceCount = 0;
+
+        for (EventLog log : logs) {
+            BigDecimal priceFromLog = convertSwapDataToEthPrice(log);
+            if (priceFromLog != null) {
+                totalPrice = totalPrice.add(priceFromLog);
+                priceCount++;
+            }
+        }
+
+        if (priceCount == 0) {
+            return null;
+        }
+
+        return totalPrice.divide(BigDecimal.valueOf(priceCount), MathContext.DECIMAL64);
+    }
+
+    BigDecimal convertSwapDataToEthPrice(EventLog log) {
+        var data = log.data();
+        // Decimals for USDT and WETH
+        BigDecimal usdtDecimals = new BigDecimal("1000000"); // USDT has 6 decimals
+        BigDecimal wethDecimals = new BigDecimal("1000000000000000000"); // WETH has 18 decimals
+
+        String dataHex = data.startsWith("0x") ? data.substring(2) : data; // Remove "0x" if present
+
+        // Each uint256 is 64 hex characters (32 bytes)
+        if (dataHex.length() != 256) {
+            return null;
+        }
+
+        String amount0InHex = dataHex.substring(0, 64);
+        String amount1InHex = dataHex.substring(64, 128);
+        String amount0OutHex = dataHex.substring(128, 192);
+        String amount1OutHex = dataHex.substring(192, 256);
+
+        BigInteger amount0In = new BigInteger(amount0InHex, 16);
+        BigInteger amount1In = new BigInteger(amount1InHex, 16);
+        BigInteger amount0Out = new BigInteger(amount0OutHex, 16);
+        BigInteger amount1Out = new BigInteger(amount1OutHex, 16);
+
+        BigDecimal usdtAmount;
+        BigDecimal wethAmount;
+
+
+        if (amount0In.compareTo(BigInteger.ZERO) > 0 && amount1Out.compareTo(BigInteger.ZERO) > 0) {
+            // WETH in, USDT out
+            usdtAmount = new BigDecimal(amount1Out).divide(usdtDecimals, MathContext.DECIMAL64);
+            wethAmount = new BigDecimal(amount0In).divide(wethDecimals, MathContext.DECIMAL64);
+        } else if (amount1In.compareTo(BigInteger.ZERO) > 0 && amount0Out.compareTo(BigInteger.ZERO) > 0) {
+            // USDT in, WETH out
+            usdtAmount = new BigDecimal(amount1In).divide(usdtDecimals, MathContext.DECIMAL64);
+            wethAmount = new BigDecimal(amount0Out).divide(wethDecimals, MathContext.DECIMAL64);
+        } else {
+            // No valid amounts, skip
+            return null;
+        }
+
+        // Compute price
+        if (wethAmount.compareTo(BigDecimal.ZERO) == 0) {
+            System.out.println("WETH amount is zero in event");
+            return null;
+        }
+
+        BigDecimal price = usdtAmount.divide(wethAmount, MathContext.DECIMAL64);
+
+        return price;
     }
 
     public record BlockNumberResponse(String status, String message, String result) {
