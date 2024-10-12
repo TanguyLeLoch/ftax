@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -128,8 +129,8 @@ public class TransactionController {
     public SuccessResponse importOnchainTransactions(
         @RequestParam("blockchain") String blockchain,
         @RequestParam("address") String address,
-        @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
-        @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
+        @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+        @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
         Principal principal
     ) {
         Client client = getClient(principal);
@@ -137,7 +138,9 @@ public class TransactionController {
             throw new FunctionalException(
                 "Invalid block range: start date must be before end date");
         }
-        service.importOnchainTransactions(blockchain, address, from, to,
+        address = address.toLowerCase();
+
+        service.importOnchainTransactions(blockchain, address, from.atStartOfDay(), to.atTime(23, 59, 59),
             client);
 
         return new SuccessResponse(true);

@@ -25,17 +25,34 @@
       <div *ngIf="importForm.value.importType === 'Ethereum'" class="address-input">
         <mat-form-field appearance="fill">
           <mat-label>Ethereum Address</mat-label>
-          <input matInput formControlName="ethAddress"/>
-          <mat-error *ngIf="importForm.get('ethAddress')?.hasError('required')">
+          <input matInput formControlName="address"/>
+          <mat-error *ngIf="importForm.get('address')?.hasError('required')">
             Ethereum address is required
           </mat-error>
         </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [formGroup]="importForm" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date">
+            <input matEndDate formControlName="end" placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+          @if (importForm.controls['start'].hasError('matStartDateInvalid')) {
+            <mat-error>Invalid start date</mat-error>
+          }
+          @if (importForm.controls['end'].hasError('matEndDateInvalid')) {
+            <mat-error>Invalid end date</mat-error>
+          }
+        </mat-form-field>
+
       </div>
       <div *ngIf="importForm.value.importType === 'Base chain'" class="address-input">
         <mat-form-field appearance="fill">
           <mat-label>Base chain Address</mat-label>
-          <input matInput formControlName="baseChainAddress"/>
-          <mat-error *ngIf="importForm.get('baseChainAddress')?.hasError('required')">
+          <input matInput formControlName="address"/>
+          <mat-error *ngIf="importForm.get('address')?.hasError('required')">
             Base chain address is required
           </mat-error>
         </mat-form-field>

@@ -15,6 +15,7 @@ model/client.ts
 model/models.ts
 model/pnl.ts
 model/profile.ts
+model/successResponse.ts
 model/token.ts
 model/transaction.ts
 param.ts

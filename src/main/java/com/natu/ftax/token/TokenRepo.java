@@ -10,4 +10,6 @@ public interface TokenRepo
         extends JpaRepository<Token, String> {
 
     Optional<Token> findByTicker(String ticker);
+
+    Optional<Token> findByExternalId(String externalId);
 }

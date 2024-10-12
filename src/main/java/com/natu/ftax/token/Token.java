@@ -21,5 +21,13 @@ public class Token {
     private String ticker;
     @NotNull
     private String name;
+    private String externalId;
+    private Integer decimals;
+
+    public Token(String id, String ticker, String name) {
+        this.id = id;
+        this.ticker = ticker;
+        this.name = name;
+    }
 
 }

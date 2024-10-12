@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { TransactionControllerService } from "../../../core/model";
-import { MatDialogRef } from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {TransactionControllerService} from "../../../core/model";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-tx-import',
@@ -19,8 +19,9 @@ export class TxImportComponent implements OnInit {
     this.importForm = this.fb.group({
       importType: [''],
       file: [null],
-      ethAddress: [''],
-      baseChainAddress: ['']
+      address: [''],
+      start: new FormControl<Date | null>(null),
+      end: new FormControl<Date | null>(null),
     });
   }
 
@@ -65,18 +66,21 @@ export class TxImportComponent implements OnInit {
 
 
   importData(): void {
-    const {importType, file, ethAddress, baseChainAddress} = this.importForm.value;
+    const {importType, file, address, start, end} = this.importForm.value;
     if (importType === 'mexc' && file) {
       console.log('MEXC import file:', file);
       this.transactionService.importTransactions('Mexc', file).subscribe((response) => {
         console.log('MEXC import successful:', response);
       });
-    } else if (importType === 'Ethereum' && ethAddress) {
-      console.log('Ethereum address:', ethAddress);
-    } else if (importType === 'Base chain' && baseChainAddress) {
-      console.log('Base chain address:', baseChainAddress);
+    } else if (importType === 'Ethereum' && address) {
+
+      this.transactionService.importOnchainTransactions('Ethereum', address, start, end).subscribe((response) => {
+        console.log('Ethereum address:', address);
+      });
+    } else if (importType === 'Base chain' && address) {
+      console.log('Base chain address:', address);
     }
-    this.closeDialog();
+    // this.closeDialog(); uncomment to close dialog
   }
 
   resetSelection(): void {
