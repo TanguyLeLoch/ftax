@@ -30,13 +30,18 @@ public class EtherscanApi {
     }
 
     public Integer getBlockNumberByTimestamp(long timestamp, String closest) {
-        String url = baseUrl + "?module=block&action=getblocknobytime"
-                + "&timestamp=" + timestamp
-                + "&closest=" + closest
-                + "&apikey=" + apiKey;
+        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("module", "block")
+                .queryParam("action", "getblocknobytime")
+                .queryParam("timestamp", timestamp)
+                .queryParam("closest", closest)
+                .queryParam("apikey", apiKey)
+                .build()
+                .encode()
+                .toUri();
 
         ResponseEntity<BlockNumberResponse> response = restTemplate.getForEntity(
-                url, BlockNumberResponse.class);
+                uri, BlockNumberResponse.class);
 
         if (response.getBody() != null && "1".equals(
                 response.getBody().status())) {
@@ -49,17 +54,22 @@ public class EtherscanApi {
 
     public List<EthTx> getTransactions(String address, long startBlock,
                                        long endBlock, int page, int offset, String sort) {
-        String url = baseUrl + "?module=account&action=txlist"
-                + "&address=" + address
-                + "&startblock=" + startBlock
-                + "&endblock=" + endBlock
-                + "&page=" + page
-                + "&offset=" + offset
-                + "&sort=" + sort
-                + "&apikey=" + apiKey;
+        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("module", "account")
+                .queryParam("action", "txlist")
+                .queryParam("address", address)
+                .queryParam("startblock", startBlock)
+                .queryParam("endblock", endBlock)
+                .queryParam("page", page)
+                .queryParam("offset", offset)
+                .queryParam("sort", sort)
+                .queryParam("apikey", apiKey)
+                .build()
+                .encode()
+                .toUri();
 
         ResponseEntity<TxListResponse> response = restTemplate.getForEntity(
-                url, TxListResponse.class);
+                uri, TxListResponse.class);
 
         if (response.getBody() != null && "1".equals(
                 response.getBody().status())) {
@@ -74,15 +84,20 @@ public class EtherscanApi {
 
         String topic0 = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
-        String url = baseUrl + "?module=logs&action=getLogs"
-                + "&fromBlock=" + tx.blockNumber()
-                + "&toBlock=" + tx.blockNumber()
-                + "&topic0=" + topic0
-                + "&page=1"
-                + "&offset=1000"
-                + "&apikey=" + apiKey;
+        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("module", "logs")
+                .queryParam("action", "getLogs")
+                .queryParam("fromBlock", tx.blockNumber())
+                .queryParam("toBlock", tx.blockNumber())
+                .queryParam("topic0", topic0)
+                .queryParam("page", "1")
+                .queryParam("offset", "1000")
+                .queryParam("apikey", apiKey)
+                .build()
+                .encode()
+                .toUri();
 
-        ResponseEntity<LogsResponse> response = restTemplate.getForEntity(url, LogsResponse.class);
+        ResponseEntity<LogsResponse> response = restTemplate.getForEntity(uri, LogsResponse.class);
 
         LogsResponse logsResponse = response.getBody();
 
