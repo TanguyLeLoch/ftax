@@ -56,7 +56,7 @@ public class Transaction {
 
     @Transient
     @JsonIgnore
-    private Boolean validationPerformed = false;
+    private boolean validationPerformed = false;
 
     @JsonProperty("valid")
     @NotNull

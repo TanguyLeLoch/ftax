@@ -2,10 +2,8 @@ package com.natu.ftax.transaction.importer.eth;
 
 import com.natu.ftax.transaction.importer.eth.model.EventLog;
 import com.natu.ftax.transaction.importer.eth.model.LogsResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
@@ -19,32 +17,23 @@ import static java.util.Collections.emptyList;
 @Component
 public class EtherscanApi {
 
-    @Value("${etherscan.api.key}")
-    private String apiKey;
+    public static final String BASE_URL = "https://api.etherscan.io/api";
+    private final EtherscanClient etherscanClient;
 
-    private final String baseUrl = "https://api.etherscan.io/api";
-    private final RestTemplate restTemplate;
-
-    public EtherscanApi(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public EtherscanApi(EtherscanClient etherscanClient) {
+        this.etherscanClient = etherscanClient;
     }
 
     public Integer getBlockNumberByTimestamp(long timestamp, String closest) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("module", "block")
-                .queryParam("action", "getblocknobytime")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("timestamp", timestamp)
-                .queryParam("closest", closest)
-                .queryParam("apikey", apiKey)
-                .build()
-                .encode()
-                .toUri();
+                .queryParam("closest", closest);
 
-        ResponseEntity<BlockNumberResponse> response = restTemplate.getForEntity(
-                uri, BlockNumberResponse.class);
+        URI uri = etherscanClient.buildUri("block", "getblocknobytime", builder);
 
-        if (response.getBody() != null && "1".equals(
-                response.getBody().status())) {
+        ResponseEntity<BlockNumberResponse> response = etherscanClient.getForEntity(uri, BlockNumberResponse.class);
+
+        if (response.getBody() != null && "1".equals(response.getBody().status())) {
             return Integer.parseInt(response.getBody().result());
         }
 
@@ -54,25 +43,19 @@ public class EtherscanApi {
 
     public List<EthTx> getTransactions(String address, long startBlock,
                                        long endBlock, int page, int offset, String sort) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("module", "account")
-                .queryParam("action", "txlist")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("address", address)
                 .queryParam("startblock", startBlock)
                 .queryParam("endblock", endBlock)
                 .queryParam("page", page)
                 .queryParam("offset", offset)
-                .queryParam("sort", sort)
-                .queryParam("apikey", apiKey)
-                .build()
-                .encode()
-                .toUri();
+                .queryParam("sort", sort);
 
-        ResponseEntity<TxListResponse> response = restTemplate.getForEntity(
-                uri, TxListResponse.class);
+        URI uri = etherscanClient.buildUri("account", "txlist", builder);
 
-        if (response.getBody() != null && "1".equals(
-                response.getBody().status())) {
+        ResponseEntity<TxListResponse> response = etherscanClient.getForEntity(uri, TxListResponse.class);
+
+        if (response.getBody() != null && "1".equals(response.getBody().status())) {
             return response.getBody().result();
         }
 
@@ -81,23 +64,18 @@ public class EtherscanApi {
     }
 
     public List<EventLog> getLogsforTx(EthTx tx, String address) {
-
         String topic0 = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("module", "logs")
-                .queryParam("action", "getLogs")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("fromBlock", tx.blockNumber())
                 .queryParam("toBlock", tx.blockNumber())
                 .queryParam("topic0", topic0)
                 .queryParam("page", "1")
-                .queryParam("offset", "1000")
-                .queryParam("apikey", apiKey)
-                .build()
-                .encode()
-                .toUri();
+                .queryParam("offset", "1000");
 
-        ResponseEntity<LogsResponse> response = restTemplate.getForEntity(uri, LogsResponse.class);
+        URI uri = etherscanClient.buildUri("logs", "getLogs", builder);
+
+        ResponseEntity<LogsResponse> response = etherscanClient.getForEntity(uri, LogsResponse.class);
 
         LogsResponse logsResponse = response.getBody();
 
@@ -123,22 +101,16 @@ public class EtherscanApi {
         String usdtWethPair = "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852";
         String swapTopic = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822";
 
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("module", "logs")
-                .queryParam("action", "getLogs")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("address", usdtWethPair)
                 .queryParam("topic0", swapTopic)
                 .queryParam("fromBlock", blockNumber)
                 .queryParam("page", "1")
-                .queryParam("offset", "20")
-                .queryParam("apikey", apiKey)
-                .build()
-                .encode()
-                .toUri();
+                .queryParam("offset", "20");
 
+        URI uri = etherscanClient.buildUri("logs", "getLogs", builder);
 
-        ResponseEntity<LogsResponse> response = restTemplate.getForEntity(
-                uri, LogsResponse.class);
+        ResponseEntity<LogsResponse> response = etherscanClient.getForEntity(uri, LogsResponse.class);
 
         if (response.getBody() == null || !"1".equals(response.getBody().status())) {
             return null;
@@ -190,7 +162,6 @@ public class EtherscanApi {
         BigDecimal usdtAmount;
         BigDecimal wethAmount;
 
-
         if (amount0In.compareTo(BigInteger.ZERO) > 0 && amount1Out.compareTo(BigInteger.ZERO) > 0) {
             // WETH in, USDT out
             usdtAmount = new BigDecimal(amount1Out).divide(usdtDecimals, MathContext.DECIMAL64);
@@ -213,6 +184,7 @@ public class EtherscanApi {
         return usdtAmount.divide(wethAmount, MathContext.DECIMAL64);
     }
 
+    // Inner classes or records
     public record BlockNumberResponse(String status, String message, String result) {
     }
 
@@ -230,4 +202,3 @@ public class EtherscanApi {
             String gasPrice) {
     }
 }
-

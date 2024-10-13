@@ -9,6 +9,8 @@ import com.natu.ftax.transaction.Transaction;
 import com.natu.ftax.transaction.TransactionRepo;
 import com.natu.ftax.transaction.importer.OnChainImporter;
 import com.natu.ftax.transaction.importer.eth.model.EventLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -19,10 +21,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Component("EthereumImporter")
 public class EthereumImporter implements OnChainImporter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EthereumImporter.class);
 
     private final EtherscanApi etherscanApi;
     private final IdGenerator idGenerator;
@@ -68,9 +73,13 @@ public class EthereumImporter implements OnChainImporter {
                 "asc");
 
         List<Transaction> txToSave = new ArrayList<>();
-
+        var totalTx = ethTxes.size();
+        var count = 0;
         // Process transactions as needed
+        txLoop:
         for (EtherscanApi.EthTx tx : ethTxes) {
+            count++;
+            System.out.println("Processing tx: " + count + "/" + totalTx);
             var hash = tx.hash();
             var ldt = convertToLocalDateTime(tx.timeStamp());
 
@@ -97,17 +106,36 @@ public class EthereumImporter implements OnChainImporter {
             }
             List<EventLog> logs = etherscanApi.getLogsforTx(tx, address);
 
+
             for (var log : logs) {
 
                 var contractAddress = log.address().toLowerCase();
-                Token token = tokenRepo.findByExternalId(contractAddress)
-                        .orElseGet(() -> {
-                            String tokenId = idGenerator.generate();
-                            var info = dextoolApi.getTokenInfo(contractAddress);
+                Optional<Token> tokenOpt = tokenRepo.findByExternalId(contractAddress);
+                Token token;
 
-                            Token t = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals());
-                            return tokenRepo.save(t);
-                        });
+                if (tokenOpt.isPresent()) {
+                    token = tokenOpt.get();
+                } else {
+                    String tokenId = idGenerator.generate();
+                    var info = dextoolApi.getTokenInfo(contractAddress);
+
+                    if (info == null) {
+                        Transaction emptyTx = Transaction.builder()
+                                .id(idGenerator.generate())
+                                .client(client)
+                                .localDateTime(ldt)
+                                .type(Transaction.Type.BUY)
+                                .token(contractAddress)
+                                .externalId(hash)
+                                .build();
+                        txToSave.add(emptyTx);
+                        LOGGER.warn("Token not found in dextool: " + contractAddress);
+                        continue txLoop;
+                    }
+
+                    Token t = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals());
+                    token = tokenRepo.save(t);
+                }
 
                 String addr = address.substring(2);
                 int idx = IntStream.range(0, log.topics().size())
