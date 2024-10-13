@@ -25,10 +25,11 @@
               <span class="date">{{ getDateTimeAtLocalFormat() }}</span>
             </div>
             <div class="tx-description-center">
-              <span class="token-value">{{ txForm.value.amount }} {{ txForm.value.token?.name }}</span>
+              <span
+                class="token-value">{{ formatter.format(txForm.value.amount) }} {{ txForm.value.token?.name }}</span>
               <span class="fiat-value">
-                    {{ txForm.value.price }} &#36;/{{ txForm.value.token?.ticker }}
-                  </span>
+                    {{ formatter.format(txForm.value.price) }} &#36;/{{ txForm.value.token?.ticker }}
+              </span>
             </div>
 
             <div class="tx-description-right">

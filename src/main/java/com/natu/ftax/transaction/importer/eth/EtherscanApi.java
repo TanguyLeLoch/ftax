@@ -195,9 +195,7 @@ public class EtherscanApi {
             return null;
         }
 
-        BigDecimal price = usdtAmount.divide(wethAmount, MathContext.DECIMAL64);
-
-        return price;
+        return usdtAmount.divide(wethAmount, MathContext.DECIMAL64);
     }
 
     public record BlockNumberResponse(String status, String message, String result) {

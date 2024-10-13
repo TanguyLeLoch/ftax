@@ -45,15 +45,14 @@ public class MexcData {
     public Transaction toTransaction(String id, Client client,
         Function<String, Token> getOrCreateToken) {
         Token token = getOrCreateToken.apply(pair);
-        return new Transaction(id,
-            client,
-            localDateTime,
-            Transaction.Type.valueOf(side),
-            executedAmount,
-            token.getId(),
-            filledPrice,
-            null,
-            null,
-            false);
+        return Transaction.builder()
+                .id(id)
+                .client(client)
+                .localDateTime(localDateTime)
+                .type(Transaction.Type.valueOf(side))
+                .amount(executedAmount)
+                .token(token.getId())
+                .price(filledPrice)
+                .build();
     }
 }

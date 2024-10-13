@@ -44,6 +44,8 @@ public class Transaction {
     @Column(precision = 64, scale = 30)
     private BigDecimal price;
 
+    private String externalId;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pnl_id")
     private Pnl pnl;

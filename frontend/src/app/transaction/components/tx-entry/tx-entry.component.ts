@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Token, Transaction, TransactionControllerService } from "../../../core/model";
+import {Component, Input, OnInit} from '@angular/core';
+import {Token, Transaction, TransactionControllerService} from "../../../core/model";
 import {
   AbstractControl,
   FormBuilder,
@@ -19,9 +19,9 @@ import {
   faTrash,
   faWarning
 } from "@fortawesome/free-solid-svg-icons";
-import { map, Observable, startWith } from "rxjs";
-import { TokenService } from "../../../core/services/token.service";
-import { ToastService } from "../../../core/services/toast.service";
+import {map, Observable, startWith} from "rxjs";
+import {TokenService} from "../../../core/services/token.service";
+import {ToastService} from "../../../core/services/toast.service";
 
 
 @Component({
@@ -51,9 +51,14 @@ export class TxEntryComponent implements OnInit {
     {value: 'SELL', text: 'Sell'}
   ]
 
+  protected formatter;
 
   constructor(private service: TransactionControllerService, private fb: FormBuilder,
               private tokenService: TokenService, private toast: ToastService) {
+    this.formatter = new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      compactDisplay: 'short'
+    });
   }
 
   ngOnInit(): void {

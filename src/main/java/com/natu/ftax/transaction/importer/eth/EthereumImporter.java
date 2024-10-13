@@ -71,7 +71,7 @@ public class EthereumImporter implements OnChainImporter {
 
         // Process transactions as needed
         for (EtherscanApi.EthTx tx : ethTxes) {
-
+            var hash = tx.hash();
             var ldt = convertToLocalDateTime(tx.timeStamp());
 
             if (!"0".equals(tx.value())) {
@@ -90,6 +90,7 @@ public class EthereumImporter implements OnChainImporter {
                         .localDateTime(ldt)
                         .price(price)
                         .token(ethToken.getId())
+                        .externalId(hash)
                         .build();
 
                 txToSave.add(ethTx);
@@ -120,19 +121,45 @@ public class EthereumImporter implements OnChainImporter {
                         .id(idGenerator.generate())
                         .client(client)
                         .token(token.getId())
-                        .price(BigDecimal.valueOf(0.003))
                         .type(side)
                         .amount(amount)
                         .localDateTime(ldt)
+                        .externalId(hash)
                         .build();
 
                 txToSave.add(txFromLog);
             }
 
+
+            matchPrices(txToSave, hash);
+
+
         }
 
         transactionRepo.saveAll(txToSave);
 
+    }
+
+    private static void matchPrices(List<Transaction> txToSave, String hash) {
+        List<Transaction> txForHash = txToSave.stream().filter(t -> t.getExternalId().equals(hash)).toList();
+
+        if (txForHash.size() != 2) {
+            return;
+        }
+        boolean hasBuy = txForHash.stream().anyMatch(t -> t.getType() == Transaction.Type.BUY);
+        boolean hasSell = txForHash.stream().anyMatch(t -> t.getType() == Transaction.Type.SELL);
+        if (!hasBuy || !hasSell) {
+            return;
+        }
+        var nullPrice = txForHash.stream().filter(t -> t.getPrice() == null).findFirst();
+        var nonNullPrice = txForHash.stream().filter(t -> t.getPrice() != null).findFirst();
+        if (nullPrice.isEmpty() || nonNullPrice.isEmpty()) {
+            return;
+        }
+
+        // both price should be the same
+        BigDecimal totalCost = nonNullPrice.get().getPrice().multiply(nonNullPrice.get().getAmount());
+        nullPrice.get().setPrice(totalCost.divide(nullPrice.get().getAmount(), MathContext.DECIMAL64));
     }
 
     private BigDecimal parseWei(String weiStr) {
