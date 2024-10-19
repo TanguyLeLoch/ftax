@@ -51,11 +51,27 @@
 
       </mat-expansion-panel-header>
 
-      <app-tx-form *ngIf="hasBeenExpanded"
-                   [transaction]="transaction"
-                   (formSubmit)="onFormSubmit($event)"
+      <div class="expanded-panel-container" *ngIf="hasBeenExpanded">
+        <app-tx-form
+          [transaction]="transaction"
+          (formSubmit)="onFormSubmit($event)"
 
-      ></app-tx-form>
+        ></app-tx-form>
+        <div class="bottom-panel-container">
+          <div *ngIf="transaction.externalId && transaction.platform === 'Ethereum'">
+            <a
+              [href]="'https://etherscan.io/tx/' + transaction.externalId"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="etherscan-link"
+            >
+              <img src="assets/etherscan.png" alt="Etherscan Logo" class="etherscan-icon"/>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
 
     </mat-expansion-panel>
   </mat-accordion>

@@ -101,3 +101,14 @@ mat-accordion {
   font-size: min(calc(2px + 1vw), 12px);
 }
 
+.etherscan-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bottom-panel-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
