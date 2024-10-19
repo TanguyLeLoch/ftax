@@ -3,6 +3,8 @@ package com.natu.ftax.transaction.importer.eth;
 import com.natu.ftax.common.exception.FunctionalException;
 import io.github.bucket4j.Bucket;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -38,7 +40,7 @@ public class EtherscanClient {
                 .build();
     }
 
-    public <T> ResponseEntity<T> getForEntity(URI uri, Class<T> responseType) {
+    public <T> ResponseEntity<T> getForEntity(URI uri, ParameterizedTypeReference<T> responseType) {
         // Consume from per-day bucket (throws exception if limit reached)
         if (!perDayBucket.tryConsume(1)) {
             throw new FunctionalException("Daily etherscan API rate limit exceeded");
@@ -53,7 +55,8 @@ public class EtherscanClient {
         }
 
         // Proceed with the API call
-        return restTemplate.getForEntity(uri, responseType);
+        return restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+
     }
 
     public URI buildUri(String module, String action, UriComponentsBuilder builder) {

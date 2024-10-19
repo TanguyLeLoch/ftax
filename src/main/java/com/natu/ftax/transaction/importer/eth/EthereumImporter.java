@@ -7,6 +7,7 @@ import com.natu.ftax.token.Token;
 import com.natu.ftax.token.TokenRepo;
 import com.natu.ftax.transaction.Transaction;
 import com.natu.ftax.transaction.TransactionRepo;
+import com.natu.ftax.transaction.importer.MasterTxService;
 import com.natu.ftax.transaction.importer.OnChainImporter;
 import com.natu.ftax.transaction.importer.eth.model.EventLog;
 import org.slf4j.Logger;
@@ -36,18 +37,21 @@ public class EthereumImporter implements OnChainImporter {
     private final DextoolApi dextoolApi;
     private final TokenRepo tokenRepo;
     private final TransactionRepo transactionRepo;
+    private final MasterTxService masterTxService;
 
     public EthereumImporter(EtherscanApi etherscanApi,
                             IdGenerator idGenerator,
                             DextoolApi dextoolApi,
                             TokenRepo tokenRepo,
-                            TransactionRepo transactionRepo
+                            TransactionRepo transactionRepo,
+                            MasterTxService masterTxService
     ) {
         this.etherscanApi = etherscanApi;
         this.idGenerator = idGenerator;
         this.dextoolApi = dextoolApi;
         this.tokenRepo = tokenRepo;
         this.transactionRepo = transactionRepo;
+        this.masterTxService = masterTxService;
     }
 
     @Override
@@ -87,29 +91,55 @@ public class EthereumImporter implements OnChainImporter {
         var hash = tx.hash();
         var ldt = convertToLocalDateTime(tx.timeStamp());
 
+        List<Transaction> txs = new ArrayList<>();
+
         if (hasEthValue(tx)) {
-            saveEthValue(address, client, tx, txToSave, ldt, hash);
+            txs.add(createTxForEthValue(address, client, tx, txToSave, ldt, hash));
+        }
+
+        List<EtherscanApi.InternalTx> internalTxs = etherscanApi.getInternalTxs(tx, address);
+        if (!internalTxs.isEmpty()) {
+            txs.addAll(createEthFromInternalTx(internalTxs, address, client, tx));
         }
 
         List<EventLog> logs = etherscanApi.getLogsforTx(tx, address);
-
-
         for (var log : logs) {
 
             if (iswithdrawal(log)) {
-                var t = importTxFromWithdrawal(address, client, txToSave, log, ldt, hash, tx);
-                txToSave.add(t);
+                txs.add(importTxFromWithdrawal(address, client, txToSave, log, ldt, hash, tx));
             } else if (isTransfer(log)) {
-                var t = importTxFromTransfer(address, client, txToSave, log, ldt, hash);
-                txToSave.add(t);
+                txs.add(importTxFromTransfer(address, client, txToSave, log, ldt, hash));
             }
-
-
         }
 
 
-        matchPrices(txToSave, hash);
+        var matchedTxs = masterTxService.createMasterTransactions(txs, "Ethereum");
+
+        matchPrices(matchedTxs, hash);
+        txToSave.addAll(matchedTxs);
+
     }
+
+    private List<Transaction> createEthFromInternalTx(List<EtherscanApi.InternalTx> internalTxs, String address, Client client, EtherscanApi.EthTx tx) {
+        List<Transaction> txs = new ArrayList<>();
+        for (EtherscanApi.InternalTx itx : internalTxs) {
+            var side = itx.from().equals(address) ? Transaction.Type.SELL : Transaction.Type.BUY;
+            txs.add(Transaction.builder()
+                    .platform("Ethereum")
+                    .id(idGenerator.generate())
+                    .client(client)
+                    .amount(parseWei(itx.value()))
+                    .type(side)
+                    .token(getEthToken().getId())
+                    .localDateTime(convertToLocalDateTime(itx.timeStamp()))
+                    .price(etherscanApi.getEtherPriceAt(tx.blockNumber()))
+                    .externalId(tx.hash())
+                    .build());
+
+        }
+        return txs;
+    }
+
 
     private Transaction importTxFromWithdrawal(String address, Client client, List<Transaction> txToSave, EventLog log, LocalDateTime ldt, String hash, EtherscanApi.EthTx tx) {
 
@@ -149,6 +179,7 @@ public class EthereumImporter implements OnChainImporter {
                 .amount(amount)
                 .localDateTime(ldt)
                 .externalId(hash)
+                .price(BigDecimal.valueOf(-1))
                 .build();
 
 
@@ -177,7 +208,7 @@ public class EthereumImporter implements OnChainImporter {
         return log.topics().get(0).equals(TRANSFER_TOPIC);
     }
 
-    private void saveEthValue(String address, Client client, EtherscanApi.EthTx tx, List<Transaction> txToSave, LocalDateTime ldt, String hash) {
+    private Transaction createTxForEthValue(String address, Client client, EtherscanApi.EthTx tx, List<Transaction> txToSave, LocalDateTime ldt, String hash) {
         var amount = parseWei(tx.value());
         var side = tx.from().equals(address) ? Transaction.Type.SELL : Transaction.Type.BUY;
         var ethToken = getEthToken();
@@ -196,8 +227,10 @@ public class EthereumImporter implements OnChainImporter {
                 .externalId(hash)
                 .build();
 
-        txToSave.add(ethTx);
+        return ethTx;
+
     }
+
 
     private Token getEthToken() {
         return tokenRepo.findByTicker("ETH").orElseThrow(() -> new FunctionalException("Cant find Eth Token"));
@@ -245,8 +278,8 @@ public class EthereumImporter implements OnChainImporter {
         if (!hasBuy || !hasSell) {
             return;
         }
-        var nullPrice = txForHash.stream().filter(t -> t.getPrice() == null).findFirst();
-        var nonNullPrice = txForHash.stream().filter(t -> t.getPrice() != null).findFirst();
+        var nullPrice = txForHash.stream().filter(t -> t.getPrice().equals(BigDecimal.valueOf(-1))).findFirst();
+        var nonNullPrice = txForHash.stream().filter(t -> t.getPrice().compareTo(BigDecimal.valueOf(-1)) != 0).findFirst();
         if (nullPrice.isEmpty() || nonNullPrice.isEmpty()) {
             return;
         }
