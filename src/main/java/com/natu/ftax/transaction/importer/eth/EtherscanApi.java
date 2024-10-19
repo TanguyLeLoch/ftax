@@ -219,13 +219,7 @@ public class EtherscanApi {
     }
 
 
-    public record Response<T>(String status, String message, T result) {
 
-        boolean isSuccess() {
-            return status.equals("1");
-        }
-
-    }
 
     public record InternalTx(
             String blockNumber,
@@ -251,5 +245,13 @@ public class EtherscanApi {
             String value,
             String gasUsed,
             String gasPrice) {
+    }
+
+    public record Response<T>(String status, String message, T result) {
+
+        boolean isSuccess() {
+            return status.equals("1");
+        }
+
     }
 }

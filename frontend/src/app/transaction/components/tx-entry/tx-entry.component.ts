@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Token, Transaction } from "../../../core/model";
+import { Token, Transaction, TransactionControllerService } from "../../../core/model";
 import { faArrowDown, faArrowUp, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { TokenService } from "../../../core/services/token.service";
 
@@ -28,7 +28,7 @@ export class TxEntryComponent implements OnInit {
 
   protected formatter;
 
-  constructor(private tokenService: TokenService) {
+  constructor(private tokenService: TokenService, private transactionService: TransactionControllerService) {
     this.formatter = new Intl.NumberFormat('en-US', {
       notation: 'compact',
       compactDisplay: 'short'
@@ -72,4 +72,8 @@ export class TxEntryComponent implements OnInit {
   }
 
   protected readonly faWarning = faWarning;
+
+  onRefreshClick() {
+    this.transactionService.refresh(this.transaction.id).subscribe();
+  }
 }

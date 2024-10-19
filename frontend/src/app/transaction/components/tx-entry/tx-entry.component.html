@@ -55,10 +55,15 @@
         <app-tx-form
           [transaction]="transaction"
           (formSubmit)="onFormSubmit($event)"
-
         ></app-tx-form>
         <div class="bottom-panel-container">
+
           <div *ngIf="transaction.externalId && transaction.platform === 'Ethereum'">
+
+            <div (click)="onRefreshClick()" class="refresh-icon">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="refresh"></mat-icon>
+            </div>
+
             <a
               [href]="'https://etherscan.io/tx/' + transaction.externalId"
               target="_blank"

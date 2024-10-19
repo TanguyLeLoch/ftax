@@ -48,6 +48,8 @@ public class Transaction {
     @NotNull
     private String platform;
 
+    private String address;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pnl_id")
     private Pnl pnl;

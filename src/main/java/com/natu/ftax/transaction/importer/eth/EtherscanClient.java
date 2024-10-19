@@ -2,11 +2,14 @@ package com.natu.ftax.transaction.importer.eth;
 
 import com.natu.ftax.common.exception.FunctionalException;
 import io.github.bucket4j.Bucket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,6 +22,7 @@ public class EtherscanClient {
 
     @Value("${etherscan.api.key}")
     private String apiKey;
+    private final Logger LOGGER = LoggerFactory.getLogger(EtherscanClient.class);
 
     private final RestTemplate restTemplate;
     private final Bucket perSecondBucket;
@@ -29,7 +33,7 @@ public class EtherscanClient {
 
         // Per-Second Limit Bucket (blocks when limit is reached)
         perSecondBucket = Bucket.builder()
-                .addLimit(limit -> limit.capacity(5).refillGreedy(1, Duration.ofMillis(200)))
+                .addLimit(limit -> limit.capacity(4).refillGreedy(1, Duration.ofMillis(200)))
                 .build();
         Instant firstRefillTime = LocalDateTime.now(ZoneId.of("UTC"))
                 .truncatedTo(ChronoUnit.DAYS).plusDays(1)
@@ -55,8 +59,14 @@ public class EtherscanClient {
         }
 
         // Proceed with the API call
-        return restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+        try {
+            return restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+        } catch (RestClientException e) {
+            LOGGER.error("Client error when calling Etherscan API at URI: {}", uri, e);
+            LOGGER.error("Error message: {}", e.getMessage());
+            throw new EthereumImporter.TxInterruptionNeeded();
 
+        }
     }
 
     public URI buildUri(String module, String action, UriComponentsBuilder builder) {

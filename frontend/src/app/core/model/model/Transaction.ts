@@ -21,6 +21,7 @@ export interface Transaction {
     price?: number;
     externalId?: string;
     platform: string;
+    address?: string;
     pnl?: Pnl;
     error?: string;
     valid: boolean;

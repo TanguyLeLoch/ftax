@@ -6,6 +6,7 @@ import com.natu.ftax.common.SuccessResponse;
 import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.common.exception.NotFoundException;
 import com.natu.ftax.transaction.calculation.Compute;
+import com.natu.ftax.transaction.importer.eth.EthereumImporter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,15 +31,19 @@ public class TransactionController {
     private final TransactionRepo repository;
     private final TransactionService service;
     private final IdGenerator idGenerator;
+    private final EthereumImporter ethereumImporter;
 
 
     public TransactionController(
             IdGenerator idGenerator,
-        TransactionService service,
-            TransactionRepo repository) {
+            TransactionService service,
+            TransactionRepo repository,
+            EthereumImporter ethereumImporter
+    ) {
         this.repository = repository;
         this.service = service;
         this.idGenerator = idGenerator;
+        this.ethereumImporter = ethereumImporter;
     }
 
 
@@ -147,6 +152,22 @@ public class TransactionController {
             client);
 
         return new SuccessResponse(true);
+    }
+
+    @PreAuthorize("isConnected()")
+    @PostMapping(value = "refresh", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Transaction> refresh(@RequestParam("txId") String txId,
+                                     Principal principal) {
+        Client client = getClient(principal);
+
+        var tx = repository.findByIdAndClient(txId, client).orElseThrow(
+                () -> new NotFoundException("Transaction not found"));
+        if ("Ethereum".equals(tx.getPlatform())) {
+            throw new FunctionalException("Transaction not found");
+        }
+
+        repository.deleteByExternalId(tx.getExternalId());
+        return ethereumImporter.refreshTx(tx, client);
     }
 
 
