@@ -15,5 +15,7 @@ export interface Token {
     id?: string;
     ticker: string;
     name: string;
+    externalId?: string;
+    decimals?: number;
 }
 

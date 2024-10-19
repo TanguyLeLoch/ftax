@@ -45,6 +45,8 @@ public class Transaction {
     private BigDecimal price;
 
     private String externalId;
+    @NotNull
+    private String platform;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pnl_id")

@@ -96,6 +96,7 @@ public class MexcImporter implements PlatformImporter {
             MathContext.DECIMAL64);
         String id = idGenerator.generate();
         return Transaction.builder()
+                .platform("Mexc")
             .id(id)
             .client(first.getClient())
             .localDateTime(first.getLocalDateTime())

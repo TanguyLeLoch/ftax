@@ -21,8 +21,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
+
+import static com.natu.ftax.transaction.importer.eth.EtherscanApi.TRANSFER_TOPIC;
+import static com.natu.ftax.transaction.importer.eth.EtherscanApi.WITHDRAW_TOPIC;
 
 @Component("EthereumImporter")
 public class EthereumImporter implements OnChainImporter {
@@ -51,6 +53,161 @@ public class EthereumImporter implements OnChainImporter {
     @Override
     public void importTransaction(String address, LocalDateTime from,
                                   LocalDateTime to, Client client) {
+        List<EtherscanApi.EthTx> ethTxes = getEthTxes(address, from, to);
+
+        List<Transaction> txToSave = new ArrayList<>();
+        var totalTx = ethTxes.size();
+        var count = 0;
+        // Process transactions as needed
+        for (EtherscanApi.EthTx tx : ethTxes) {
+            count++;
+            System.out.println("Processing tx: " + count + "/" + totalTx);
+            try {
+                importOneTx(address, client, tx, txToSave);
+            } catch (TxInterruptionNeeded e) {
+                var hash = tx.hash();
+                var ldt = convertToLocalDateTime(tx.timeStamp());
+                Transaction emptyTx = Transaction.builder()
+                        .platform("Ethereum")
+                        .id(idGenerator.generate())
+                        .client(client)
+                        .localDateTime(ldt)
+                        .type(Transaction.Type.BUY)
+                        .externalId(hash)
+                        .build();
+                txToSave.add(emptyTx);
+            }
+        }
+
+        transactionRepo.saveAll(txToSave);
+
+    }
+
+    private void importOneTx(String address, Client client, EtherscanApi.EthTx tx, List<Transaction> txToSave) {
+        var hash = tx.hash();
+        var ldt = convertToLocalDateTime(tx.timeStamp());
+
+        if (hasEthValue(tx)) {
+            saveEthValue(address, client, tx, txToSave, ldt, hash);
+        }
+
+        List<EventLog> logs = etherscanApi.getLogsforTx(tx, address);
+
+
+        for (var log : logs) {
+
+            if (iswithdrawal(log)) {
+                var t = importTxFromWithdrawal(address, client, txToSave, log, ldt, hash, tx);
+                txToSave.add(t);
+            } else if (isTransfer(log)) {
+                var t = importTxFromTransfer(address, client, txToSave, log, ldt, hash);
+                txToSave.add(t);
+            }
+
+
+        }
+
+
+        matchPrices(txToSave, hash);
+    }
+
+    private Transaction importTxFromWithdrawal(String address, Client client, List<Transaction> txToSave, EventLog log, LocalDateTime ldt, String hash, EtherscanApi.EthTx tx) {
+
+        var amount = getAmountFromData(log.data(), 18);
+
+        return Transaction.builder()
+                .platform("Ethereum")
+                .id(idGenerator.generate())
+                .client(client)
+                .token(getEthToken().getId())
+                .type(Transaction.Type.BUY)
+                .externalId(hash)
+                .price(etherscanApi.getEtherPriceAt(tx.blockNumber()))
+                .localDateTime(ldt)
+                .amount(amount)
+                .build();
+    }
+
+    private Transaction importTxFromTransfer(String address, Client client, List<Transaction> txToSave, EventLog log, LocalDateTime ldt, String hash) {
+        var contractAddress = log.address().toLowerCase();
+        Token token = findOrCreateToken(contractAddress);
+
+        String addr = address.substring(2);
+        int idx = IntStream.range(0, log.topics().size())
+                .filter(i -> log.topics().get(i).contains(addr))
+                .findFirst()
+                .orElse(-1);
+        var side = idx == 2 ? Transaction.Type.BUY : Transaction.Type.SELL;
+        var amount = getAmountFromData(log.data(), token.getDecimals());
+
+        return Transaction.builder()
+                .platform("Ethereum")
+                .id(idGenerator.generate())
+                .client(client)
+                .token(token.getId())
+                .type(side)
+                .amount(amount)
+                .localDateTime(ldt)
+                .externalId(hash)
+                .build();
+
+
+    }
+
+    private Token findOrCreateToken(String contractAddress) {
+        return tokenRepo.findByExternalId(contractAddress)
+                .orElseGet(() -> createAndSaveToken(contractAddress));
+    }
+
+    private Token createAndSaveToken(String contractAddress) {
+        String tokenId = idGenerator.generate();
+        var info = dextoolApi.getTokenInfo(contractAddress);
+
+        if (info == null) {
+            LOGGER.warn("Token not found in dextool: " + contractAddress);
+            throw new TxInterruptionNeeded();
+        }
+
+        Token token = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals());
+        return tokenRepo.save(token);
+    }
+
+
+    private boolean isTransfer(EventLog log) {
+        return log.topics().get(0).equals(TRANSFER_TOPIC);
+    }
+
+    private void saveEthValue(String address, Client client, EtherscanApi.EthTx tx, List<Transaction> txToSave, LocalDateTime ldt, String hash) {
+        var amount = parseWei(tx.value());
+        var side = tx.from().equals(address) ? Transaction.Type.SELL : Transaction.Type.BUY;
+        var ethToken = getEthToken();
+
+        BigDecimal price = etherscanApi.getEtherPriceAt(tx.blockNumber());
+        //create eth tx
+        var ethTx = Transaction.builder()
+                .platform("Ethereum")
+                .id(idGenerator.generate())
+                .client(client)
+                .amount(amount)
+                .type(side)
+                .localDateTime(ldt)
+                .price(price)
+                .token(ethToken.getId())
+                .externalId(hash)
+                .build();
+
+        txToSave.add(ethTx);
+    }
+
+    private Token getEthToken() {
+        return tokenRepo.findByTicker("ETH").orElseThrow(() -> new FunctionalException("Cant find Eth Token"));
+    }
+
+    private static boolean hasEthValue(EtherscanApi.EthTx tx) {
+        return !"0".equals(tx.value());
+    }
+
+    private List<EtherscanApi.EthTx> getEthTxes(String address, LocalDateTime from, LocalDateTime to) {
         long fromTimestamp = from.toEpochSecond(ZoneOffset.UTC);
         long toTimestamp = to.toEpochSecond(ZoneOffset.UTC);
 
@@ -64,108 +221,17 @@ public class EthereumImporter implements OnChainImporter {
                     "Invalid block range, failed to get block number from Etherscan API");
         }
 
-        List<EtherscanApi.EthTx> ethTxes = etherscanApi.getTransactions(
+        return etherscanApi.getTransactions(
                 address,
                 startBlock,
                 endBlock,
                 1,
                 10000,
                 "asc");
+    }
 
-        List<Transaction> txToSave = new ArrayList<>();
-        var totalTx = ethTxes.size();
-        var count = 0;
-        // Process transactions as needed
-        txLoop:
-        for (EtherscanApi.EthTx tx : ethTxes) {
-            count++;
-            System.out.println("Processing tx: " + count + "/" + totalTx);
-            var hash = tx.hash();
-            var ldt = convertToLocalDateTime(tx.timeStamp());
-
-            if (!"0".equals(tx.value())) {
-
-                var amount = parseWei(tx.value());
-                var side = tx.from().equals(address) ? Transaction.Type.SELL : Transaction.Type.BUY;
-                var ethToken = tokenRepo.findByTicker("ETH").orElseThrow(() -> new FunctionalException("Cant find Eth Token"));
-
-                BigDecimal price = etherscanApi.getEtherPriceAt(tx.blockNumber());
-                //create eth tx
-                var ethTx = Transaction.builder()
-                        .id(idGenerator.generate())
-                        .client(client)
-                        .amount(amount)
-                        .type(side)
-                        .localDateTime(ldt)
-                        .price(price)
-                        .token(ethToken.getId())
-                        .externalId(hash)
-                        .build();
-
-                txToSave.add(ethTx);
-            }
-            List<EventLog> logs = etherscanApi.getLogsforTx(tx, address);
-
-
-            for (var log : logs) {
-
-                var contractAddress = log.address().toLowerCase();
-                Optional<Token> tokenOpt = tokenRepo.findByExternalId(contractAddress);
-                Token token;
-
-                if (tokenOpt.isPresent()) {
-                    token = tokenOpt.get();
-                } else {
-                    String tokenId = idGenerator.generate();
-                    var info = dextoolApi.getTokenInfo(contractAddress);
-
-                    if (info == null) {
-                        Transaction emptyTx = Transaction.builder()
-                                .id(idGenerator.generate())
-                                .client(client)
-                                .localDateTime(ldt)
-                                .type(Transaction.Type.BUY)
-                                .token(contractAddress)
-                                .externalId(hash)
-                                .build();
-                        txToSave.add(emptyTx);
-                        LOGGER.warn("Token not found in dextool: " + contractAddress);
-                        continue txLoop;
-                    }
-
-                    Token t = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals());
-                    token = tokenRepo.save(t);
-                }
-
-                String addr = address.substring(2);
-                int idx = IntStream.range(0, log.topics().size())
-                        .filter(i -> log.topics().get(i).contains(addr))
-                        .findFirst()
-                        .orElse(-1);
-                var side = idx == 2 ? Transaction.Type.BUY : Transaction.Type.SELL;
-                var amount = getAmountFromData(log.data(), token.getDecimals());
-
-                var txFromLog = Transaction.builder()
-                        .id(idGenerator.generate())
-                        .client(client)
-                        .token(token.getId())
-                        .type(side)
-                        .amount(amount)
-                        .localDateTime(ldt)
-                        .externalId(hash)
-                        .build();
-
-                txToSave.add(txFromLog);
-            }
-
-
-            matchPrices(txToSave, hash);
-
-
-        }
-
-        transactionRepo.saveAll(txToSave);
-
+    private boolean iswithdrawal(EventLog log) {
+        return log.topics().get(0).equals(WITHDRAW_TOPIC);
     }
 
     private static void matchPrices(List<Transaction> txToSave, String hash) {
@@ -209,5 +275,8 @@ public class EthereumImporter implements OnChainImporter {
         BigInteger bigInt = new BigInteger(hexValue, 16);
 
         return new BigDecimal(bigInt).divide(BigDecimal.TEN.pow(decimals), MathContext.DECIMAL64);
+    }
+
+    static class TxInterruptionNeeded extends RuntimeException {
     }
 }

@@ -18,6 +18,8 @@ import static java.util.Collections.emptyList;
 public class EtherscanApi {
 
     public static final String BASE_URL = "https://api.etherscan.io/api";
+    public static final String WITHDRAW_TOPIC = "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65";
+    public static final String TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
     private final EtherscanClient etherscanClient;
 
     public EtherscanApi(EtherscanClient etherscanClient) {
@@ -64,12 +66,13 @@ public class EtherscanApi {
     }
 
     public List<EventLog> getLogsforTx(EthTx tx, String address) {
-        String topic0 = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("fromBlock", tx.blockNumber())
                 .queryParam("toBlock", tx.blockNumber())
-                .queryParam("topic0", topic0)
+                .queryParam("topic0", TRANSFER_TOPIC)
+                .queryParam("topic0_1_opr", "or")
+                .queryParam("topic1", WITHDRAW_TOPIC)
                 .queryParam("page", "1")
                 .queryParam("offset", "1000");
 
@@ -85,13 +88,13 @@ public class EtherscanApi {
         String addr = address.substring(2);
         return logsResponse.result().stream()
                 .filter(log -> log.transactionHash().equals(tx.hash()))
-                .filter(log -> isAddressInTopics(log, addr))
+                .filter(log -> isAddressInTransferTopics(log, addr))
                 .toList();
     }
 
-    private static boolean isAddressInTopics(EventLog log, String addr) {
-        return log.topics().stream()
-                .anyMatch(topic -> topic.contains(addr));
+    private static boolean isAddressInTransferTopics(EventLog log, String addr) {
+        return TRANSFER_TOPIC.equals(log.topics().get(0))
+                && log.topics().stream().anyMatch(topic -> topic.contains(addr));
     }
 
     /**

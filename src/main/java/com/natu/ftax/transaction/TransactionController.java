@@ -64,6 +64,9 @@ public class TransactionController {
         if (transaction.getType() == null) {
             transaction.setType(BUY);
         }
+        if (transaction.getPlatform() == null) {
+            transaction.setPlatform("Ftax");
+        }
     }
 
     @PreAuthorize("isConnected()")

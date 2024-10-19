@@ -46,6 +46,7 @@ public class MexcData {
         Function<String, Token> getOrCreateToken) {
         Token token = getOrCreateToken.apply(pair);
         return Transaction.builder()
+                .platform("Mexc")
                 .id(id)
                 .client(client)
                 .localDateTime(localDateTime)
