@@ -1,0 +1,122 @@
+<form [formGroup]="txForm" (ngSubmit)="onSubmit()" class="tx-entry">
+
+  <!--                        -->
+  <!--         DATE           -->
+  <!--                        -->
+  <mat-form-field appearance="outline">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date">
+    <span matTextPrefix (click)="picker.open()">
+          <mat-icon aria-hidden="false" aria-label="Open picker" fontIcon="event"></mat-icon>
+        </span>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!--                        -->
+  <!--         TIME           -->
+  <!--                        -->
+  <mat-form-field appearance="outline">
+    <mat-label>Time</mat-label>
+
+    <input formControlName="time" matInput id="settime" type="time" step="1" placeholder="start date"/>
+  </mat-form-field>
+
+
+  <!--                        -->
+  <!--         ACTION         -->
+  <!--                        -->
+  <mat-form-field appearance="outline">
+    <mat-label>Action</mat-label>
+    <mat-select formControlName="type" id="">
+      @for (action of actions; track action) {
+        <mat-option [value]="action.value">{{ action.text }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+
+  <!--                        -->
+  <!--         AMOUNT         -->
+  <!--                        -->
+  <mat-form-field floatLabel="auto" appearance="outline">
+    <mat-label>Amount</mat-label>
+    <input formControlName="amount"
+           matInput type="number" class="right-align" placeholder="0.00"/>
+    <mat-error *ngIf="txForm.get('amount')?.hasError('notNegative')">
+      Cannot be negative
+    </mat-error>
+  </mat-form-field>
+
+  <!--                        -->
+  <!--         TOKEN          -->
+  <!--                        -->
+  <mat-form-field floatLabel="auto" appearance="outline">
+    <mat-label>Token</mat-label>
+
+    <div class="input-container">
+      <input type="text" matInput formControlName="token"
+             [formControl]="tokenControl" [matAutocomplete]="auto">
+      <!--                 placeholder="Token"-->
+
+      <fa-icon class="add-token"
+               *ngIf="txForm.get('token')?.hasError('noString')"
+               [icon]="faPlus" (click)="addToken()"></fa-icon>
+    </div>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      @for (option of filteredOptions | async; track option) {
+        <mat-option [value]="option">{{ option.name }}</mat-option>
+      }
+    </mat-autocomplete>
+    <mat-error *ngIf="txForm.get('token')?.hasError('noString')">
+      Token missing, create with + button
+    </mat-error>
+  </mat-form-field>
+
+
+  <!--                        -->
+  <!--      PRICE      -->
+  <!--                        -->
+  <mat-form-field floatLabel="auto" class="form-field" appearance="outline">
+    <mat-label>Price</mat-label>
+    <input formControlName="price"
+           matInput type="number" class="right-align" placeholder="0.00"/>
+    <mat-error *ngIf="txForm.get('price')?.hasError('notNegative')">
+      Cannot be negative
+    </mat-error>
+    <span matTextPrefix>
+          <mat-icon aria-hidden="false" aria-label="Dollar symbol" fontIcon="attach_money"></mat-icon>
+        </span>
+  </mat-form-field>
+
+
+  <!--                        -->
+  <!--       SUBMIT           -->
+  <!--                        -->
+  <button mat-raised-button
+          color="secondary"
+          aria-label="submit"
+          type="submit" [disabled]="txForm.invalid" class="btn-primary">
+    <mat-icon>check_circle</mat-icon>
+    Confirm
+  </button>
+</form>
+
+
+<app-modal [isOpen]="addTokenOpen" (close)="addTokenOpen = false">
+  <form [formGroup]="tokenForm" (ngSubmit)="onSubmitToken()"
+        class="token-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Bitcoin" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ticker</mat-label>
+      <input matInput placeholder="BTC" formControlName="ticker">
+    </mat-form-field>
+
+    <button mat-button type="submit">Create</button>
+
+  </form>
+
+</app-modal>

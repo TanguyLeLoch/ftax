@@ -26,6 +26,10 @@ export class TokenService {
     return this.allTokens;
   }
 
+  getToken(id: string): Token | undefined {
+    return this.allTokens.find(token => token.id === id);
+  }
+
   createToken(token: Token): Observable<Token> {
     return this.controller.post1(token)
       .pipe(

@@ -7,13 +7,15 @@ import { TxEntryComponent } from "./components/tx-entry/tx-entry.component";
 import { TxListComponent } from "./components/tx-list/tx-list.component";
 import { MaterialModule } from "../material/material.module";
 import { TxImportComponent } from "./components/tx-import/tx-import.component";
+import { TxFormComponent } from "./components/tx-form/tx-form.component";
 
 
 @NgModule({
   declarations: [
     TxEntryComponent,
     TxListComponent,
-    TxImportComponent
+    TxImportComponent,
+    TxFormComponent,
   ],
   exports: [
     TxListComponent

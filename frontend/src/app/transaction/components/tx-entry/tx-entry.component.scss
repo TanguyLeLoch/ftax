@@ -3,20 +3,6 @@
 mat-accordion {
   width: 100%;
 }
-.tx-entry {
-  margin-bottom: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  font-family: Pacifico, "Roboto Light", serif;
-
-
-  .number-input {
-    width: 50px;
-    text-align: center;
-  }
-
-}
 
 
 .warning-icon {
@@ -39,27 +25,10 @@ mat-accordion {
   height: 18px;
 }
 
-.input-container {
-  display: flex;
-  flex-direction: row;
-}
 
-.add-token {
-  cursor: pointer;
-  color: $green-from-theme
-}
-
-.token-form {
-  display: flex;
-  flex-direction: column;
-}
 
 .right-align {
   text-align: right;
-}
-
-mat-form-field {
-  width: 150px;
 }
 
 .tx-overview {

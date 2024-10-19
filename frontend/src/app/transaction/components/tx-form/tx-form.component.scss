@@ -1,0 +1,32 @@
+@import 'variables';
+
+.tx-entry {
+  margin-bottom: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: Pacifico, "Roboto Light", serif;
+
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.add-token {
+  cursor: pointer;
+  color: $green-from-theme;
+}
+
+.token-form {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field {
+  width: 150px;
+}
+
+
+
