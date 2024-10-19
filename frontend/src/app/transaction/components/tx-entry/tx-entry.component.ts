@@ -1,16 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Token, Transaction, TransactionControllerService } from "../../../core/model";
-import { FormBuilder } from "@angular/forms";
+import { Token, Transaction } from "../../../core/model";
 import { faArrowDown, faArrowUp, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { TokenService } from "../../../core/services/token.service";
-import { ToastService } from "../../../core/services/toast.service";
 
 
 @Component({
   selector: 'app-tx-entry',
   templateUrl: './tx-entry.component.html',
   styleUrl: './tx-entry.component.scss',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TxEntryComponent implements OnInit {
   @Input() transaction!: Transaction;
@@ -31,8 +28,7 @@ export class TxEntryComponent implements OnInit {
 
   protected formatter;
 
-  constructor(private service: TransactionControllerService, private fb: FormBuilder,
-              private tokenService: TokenService, private toast: ToastService) {
+  constructor(private tokenService: TokenService) {
     this.formatter = new Intl.NumberFormat('en-US', {
       notation: 'compact',
       compactDisplay: 'short'
@@ -40,9 +36,6 @@ export class TxEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
-
     const dateStr = this.transaction.localDateTime.slice(0, 10);
     this.date = new Date(dateStr + 'T00:00:00Z')
     this.time = this.transaction.localDateTime.slice(11, 19);

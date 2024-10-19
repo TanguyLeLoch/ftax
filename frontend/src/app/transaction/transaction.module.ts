@@ -8,6 +8,7 @@ import { TxListComponent } from "./components/tx-list/tx-list.component";
 import { MaterialModule } from "../material/material.module";
 import { TxImportComponent } from "./components/tx-import/tx-import.component";
 import { TxFormComponent } from "./components/tx-form/tx-form.component";
+import { TokenDialogComponent } from "./components/token-dialog/token-dialog.component";
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { TxFormComponent } from "./components/tx-form/tx-form.component";
     TxListComponent,
     TxImportComponent,
     TxFormComponent,
+    TokenDialogComponent
   ],
   exports: [
     TxListComponent

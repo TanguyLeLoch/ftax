@@ -14,6 +14,8 @@ import { TokenService } from "../../../core/services/token.service";
 import { ToastService } from "../../../core/services/toast.service";
 
 import { faAdd, faCheck, faEdit, faPlus, faTrash, faWarning } from "@fortawesome/free-solid-svg-icons";
+import { MatDialog } from "@angular/material/dialog";
+import { TokenDialogComponent } from "../token-dialog/token-dialog.component";
 
 
 @Component({
@@ -26,7 +28,6 @@ export class TxFormComponent implements OnInit {
   @Output() formSubmit = new EventEmitter<Transaction>();
 
   txForm!: FormGroup;
-  tokenForm!: FormGroup;
   tokenControl!: FormControl<string | Token | null>;
   filteredOptions!: Observable<Token[]>;
   addTokenOpen = false;
@@ -49,17 +50,22 @@ export class TxFormComponent implements OnInit {
     private service: TransactionControllerService,
     private fb: FormBuilder,
     private tokenService: TokenService,
-    private toast: ToastService
+    private toast: ToastService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.initializeForms();
     this.setupTokenAutocomplete();
+    this.initializeForms();
     this.isValid = this.transaction.valid;
     this.isExpanded = !this.transaction.valid;
   }
 
   initializeForms() {
+    const dateStr = this.transaction.localDateTime.slice(0, 10);
+    this.date = new Date(dateStr + 'T00:00:00Z')
+    this.time = this.transaction.localDateTime.slice(11, 19);
+
     this.txForm = this.fb.group({
       date: [this.date, Validators.required,],
       time: [this.time, Validators.required,],
@@ -67,10 +73,6 @@ export class TxFormComponent implements OnInit {
       amount: [this.transaction.amount, [Validators.required, notNegativeValidator()]],
       token: this.tokenControl,
       price: [this.transaction.price, [Validators.required, notNegativeValidator()]],
-    });
-    this.tokenForm = this.fb.group({
-      name: ['', Validators.required],
-      ticker: ['', Validators.required],
     });
   }
 
@@ -144,26 +146,35 @@ export class TxFormComponent implements OnInit {
   }
 
   addToken() {
-    this.addTokenOpen = true;
+    console.log('addToken', this.txForm.get('token')!.value);
     const threeFirstChars = this.txForm.get('token')!.value.substring(0, 3).toUpperCase();
-
-    this.tokenForm.setValue({
-      name: this.txForm.get('token')!.value,
-      ticker: threeFirstChars
+    const dialogRef = this.dialog.open(TokenDialogComponent, {
+      width: '600px',
+      data: {
+        name: this.txForm.get('token')!.value,
+        ticker: threeFirstChars,
+      }
     });
+
+    console.log('dialogRef', dialogRef);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Handle the result from the dialog (the new token)
+        this.handleNewToken(result);
+      }
+    });
+
   }
 
-  onSubmitToken() {
-    const token: Token = {
-      name: this.tokenForm.get('name')!.value,
-      ticker: this.tokenForm.get('ticker')!.value,
-    };
+  handleNewToken(token: Token) {
     this.tokenService.createToken(token).subscribe(token => {
         this.addTokenOpen = false;
         this.txForm.get('token')!.setValue(token);
       }
     )
   }
+
 
   protected readonly faTrash = faTrash;
   protected readonly faEdit = faEdit;
@@ -177,7 +188,7 @@ export class TxFormComponent implements OnInit {
 function noStringValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (typeof control.value === 'string' && control.value.length > 0) {
-      return {'noString': true};
+      return {noString: true};
     }
     return null;
   };

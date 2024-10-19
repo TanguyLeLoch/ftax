@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1001;
 
   /* Blurs everything behind the modal */
   backdrop-filter: blur(5px);
@@ -21,7 +21,7 @@
   max-width: 500px;
   width: 100%;
   position: relative;
-  z-index: 1001; /* Ensure it appears above the overlay */
+  z-index: 1002; /* Ensure it appears above the overlay */
 }
 
 .modal-header {
@@ -58,5 +58,5 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000; /* Ensure the overlay appears behind the modal content */
+  z-index: 1001; /* Ensure the overlay appears behind the modal content */
 }

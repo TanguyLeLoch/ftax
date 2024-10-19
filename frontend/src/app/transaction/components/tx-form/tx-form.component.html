@@ -56,7 +56,6 @@
     <div class="input-container">
       <input type="text" matInput formControlName="token"
              [formControl]="tokenControl" [matAutocomplete]="auto">
-      <!--                 placeholder="Token"-->
 
       <fa-icon class="add-token"
                *ngIf="txForm.get('token')?.hasError('noString')"
@@ -102,21 +101,3 @@
 </form>
 
 
-<app-modal [isOpen]="addTokenOpen" (close)="addTokenOpen = false">
-  <form [formGroup]="tokenForm" (ngSubmit)="onSubmitToken()"
-        class="token-form">
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput placeholder="Bitcoin" formControlName="name">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Ticker</mat-label>
-      <input matInput placeholder="BTC" formControlName="ticker">
-    </mat-form-field>
-
-    <button mat-button type="submit">Create</button>
-
-  </form>
-
-</app-modal>

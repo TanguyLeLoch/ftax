@@ -1,0 +1,23 @@
+
+
+h2 {
+  font-size: 1.5rem;
+  padding: 20px;
+  margin-right: auto;
+  text-align: left;
+}
+.token-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.token-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+mat-form-field {
+  width: 200px;
+}
