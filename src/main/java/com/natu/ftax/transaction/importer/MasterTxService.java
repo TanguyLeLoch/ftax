@@ -32,7 +32,6 @@ public class MasterTxService {
 
     private String createGroupKey(Transaction tx) {
         return tx.getLocalDateTime().truncatedTo(ChronoUnit.SECONDS)
-                + "-" + tx.getType()
                 + "-" + tx.getToken()
                 + "-" + tx.getExternalId();
     }
@@ -46,10 +45,17 @@ public class MasterTxService {
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal totalValue = BigDecimal.ZERO;
 
+
         for (Transaction tx : group) {
-            totalAmount = totalAmount.add(tx.getAmount());
+            if (tx.getType() == Transaction.Type.BUY) {
+                totalAmount = totalAmount.add(tx.getAmount());
+            } else {
+                totalAmount = totalAmount.subtract(tx.getAmount());
+            }
             totalValue = totalValue.add(tx.getAmount().multiply(tx.getPrice()));
         }
+        var side = totalAmount.compareTo(BigDecimal.ZERO) > 0 ? Transaction.Type.BUY : Transaction.Type.SELL;
+        totalAmount = totalAmount.abs();
 
         BigDecimal averagePrice = totalValue.divide(totalAmount,
                 MathContext.DECIMAL64);
@@ -59,7 +65,7 @@ public class MasterTxService {
                 .id(id)
                 .client(first.getClient())
                 .localDateTime(first.getLocalDateTime())
-                .type(first.getType())
+                .type(side)
                 .amount(totalAmount)
                 .token(first.getToken())
                 .price(averagePrice)

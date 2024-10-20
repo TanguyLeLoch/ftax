@@ -111,4 +111,9 @@ mat-accordion {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  gap: 5px;
+}
+
+.refresh-icon {
+  cursor: pointer;
 }

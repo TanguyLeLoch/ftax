@@ -58,7 +58,7 @@
         ></app-tx-form>
         <div class="bottom-panel-container">
 
-          <div *ngIf="transaction.externalId && transaction.platform === 'Ethereum'">
+          <ng-container *ngIf="transaction.externalId && transaction.platform === 'Ethereum'">
 
             <div (click)="onRefreshClick()" class="refresh-icon">
               <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="refresh"></mat-icon>
@@ -72,7 +72,7 @@
             >
               <img src="assets/etherscan.png" alt="Etherscan Logo" class="etherscan-icon"/>
             </a>
-          </div>
+          </ng-container>
         </div>
 
       </div>
