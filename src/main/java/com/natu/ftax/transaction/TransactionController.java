@@ -156,14 +156,15 @@ public class TransactionController {
 
     @PreAuthorize("isConnected()")
     @PostMapping(value = "refresh", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public List<Transaction> refresh(@RequestParam("txId") String txId,
                                      Principal principal) {
         Client client = getClient(principal);
 
-        var tx = repository.findByIdAndClient(txId, client).orElseThrow(
+        Transaction tx = repository.findByIdAndClient(txId, client).orElseThrow(
                 () -> new NotFoundException("Transaction not found"));
-        if ("Ethereum".equals(tx.getPlatform())) {
-            throw new FunctionalException("Transaction not found");
+        if (!"Ethereum".equals(tx.getPlatform())) {
+            throw new FunctionalException("Transaction is not Ethereum");
         }
 
         repository.deleteByExternalId(tx.getExternalId());

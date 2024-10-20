@@ -64,6 +64,7 @@ public class MasterTxService {
                 .token(first.getToken())
                 .price(averagePrice)
                 .externalId(first.getExternalId())
+                .address(first.getAddress())
                 .build();
     }
 }

@@ -1,8 +1,7 @@
 package com.natu.ftax.transaction.importer.eth;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.natu.ftax.transaction.importer.eth.model.EventLog;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -11,6 +10,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
@@ -33,17 +33,12 @@ public class EtherscanApi {
 
         URI uri = etherscanClient.buildUri("block", "getblocknobytime", builder);
 
-        ParameterizedTypeReference<Response<String>> responseType = new ParameterizedTypeReference<>() {
+        TypeReference<String> typeRef = new TypeReference<>() {
         };
 
-        ResponseEntity<Response<String>> response = etherscanClient.getForEntity(uri, responseType);
+        var response = etherscanClient.getForEntity(uri, typeRef);
 
-        if (response.getBody() != null && "1".equals(response.getBody().status())) {
-            return Integer.parseInt(response.getBody().result());
-        }
-
-        // Handle error case as needed
-        return null;
+        return response.map(Integer::parseInt).orElse(null);
     }
 
     public List<EthTx> getTransactions(String address, long startBlock,
@@ -57,17 +52,13 @@ public class EtherscanApi {
                 .queryParam("sort", sort);
 
         URI uri = etherscanClient.buildUri("account", "txlist", builder);
-
-        ParameterizedTypeReference<Response<List<EthTx>>> responseType = new ParameterizedTypeReference<>() {
+        TypeReference<List<EthTx>> typeRef = new TypeReference<>() {
         };
 
-        ResponseEntity<Response<List<EthTx>>> response = etherscanClient.getForEntity(uri, responseType);
+        Optional<List<EthTx>> response = etherscanClient.getForEntity(uri, typeRef);
 
-        if (response.getBody() != null && "1".equals(response.getBody().status())) {
-            return response.getBody().result();
-        }
+        return response.orElse(emptyList());
 
-        return emptyList();
     }
 
     public List<InternalTx> getInternalTxs(EthTx tx, String address) {
@@ -75,20 +66,16 @@ public class EtherscanApi {
                 .queryParam("txHash", tx.hash());
 
         URI uri = etherscanClient.buildUri("account", "txlistinternal", builder);
-
-        ParameterizedTypeReference<Response<List<InternalTx>>> responseType = new ParameterizedTypeReference<>() {
+        TypeReference<List<InternalTx>> typeRef = new TypeReference<>() {
         };
 
-        ResponseEntity<Response<List<InternalTx>>> response = etherscanClient.getForEntity(uri, responseType);
+        var response = etherscanClient.getForEntity(uri, typeRef);
 
-        if (response.getBody() != null && "1".equals(response.getBody().status())) {
-            List<InternalTx> txs = response.getBody().result();
-            return txs.stream()
-                    .filter(itx -> itx.from().equals(address) || itx.to().equals(address)).toList();
-        }
-
-        // Handle error case as needed
-        return List.of();
+        return response
+                .map(internalTxes -> internalTxes.stream()
+                        .filter(itx -> itx.from().equals(address) || itx.to().equals(address))
+                        .toList())
+                .orElseGet(List::of);
     }
 
     public List<EventLog> getLogsforTx(EthTx tx, String address) {
@@ -102,27 +89,25 @@ public class EtherscanApi {
                 .queryParam("page", "1")
                 .queryParam("offset", "1000");
 
-        Response<List<EventLog>> logsResponse = getLogsResponse(builder);
+        List<EventLog> logsResponse = getLogsResponse(builder);
 
-        if (logsResponse == null || !logsResponse.isSuccess()) {
-            return emptyList();
-        }
 
         String addr = address.substring(2);
-        return logsResponse.result().stream()
+        return logsResponse.stream()
                 .filter(log -> log.transactionHash().equals(tx.hash()))
                 .filter(log -> isAddressInTransferTopics(log, addr))
                 .toList();
     }
 
-    private Response<List<EventLog>> getLogsResponse(UriComponentsBuilder builder) {
+    private List<EventLog> getLogsResponse(UriComponentsBuilder builder) {
         URI uri = etherscanClient.buildUri("logs", "getLogs", builder);
-        ParameterizedTypeReference<Response<List<EventLog>>> responseType = new ParameterizedTypeReference<>() {
+
+        TypeReference<List<EventLog>> typeRef = new TypeReference<>() {
         };
 
-        ResponseEntity<Response<List<EventLog>>> response = etherscanClient.getForEntity(uri, responseType);
+        Optional<List<EventLog>> response = etherscanClient.getForEntity(uri, typeRef);
 
-        return response.getBody();
+        return response.orElse(emptyList());
     }
 
     private static boolean isAddressInTransferTopics(EventLog log, String addr) {
@@ -144,14 +129,9 @@ public class EtherscanApi {
                 .queryParam("page", "1")
                 .queryParam("offset", "20");
 
-        var logsResponse = getLogsResponse(builder);
-
-        if (logsResponse == null || !logsResponse.isSuccess()) {
-            return null;
-        }
+        List<EventLog> logs = getLogsResponse(builder);
 
         // average price
-        List<EventLog> logs = logsResponse.result();
         BigDecimal totalPrice = BigDecimal.ZERO;
         int priceCount = 0;
 

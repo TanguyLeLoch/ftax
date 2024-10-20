@@ -31,14 +31,15 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void logRequest(String requestId, HttpRequest request, byte[] body) {
-        log.info("request id: {}, uri: {}, method: {}", requestId, request.getURI(), request.getMethod());
+//        log.info("request id: {}, uri: {}, method: {}", requestId, request.getURI(), request.getMethod());
     }
 
     private void logResponse(String requestId, ClientHttpResponse response, long duration)
             throws IOException {
         String bodyString = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
-
-        log.info("request id: {}, status code: {}, duration: {}ms, response headers: {}, " + "response body: {}",
-                requestId, response.getStatusCode(), duration, response.getHeaders(), bodyString);
+        if (bodyString.contains("NOTOK")) {
+            log.info("request id: {}, status code: {}, duration: {}ms, response headers: {}, " + "response body: {}",
+                    requestId, response.getStatusCode(), duration, response.getHeaders(), bodyString);
+        }
     }
 }
