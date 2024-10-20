@@ -13,7 +13,7 @@ import { Token, Transaction, TransactionControllerService } from "../../../core/
 import { TokenService } from "../../../core/services/token.service";
 import { ToastService } from "../../../core/services/toast.service";
 
-import { faAdd, faCheck, faEdit, faPlus, faTrash, faWarning } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { MatDialog } from "@angular/material/dialog";
 import { TokenDialogComponent } from "../token-dialog/token-dialog.component";
 
@@ -175,12 +175,6 @@ export class TxFormComponent implements OnInit {
     )
   }
 
-
-  protected readonly faTrash = faTrash;
-  protected readonly faEdit = faEdit;
-  protected readonly faCheck = faCheck;
-  protected readonly faWarning = faWarning;
-  protected readonly faAdd = faAdd;
   protected readonly faPlus = faPlus;
 }
 
