@@ -31,28 +31,9 @@ mat-accordion {
   text-align: right;
 }
 
-.tx-overview {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-
-  @media screen and (max-width: 600px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  font-size: min(calc(5px + 2vw), 20px);
-  width: 100%;
-}
 
 
-.Buy {
-  color: $green-from-theme;
-  font-size: min(calc(10px + 1vw), 16px);
-}
 
-.Sell {
-  color: $red-from-theme;
-  font-size: min(calc(10px + 1vw), 16px);
-}
 
 .positive {
   color: $green-from-theme;
@@ -70,31 +51,6 @@ mat-accordion {
   color: #a80000;
   font-size: min(calc(2px + 1vw), 12px);
   line-height: 1.2;
-}
-
-.tx-description-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.tx-description-left {
-  display: flex;
-  flex-direction: column;
-
-  .date {
-    font-size: min(calc(2px + 0.8vw), 12px);
-    line-height: 1
-  }
-
-}
-
-.tx-description-right {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
 }
 
 .fiat-value {

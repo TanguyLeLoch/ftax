@@ -1,7 +1,7 @@
 // tx-entry.component.ts
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Token, Transaction } from '../../../core/model';
+import { Transaction } from '../../../core/model';
 import { faArrowDown, faArrowUp, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { TokenService } from '../../../core/services/token.service';
 import { TransactionService } from '../../../core/services/transaction.service';
@@ -25,7 +25,6 @@ export class TxEntryComponent implements OnInit {
     {value: 'SELL', text: 'Sell'},
   ];
 
-  protected formatter;
 
   protected readonly faArrowUp = faArrowUp;
   protected readonly faArrowDown = faArrowDown;
@@ -35,10 +34,7 @@ export class TxEntryComponent implements OnInit {
     private tokenService: TokenService,
     private transactionService: TransactionService // Inject the TransactionService
   ) {
-    this.formatter = new Intl.NumberFormat('en-US', {
-      notation: 'compact',
-      compactDisplay: 'short',
-    });
+
   }
 
   ngOnInit(): void {
@@ -49,18 +45,6 @@ export class TxEntryComponent implements OnInit {
     this.hasBeenExpanded = this.isExpanded;
   }
 
-  getToken(id: string | undefined): Token | undefined {
-    if (!id) {
-      return undefined;
-    }
-    return this.tokenService.getToken(id);
-  }
-
-  onExpandedChange(expanded: boolean) {
-    if (expanded) {
-      this.hasBeenExpanded = true;
-    }
-  }
 
   onFormSubmit(updatedTransaction: Transaction) {
     // Update the transaction state
@@ -71,10 +55,6 @@ export class TxEntryComponent implements OnInit {
     )
   }
 
-  getDateTimeAtLocalFormat() {
-    const date = new Date(this.transaction.localDateTime);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-  }
 
   onRefreshClick() {
     // Assuming 'refreshTransaction' method fetches updated transaction data

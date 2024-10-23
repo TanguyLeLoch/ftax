@@ -1,3 +1,6 @@
+@import 'variables';
+
+
 .master-transaction {
   padding: 3px;
   border: 1px solid #ccc;
@@ -9,3 +12,79 @@
 
 .transaction-item {
 }
+
+.Buy {
+  color: $green-from-theme;
+  font-size: min(calc(10px + 1vw), 16px);
+}
+
+.Sell {
+  color: $red-from-theme;
+  font-size: min(calc(10px + 1vw), 16px);
+}
+
+.Swap {
+  color: #2353cd;
+  font-size: min(calc(10px + 1vw), 16px);
+}
+
+.warning-icon {
+  color: #ff7a2d;
+  font-size: 18px;
+  border: none;
+  background-color: transparent;
+  padding: 0 5px 0 0;
+
+}
+
+.icon-placeholder {
+  width: 23px;
+  height: 18px;
+}
+
+.tx-description-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tx-description-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .date {
+    font-size: min(calc(2px + 0.8vw), 12px);
+    line-height: 1
+  }
+
+}
+
+.tx-description-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tx-overview {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  font-size: min(calc(5px + 2vw), 20px);
+  width: 100%;
+}
+
+mat-expansion-panel-header {
+  height: 100px !important;
+}
+
+.expanded-panel-container {
+  padding-top: 10px;
+}
+

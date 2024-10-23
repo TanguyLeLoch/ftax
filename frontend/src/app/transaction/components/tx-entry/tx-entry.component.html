@@ -1,85 +1,84 @@
+<!--  <mat-accordion>-->
+<!--    <mat-expansion-panel [(expanded)]="isExpanded" (expandedChange)="onExpandedChange($event)">-->
+<!--      <mat-expansion-panel-header>-->
 
-  <mat-accordion>
-    <mat-expansion-panel [(expanded)]="isExpanded" (expandedChange)="onExpandedChange($event)">
-      <mat-expansion-panel-header>
+<!--        <mat-panel-description>-->
+<!--          <ng-container *ngIf="!isValid; else placeholder">-->
+<!--            <fa-icon class="warning-icon" [icon]="faWarning"></fa-icon>-->
+<!--          </ng-container>-->
+<!--          <ng-template #placeholder>-->
+<!--            <div class="icon-placeholder"></div>-->
+<!--          </ng-template>-->
+<!--          <div class="tx-overview">-->
 
-        <mat-panel-description>
-          <ng-container *ngIf="!isValid; else placeholder">
-            <fa-icon class="warning-icon" [icon]="faWarning"></fa-icon>
-          </ng-container>
-          <ng-template #placeholder>
-            <div class="icon-placeholder"></div>
-          </ng-template>
-          <div class="tx-overview">
-
-            <div class="tx-description-left">
+<!--            <div class="tx-description-left">-->
 
 
-              <ng-container *ngIf="transaction.type === 'BUY'">
-                <span class="Buy">Buy</span>
-              </ng-container>
-              <ng-container *ngIf="transaction.type === 'SELL'">
-                <span class="Sell">Sell</span>
-              </ng-container>
-              <span class="date">{{ getDateTimeAtLocalFormat() }}</span>
-            </div>
-            <div class="tx-description-center">
-              <span
-                class="token-value"> {{ formatter.format(transaction.amount!) }} {{ getToken(transaction.token)?.name }}</span>
+<!--              <ng-container *ngIf="transaction.type === 'BUY'">-->
+<!--                <span class="Buy">Buy</span>-->
+<!--              </ng-container>-->
+<!--              <ng-container *ngIf="transaction.type === 'SELL'">-->
+<!--                <span class="Sell">Sell</span>-->
+<!--              </ng-container>-->
+<!--              <span class="date">{{ getDateTimeAtLocalFormat() }}</span>-->
+<!--            </div>-->
+<!--            <div class="tx-description-center">-->
+<!--              <span-->
+<!--                class="token-value"> {{ formatter.format(transaction.amount!) }} {{ getToken(transaction.token)?.name }}</span>-->
 
-              <span class="fiat-value">
-                {{ transaction.price ? formatter.format(transaction.price!) : '?' }}
-                &#36;/{{ getToken(transaction.token)?.ticker }}
-              </span>
-            </div>
+<!--              <span class="fiat-value">-->
+<!--                {{ transaction.price ? formatter.format(transaction.price!) : '?' }}-->
+<!--                &#36;/{{ getToken(transaction.token)?.ticker }}-->
+<!--              </span>-->
+<!--            </div>-->
 
-            <div class="tx-description-right">
-                <span *ngIf="transaction.pnl?.value" class="pnl-value"
-                      [ngClass]="{'positive': transaction.pnl!.value! >= 0, 'negative': transaction.pnl!.value! < 0}">
-                    <fa-icon *ngIf="transaction.pnl!.value! >= 0" [icon]="faArrowUp"></fa-icon>
-                    <fa-icon *ngIf="transaction.pnl!.value! < 0" [icon]="faArrowDown"></fa-icon>
-                  {{ transaction.pnl!.value! | number: '1.2-2' }}
-                </span>
-              <span *ngIf="transaction.pnl?.errorMessage" class="pnl-error">
-                  <fa-icon [icon]="faWarning"></fa-icon>
-                {{ transaction.pnl!.errorMessage }}
-                </span>
+<!--            <div class="tx-description-right">-->
+<!--                <span *ngIf="transaction.pnl?.value" class="pnl-value"-->
+<!--                      [ngClass]="{'positive': transaction.pnl!.value! >= 0, 'negative': transaction.pnl!.value! < 0}">-->
+<!--                    <fa-icon *ngIf="transaction.pnl!.value! >= 0" [icon]="faArrowUp"></fa-icon>-->
+<!--                    <fa-icon *ngIf="transaction.pnl!.value! < 0" [icon]="faArrowDown"></fa-icon>-->
+<!--                  {{ transaction.pnl!.value! | number: '1.2-2' }}-->
+<!--                </span>-->
+<!--              <span *ngIf="transaction.pnl?.errorMessage" class="pnl-error">-->
+<!--                  <fa-icon [icon]="faWarning"></fa-icon>-->
+<!--                {{ transaction.pnl!.errorMessage }}-->
+<!--                </span>-->
 
-            </div>
-          </div>
-        </mat-panel-description>
+<!--            </div>-->
+<!--          </div>-->
+<!--        </mat-panel-description>-->
 
-      </mat-expansion-panel-header>
+<!--      </mat-expansion-panel-header>-->
 
-      <div class="expanded-panel-container" *ngIf="hasBeenExpanded">
+<!--      <div class="expanded-panel-container" *ngIf="hasBeenExpanded">-->
         <app-tx-form
           [transaction]="transaction"
           (formSubmit)="onFormSubmit($event)"
         ></app-tx-form>
-        <div class="bottom-panel-container">
+<!--        <div class="bottom-panel-container">-->
 
-          <ng-container *ngIf="transaction.externalId && transaction.platform === 'Ethereum'">
+<!--          <ng-container *ngIf="transaction.externalId && transaction.platform === 'Ethereum'">-->
 
-            <div (click)="onRefreshClick()" class="refresh-icon">
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="refresh"></mat-icon>
-            </div>
+<!--            <div (click)="onRefreshClick()" class="refresh-icon">-->
+<!--              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="refresh"></mat-icon>-->
+<!--            </div>-->
 
-            <a
-              [href]="'https://etherscan.io/tx/' + transaction.externalId"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="etherscan-link"
-            >
-              <img src="assets/etherscan.png" alt="Etherscan Logo" class="etherscan-icon"/>
-            </a>
-          </ng-container>
-        </div>
+<!--            <a-->
+<!--              [href]="'https://etherscan.io/tx/' + transaction.externalId"-->
+<!--              target="_blank"-->
+<!--              rel="noopener noreferrer"-->
+<!--              class="etherscan-link"-->
+<!--            >-->
+<!--              <img src="assets/etherscan.png" alt="Etherscan Logo" class="etherscan-icon"/>-->
+<!--            </a>-->
+<!--          </ng-container>-->
+<!--        </div>-->
 
-      </div>
+<!--      </div>-->
 
 
-    </mat-expansion-panel>
-  </mat-accordion>
+<!--    </mat-expansion-panel>-->
+<!--  </mat-accordion>-->
 
 
 
