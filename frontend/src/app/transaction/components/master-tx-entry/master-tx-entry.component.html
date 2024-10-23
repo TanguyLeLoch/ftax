@@ -1,0 +1,7 @@
+<div class="master-transaction">
+  <div class="transaction-list">
+    <div *ngFor="let tx of masterTransaction.transactions" class="transaction-item">
+      <app-tx-entry [transaction]="tx"></app-tx-entry>
+    </div>
+  </div>
+</div>

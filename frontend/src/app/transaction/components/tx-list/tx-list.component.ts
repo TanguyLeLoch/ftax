@@ -7,6 +7,8 @@ import { TxImportComponent } from '../tx-import/tx-import.component';
 import { TokenService } from '../../../core/services/token.service';
 import { TransactionService } from '../../../core/services/transaction.service';
 import { Subscription } from 'rxjs';
+import { MasterTransaction } from 'src/app/core/frontModel/MasterTransaction';
+import { ToastService } from "../../../core/services/toast.service";
 
 @Component({
   selector: 'app-tx-list',
@@ -15,15 +17,19 @@ import { Subscription } from 'rxjs';
 })
 export class TxListComponent implements OnInit, OnDestroy {
   txs: Transaction[] = [];
+  mtxs: MasterTransaction[] = [];
   isLoading = true;
   startTime = new Date().getTime();
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription
 
   constructor(
     private transactionService: TransactionService, // Use TransactionService
     private dialog: MatDialog,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private toast: ToastService
   ) {
+    this.subscriptions = new Subscription();
+
   }
 
   ngOnInit(): void {
@@ -35,6 +41,7 @@ export class TxListComponent implements OnInit, OnDestroy {
     // Subscribe to the transactions observable
     const txSubscription = this.transactionService.transactions$.subscribe((txs) => {
       this.txs = txs.sort((a, b) => b.localDateTime.localeCompare(a.localDateTime));
+      this.mtxs = this.groupTransactionsByExternalId(this.txs);
     });
     this.subscriptions.add(txSubscription);
   }
@@ -55,16 +62,7 @@ export class TxListComponent implements OnInit, OnDestroy {
   newTx() {
     console.log(this.txs);
     const tx = {} as Transaction;
-    this.transactionService.addTransaction(tx).subscribe(
-      (newTx) => {
-        // The transactions$ observable will emit the new transaction
-        // No need to manually update this.txs here
-      },
-      (error) => {
-        console.error('Error adding new transaction:', error);
-        // Handle error (e.g., show a notification)
-      }
-    );
+    this.transactionService.addTransaction(tx).subscribe();
   }
 
   importTx() {
@@ -79,5 +77,21 @@ export class TxListComponent implements OnInit, OnDestroy {
         // Handle the result from the import dialog if needed
       }
     });
+  }
+
+  private groupTransactionsByExternalId(transactions: Transaction[]): MasterTransaction[] {
+    const masterTransactionsMap = new Map<string, Transaction[]>();
+
+    transactions.forEach((transaction) => {
+      const externalId = transaction.externalId || 'UNKNOWN';
+      if (!masterTransactionsMap.has(externalId)) {
+        masterTransactionsMap.set(externalId, []);
+      }
+      masterTransactionsMap.get(externalId)!.push(transaction);
+    });
+
+    return Array.from(masterTransactionsMap.values()).map(
+      (transactionGroup) => new MasterTransaction(transactionGroup)
+    );
   }
 }

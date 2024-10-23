@@ -53,13 +53,8 @@ export class TransactionService {
    * @param updatedTransaction The Transaction object with updated data.
    */
   updateTransaction(updatedTransaction: Transaction): Observable<Transaction> {
-    console.log('updateTransaction');
-    console.log(updatedTransaction);
     return this.transactionControllerService.post(updatedTransaction).pipe(
       tap((transaction) => {
-        console.log('11111');
-        console.log(transaction);
-
         const currentTransactions = this.transactionsSubject.value;
         const index = currentTransactions.findIndex((t) => t.id === transaction.id);
         if (index !== -1) {
