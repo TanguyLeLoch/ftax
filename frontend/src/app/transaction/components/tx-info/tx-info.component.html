@@ -1,0 +1,4 @@
+<div class="transaction-info">
+  <span class="token-value">{{ formatter.format(tx.amount!) }} {{ getToken(tx.token)?.name }}</span>
+  <span class="fiat-value">{{ tx.price ? formatter.format(tx.price!) : '?' }} &#36;/{{ getToken(tx.token)?.ticker }}</span>
+</div>

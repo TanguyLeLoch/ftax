@@ -56,11 +56,4 @@ export class TxEntryComponent implements OnInit {
   }
 
 
-  onRefreshClick() {
-    // Assuming 'refreshTransaction' method fetches updated transaction data
-    this.transactionService.refreshTransaction(this.transaction.id).subscribe((updatedTransaction) => {
-      this.transaction = updatedTransaction;
-      this.isValid = updatedTransaction.valid;
-    });
-  }
 }

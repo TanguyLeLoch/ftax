@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TransactionRepo
@@ -15,5 +14,5 @@ public interface TransactionRepo
 
     void deleteByExternalId(String hash);
 
-    Optional<Transaction> findByIdAndClient(String txId, Client client);
+    List<Transaction> findByExternalIdAndClient(String txId, Client client);
 }

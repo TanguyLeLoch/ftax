@@ -88,3 +88,27 @@ mat-expansion-panel-header {
   padding-top: 10px;
 }
 
+.swap-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.etherscan-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bottom-panel-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+
+.refresh-icon {
+  cursor: pointer;
+}

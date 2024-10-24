@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MasterTransaction } from 'src/app/core/frontModel/MasterTransaction';
 import { faArrowDown, faArrowUp, faWarning } from '@fortawesome/free-solid-svg-icons';
-import { Token, Transaction } from "../../../core/model";
+import { Transaction } from "../../../core/model";
 import { TokenService } from "../../../core/services/token.service";
+import { TransactionService } from "../../../core/services/transaction.service";
 
 @Component({
   selector: 'app-master-tx-entry',
@@ -20,7 +21,8 @@ export class MasterTxEntryComponent implements OnInit {
   sellTxs: Transaction[] = [];
   buyTxs: Transaction[] = [];
 
-  constructor(private tokenService: TokenService) {
+  constructor(private tokenService: TokenService,
+              private transactionService: TransactionService) {
     this.formatter = new Intl.NumberFormat('en-US', {
       notation: 'compact',
       compactDisplay: 'short',
@@ -63,10 +65,7 @@ export class MasterTxEntryComponent implements OnInit {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   }
 
-  getToken(id: string | undefined): Token | undefined {
-    if (!id) {
-      return undefined;
-    }
-    return this.tokenService.getToken(id);
+  onRefreshClick() {
+    this.transactionService.refreshTransaction(this.masterTransaction.externalId).subscribe();
   }
 }

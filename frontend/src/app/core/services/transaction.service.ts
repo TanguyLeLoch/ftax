@@ -67,18 +67,23 @@ export class TransactionService {
 
   /**
    * Refreshes a transaction by fetching it from the backend and updating the state.
-   * @param id The ID of the transaction to refresh.
+   * @param externalId The ID of the transaction to refresh.
    * @returns An Observable of the updated Transaction.
    */
-  refreshTransaction(id: string): Observable<Transaction> {
-    return this.transactionControllerService.getById(id).pipe(
-      tap((updatedTransaction) => {
+  refreshTransaction(externalId: string): Observable<Transaction[]> {
+    return this.transactionControllerService.refresh(externalId).pipe(
+      tap((updatedTransactions) => {
         const currentTransactions = this.transactionsSubject.value;
-        const index = currentTransactions.findIndex((t) => t.id === id);
-        if (index !== -1) {
-          currentTransactions[index] = updatedTransaction;
-          this.transactionsSubject.next([...currentTransactions]);
-        }
+        const updatedTransactionIds = updatedTransactions.map(t => t.externalId);
+
+        // Remove transactions with matching externalIds
+        const filteredTransactions = currentTransactions.filter(t => !updatedTransactionIds.includes(t.externalId));
+
+        // Combine filtered transactions with updated ones
+        const newTransactions = [...updatedTransactions, ...filteredTransactions];
+
+        // Update the BehaviorSubject with the new transaction list
+        this.transactionsSubject.next(newTransactions);
       })
     );
   }

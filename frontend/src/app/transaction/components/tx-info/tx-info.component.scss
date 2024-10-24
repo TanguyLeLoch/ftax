@@ -1,0 +1,11 @@
+.transaction-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fiat-value {
+  font-size: min(calc(2px + 1vw), 12px);
+  line-height: 0.8
+}
