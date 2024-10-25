@@ -55,7 +55,8 @@ public class DextoolApi {
     public record TokenInfo(
             String symbol,
             String name,
-            int decimals
+            int decimals,
+            String logo
     ) {
     }
 }

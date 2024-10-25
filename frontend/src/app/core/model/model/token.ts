@@ -17,5 +17,6 @@ export interface Token {
     name: string;
     externalId?: string;
     decimals?: number;
+    logoUrl?: string;
 }
 

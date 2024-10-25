@@ -24,4 +24,19 @@ export class TransactionInfoComponent {
     }
     return this.tokenService.getToken(id);
   }
+
+  getTokenUrl() {
+    const token = this.getToken(this.tx.token);
+    let url: string;
+    if (token && token.logoUrl) {
+      url = token.logoUrl;
+    } else {
+      url = 'assets/unknown-logo.png';
+    }
+
+    if (url.startsWith('http')) {
+      url = url + '?' + Date.now();
+    }
+    return url;
+  }
 }

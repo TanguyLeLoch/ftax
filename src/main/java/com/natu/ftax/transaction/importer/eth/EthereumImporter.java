@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import static com.natu.ftax.transaction.importer.eth.EtherscanApi.TRANSFER_TOPIC;
 import static com.natu.ftax.transaction.importer.eth.EtherscanApi.WITHDRAW_TOPIC;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Component("EthereumImporter")
 public class EthereumImporter implements OnChainImporter {
@@ -89,7 +90,6 @@ public class EthereumImporter implements OnChainImporter {
     }
 
     private List<Transaction> importOneTx(String address, Client client, EtherscanApi.EthTx tx) {
-        System.out.println("importOneTx");
         var hash = tx.hash();
         var ldt = convertToLocalDateTime(tx.timeStamp());
 
@@ -144,7 +144,8 @@ public class EthereumImporter implements OnChainImporter {
     }
 
 
-    private Transaction importTxFromWithdrawal(String address, Client client, EventLog log, LocalDateTime ldt, String hash, EtherscanApi.EthTx tx) {
+    private Transaction importTxFromWithdrawal(String address, Client client, EventLog log,
+                                               LocalDateTime ldt, String hash, EtherscanApi.EthTx tx) {
 
         var amount = getAmountFromData(log.data(), 18);
 
@@ -197,14 +198,14 @@ public class EthereumImporter implements OnChainImporter {
 
     private Token createAndSaveToken(String contractAddress) {
         String tokenId = idGenerator.generate();
-        var info = dextoolApi.getTokenInfo(contractAddress);
+        DextoolApi.TokenInfo info = dextoolApi.getTokenInfo(contractAddress);
 
         if (info == null) {
             LOGGER.warn("Token not found in dextool: " + contractAddress);
             throw new TxInterruptionNeeded();
         }
-
-        Token token = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals());
+        String tokenUrl = isEmpty(info.logo()) ? "https://www.dextools.io/resources/tokens/logos/" + info.logo().split("\\?")[0] : null;
+        Token token = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals(), tokenUrl);
         return tokenRepo.save(token);
     }
 

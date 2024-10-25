@@ -23,6 +23,7 @@ public class Token {
     private String name;
     private String externalId;
     private Integer decimals;
+    private String logoUrl;
 
     public Token(String id, String ticker, String name) {
         this.id = id;
