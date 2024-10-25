@@ -4,6 +4,7 @@ import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.client.Client;
 import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.common.exception.NotFoundException;
+import com.natu.ftax.common.imgstorage.ImgDownloader;
 import com.natu.ftax.token.Token;
 import com.natu.ftax.token.TokenRepo;
 import com.natu.ftax.transaction.Transaction;
@@ -42,13 +43,15 @@ public class EthereumImporter implements OnChainImporter {
     private final TokenRepo tokenRepo;
     private final TransactionRepo transactionRepo;
     private final MasterTxService masterTxService;
+    private final ImgDownloader imgDownloader;
 
     public EthereumImporter(EtherscanApi etherscanApi,
                             IdGenerator idGenerator,
                             DextoolApi dextoolApi,
                             TokenRepo tokenRepo,
                             TransactionRepo transactionRepo,
-                            MasterTxService masterTxService
+                            MasterTxService masterTxService,
+                            ImgDownloader imgDownloader
     ) {
         this.etherscanApi = etherscanApi;
         this.idGenerator = idGenerator;
@@ -56,6 +59,7 @@ public class EthereumImporter implements OnChainImporter {
         this.tokenRepo = tokenRepo;
         this.transactionRepo = transactionRepo;
         this.masterTxService = masterTxService;
+        this.imgDownloader = imgDownloader;
     }
 
     @Override
@@ -204,8 +208,15 @@ public class EthereumImporter implements OnChainImporter {
             LOGGER.warn("Token not found in dextool: " + contractAddress);
             throw new TxInterruptionNeeded();
         }
-        String tokenUrl = isEmpty(info.logo()) ? "https://www.dextools.io/resources/tokens/logos/" + info.logo().split("\\?")[0] : null;
-        Token token = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals(), tokenUrl);
+
+        String logoPath = null;
+        if (!isEmpty(info.logo())) {
+            String url = "https://www.dextools.io/resources/tokens/logos/" + info.logo().split("\\?")[0];
+            logoPath = "logo/ether/" + contractAddress + ".png";
+            imgDownloader.downloadAndSaveImage(url, logoPath);
+        }
+
+        Token token = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals(), logoPath);
         return tokenRepo.save(token);
     }
 

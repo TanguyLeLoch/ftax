@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Token, Transaction } from "../../../core/model";
 import { TokenService } from "../../../core/services/token.service";
+import { environment } from "../../../../environments/environment";
+
 
 @Component({
   selector: 'app-tx-info',
@@ -10,6 +12,8 @@ import { TokenService } from "../../../core/services/token.service";
 export class TransactionInfoComponent {
   @Input() tx!: Transaction; // Input property to pass transaction data to the component
   formatter ;
+
+  private basePath = environment.basePath;
 
 
   constructor( private tokenService: TokenService ) {
@@ -29,13 +33,9 @@ export class TransactionInfoComponent {
     const token = this.getToken(this.tx.token);
     let url: string;
     if (token && token.logoUrl) {
-      url = token.logoUrl;
+      url = this.basePath + '/img/' + token.logoUrl;
     } else {
       url = 'assets/unknown-logo.png';
-    }
-
-    if (url.startsWith('http')) {
-      url = url + '?' + Date.now();
     }
     return url;
   }
