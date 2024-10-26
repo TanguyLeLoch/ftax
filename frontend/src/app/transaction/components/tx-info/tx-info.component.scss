@@ -5,7 +5,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 0.5vw;
 }
 
 .left {
@@ -13,6 +13,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 1.5vw;
 }
 
 .right {
@@ -23,18 +24,22 @@
 }
 
 .token-value {
-  color: $secondary-30
+  color: $secondary-30;
+  font-size: min(calc(2px + 1vw), 16px);
+  line-height: 1;
+  text-align: center;
 }
 
 .fiat-value {
   font-size: min(calc(2px + 1vw), 12px);
   line-height: 0.8;
   color: $secondary-10;
+  text-align: center;
 }
 
 .token-icon {
-  width: 36px;
-  height: 36px;
+  width: min(calc(16px + 2vw), 36px);
+  height: min(calc(16px + 2vw), 36px);
 }
 
 .first-line {

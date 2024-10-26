@@ -18,13 +18,13 @@
 
 
               <ng-container *ngIf="getType() === 'BUY'">
-                <span class="Buy">Buy</span>
+                <span class="Buy action">Buy</span>
               </ng-container>
               <ng-container *ngIf="getType() === 'SELL'">
-                <span class="Sell">Sell</span>
+                <span class="Sell action">Sell</span>
               </ng-container>
               <ng-container *ngIf="getType() === 'SWAP'">
-                <span class="Swap">Swap</span>
+                <span class="Swap action">Swap</span>
               </ng-container>
               <span class="date">{{ getDateTimeAtLocalFormat() }}</span>
             </div>
@@ -36,7 +36,7 @@
                       <app-tx-info [tx]="tx"></app-tx-info>
                     </ng-container>
                   </div>
-                  <span>for</span>
+                  <span class="for">for</span>
                   <div class="buy-side">
                     <ng-container *ngFor="let tx of buyTxs">
                       <app-tx-info [tx]="tx"></app-tx-info>

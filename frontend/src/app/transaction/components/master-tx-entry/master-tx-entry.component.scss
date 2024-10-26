@@ -1,5 +1,8 @@
 @import 'variables';
 
+.mat-expansion-panel-header {
+  height: 100% !important;
+}
 
 .master-transaction {
   padding: 5px;
@@ -13,17 +16,18 @@
 
 .Buy {
   color: $green-from-theme;
-  font-size: min(calc(10px + 1vw), 16px);
 }
 
 .Sell {
   color: $red-from-theme;
-  font-size: min(calc(10px + 1vw), 16px);
 }
 
 .Swap {
   color: #2353cd;
-  font-size: min(calc(10px + 1vw), 16px);
+}
+
+.action {
+  font-size: min(calc(5px + 1vw), 14px);
 }
 
 .warning-icon {
@@ -70,10 +74,6 @@
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
 
-  @media screen and (max-width: 600px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
   font-size: min(calc(5px + 2vw), 20px);
   width: 100%;
 }
@@ -108,4 +108,8 @@ mat-expansion-panel-header {
 
 .refresh-icon {
   cursor: pointer;
+}
+
+.for {
+  font-size: min(calc(2px + 0.8vw), 12px);
 }

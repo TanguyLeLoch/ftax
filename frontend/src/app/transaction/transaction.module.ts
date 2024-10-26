@@ -11,6 +11,7 @@ import { TxFormComponent } from "./components/tx-form/tx-form.component";
 import { TokenDialogComponent } from "./components/token-dialog/token-dialog.component";
 import { MasterTxEntryComponent } from "./components/master-tx-entry/master-tx-entry.component";
 import { TransactionInfoComponent } from "./components/tx-info/tx-info.component";
+import { TxFilterComponent } from "./components/tx-filter/tx-filter.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { TransactionInfoComponent } from "./components/tx-info/tx-info.component
     TxFormComponent,
     TokenDialogComponent,
     MasterTxEntryComponent,
-    TransactionInfoComponent
+    TransactionInfoComponent,
+    TxFilterComponent
   ],
   exports: [
     TxListComponent
