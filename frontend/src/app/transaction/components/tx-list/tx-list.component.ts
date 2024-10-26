@@ -9,6 +9,7 @@ import { TransactionService } from '../../../core/services/transaction.service';
 import { Subscription } from 'rxjs';
 import { MasterTransaction } from 'src/app/core/frontModel/MasterTransaction';
 import { ToastService } from "../../../core/services/toast.service";
+import { TxFilterComponent } from "../tx-filter/tx-filter.component";
 
 @Component({
   selector: 'app-tx-list',
@@ -79,11 +80,19 @@ export class TxListComponent implements OnInit, OnDestroy {
     });
   }
 
+  openFilter() {
+    const dialogRef = this.dialog.open(TxFilterComponent, {
+      height: '400px',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe();
+  }
   private groupTransactionsByExternalId(transactions: Transaction[]): MasterTransaction[] {
     const masterTransactionsMap = new Map<string, Transaction[]>();
 
     transactions.forEach((transaction) => {
-      const externalId = transaction.externalId || 'UNKNOWN';
+      const externalId = transaction.externalId;
       if (!masterTransactionsMap.has(externalId)) {
         masterTransactionsMap.set(externalId, []);
       }
@@ -101,4 +110,6 @@ export class TxListComponent implements OnInit, OnDestroy {
     });
 
   }
+
+
 }

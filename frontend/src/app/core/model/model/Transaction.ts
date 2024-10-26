@@ -19,7 +19,7 @@ export interface Transaction {
     amount?: number;
     token?: string;
     price?: number;
-    externalId?: string;
+    externalId: string;
     platform: string;
     address?: string;
     pnl?: Pnl;

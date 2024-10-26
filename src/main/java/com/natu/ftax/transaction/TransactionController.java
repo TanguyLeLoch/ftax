@@ -72,6 +72,9 @@ public class TransactionController {
         if (transaction.getPlatform() == null) {
             transaction.setPlatform("Ftax");
         }
+        if (transaction.getExternalId() == null) {
+            transaction.setExternalId("external- " + transaction.getId());
+        }
     }
 
     @PreAuthorize("isConnected()")

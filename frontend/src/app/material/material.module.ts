@@ -21,6 +21,7 @@ import { MatTooltip } from "@angular/material/tooltip";
 import { MatDialogActions, MatDialogContainer, MatDialogContent } from "@angular/material/dialog";
 import { MatGridList, MatGridTile } from "@angular/material/grid-list";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatChipsModule } from "@angular/material/chips";
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     MatDialogContainer,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatChipsModule,
   ],
   exports: [
     MatAutocompleteModule,
@@ -113,6 +115,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     MatDialogContainer,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatChipsModule
   ],
   providers: [
     provideNativeDateAdapter(),

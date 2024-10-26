@@ -44,6 +44,7 @@ public class Transaction {
     @Column(precision = 64, scale = 30)
     private BigDecimal price;
 
+    @NotNull
     private String externalId;
     @NotNull
     private String platform;
