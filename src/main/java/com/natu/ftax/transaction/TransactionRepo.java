@@ -12,7 +12,9 @@ public interface TransactionRepo
 
     List<Transaction> findAllByClient(Client client);
 
-    void deleteByExternalId(String hash);
+    List<Transaction> findAllByExternalIdAndClient(String externalId, Client client);
 
-    List<Transaction> findByExternalIdAndClient(String txId, Client client);
+    int deleteByExternalIdAndClient(String externalId, Client client);
+
+    int deleteByIdAndClient(String id, Client client);
 }

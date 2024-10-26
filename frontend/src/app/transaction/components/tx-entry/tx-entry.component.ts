@@ -5,6 +5,7 @@ import { Transaction } from '../../../core/model';
 import { faArrowDown, faArrowUp, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { TokenService } from '../../../core/services/token.service';
 import { TransactionService } from '../../../core/services/transaction.service';
+import { ToastService } from "../../../core/services/toast.service";
 
 @Component({
   selector: 'app-tx-entry',
@@ -32,7 +33,8 @@ export class TxEntryComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
-    private transactionService: TransactionService // Inject the TransactionService
+    private transactionService: TransactionService,
+    private toast: ToastService,
   ) {
 
   }
@@ -56,4 +58,9 @@ export class TxEntryComponent implements OnInit {
   }
 
 
+  deleteTx() {
+    this.transactionService.deleteById(this.transaction.id).subscribe(() => {
+      this.toast.showSuccess('Transaction deleted');
+    });
+  }
 }

@@ -19,3 +19,22 @@ mat-progress-bar {
   margin: 100px auto auto;
   width: 60%;
 }
+
+.mtx-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  mat-icon {
+    cursor: pointer;
+  }
+
+  /* Add this rule */
+  mat-icon:hover + .mtx-entry {
+    opacity: 0.5;
+  }
+}
+
+.mtx-entry {
+  width: 100%;
+}

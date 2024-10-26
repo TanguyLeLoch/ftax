@@ -12,11 +12,9 @@
   </div>
   <mat-progress-bar *ngIf="isLoading" mode="query"></mat-progress-bar>
   <div *ngIf="!isLoading" class="tx-list">
-    <!--    <div *ngFor="let tx of txs" class="tx-item">-->
-    <!--      <app-tx-entry [transaction]="tx"></app-tx-entry>-->
-    <!--    </div>-->
     <div *ngFor="let mtx of mtxs" class="mtx-item">
-      <app-master-tx-entry [masterTransaction]="mtx"></app-master-tx-entry>
+      <mat-icon (click)="deleteMtx(mtx)">delete_outlined</mat-icon>
+      <app-master-tx-entry [masterTransaction]="mtx" class="mtx-entry"></app-master-tx-entry>
     </div>
   </div>
 

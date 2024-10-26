@@ -94,4 +94,11 @@ export class TxListComponent implements OnInit, OnDestroy {
       (transactionGroup) => new MasterTransaction(transactionGroup)
     );
   }
+
+  deleteMtx(mtx: MasterTransaction) {
+    this.transactionService.deleteByExternalId(mtx.externalId).subscribe(() => {
+      this.toast.showSuccess('Master transaction deleted');
+    });
+
+  }
 }

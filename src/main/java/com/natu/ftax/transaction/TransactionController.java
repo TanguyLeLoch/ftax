@@ -161,16 +161,39 @@ public class TransactionController {
                                      Principal principal) {
         Client client = getClient(principal);
 
-        List<Transaction> txs = repository.findByExternalIdAndClient(externalId, client);
-        if (txs.isEmpty()) {
-            throw new NotFoundException("Transaction not found");
+        List<Transaction> txs = repository.findAllByExternalIdAndClient(externalId, client);
+        int n = repository.deleteByExternalIdAndClient(externalId, client);
+        if (n == 0) {
+            throw new NotFoundException("Transaction(s) not found");
         }
         if (!"Ethereum".equals(txs.get(0).getPlatform())) {
             throw new FunctionalException("Transaction is not Ethereum");
         }
 
-        repository.deleteByExternalId(externalId);
         return ethereumImporter.refreshTx(txs.get(0), client);
+    }
+
+    @PreAuthorize("isConnected()")
+    @DeleteMapping(value = "/externalId/{externalId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public void deleteByExternalId(@PathVariable("externalId") String externalId, Principal principal) {
+        Client client = getClient(principal);
+
+        int n = repository.deleteByExternalIdAndClient(externalId, client);
+        if (n == 0) {
+            throw new NotFoundException("Transaction(s) not found");
+        }
+    }
+
+    @PreAuthorize("isConnected()")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public void deleteById(@PathVariable("id") String id, Principal principal) {
+        Client client = getClient(principal);
+        int n = repository.deleteByIdAndClient(id, client);
+        if (n == 0) {
+            throw new NotFoundException("Transaction not found");
+        }
     }
 
 

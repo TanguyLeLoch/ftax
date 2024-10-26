@@ -87,6 +87,29 @@ export class TransactionService {
       })
     );
   }
+
+  deleteByExternalId(externalId: string) {
+    return this.transactionControllerService.deleteByExternalId(externalId).pipe(
+      tap(() => {
+        const currentTransactions = this.transactionsSubject.value;
+        const updatedTransactions = currentTransactions.filter(t => t.externalId !== externalId);
+        this.transactionsSubject.next(updatedTransactions);
+      })
+    );
+  }
+
+  deleteById(id: string) {
+    return this.transactionControllerService.deleteById(id).pipe(
+      tap(() => {
+        const currentTransactions = this.transactionsSubject.value;
+        const index = currentTransactions.findIndex((t) => t.id === id);
+        if (index !== -1) {
+          currentTransactions.splice(index, 1);
+        }
+        this.transactionsSubject.next([...currentTransactions]);
+      })
+    );
+  }
 }
 
 

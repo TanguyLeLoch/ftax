@@ -54,4 +54,22 @@ mat-accordion {
 }
 
 
+.tx-atomic-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
+  mat-icon {
+    cursor: pointer;
+    margin-bottom: 25px;
+  }
+
+  /* Add this rule */
+  mat-icon:hover + .tx-form {
+    opacity: 0.5;
+  }
+}
+
+.tx-form {
+  width: 100%;
+}
