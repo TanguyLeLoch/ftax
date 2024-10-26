@@ -158,6 +158,9 @@ $light-theme: mat.define-theme((
     primary: $_primary,
     tertiary: $_tertiary
   ),
+  density: (
+    scale: -5
+  )
 ));
 
 $green_from_theme: mat.get-theme-color($light-theme, secondary, 50);

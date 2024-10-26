@@ -6,9 +6,7 @@
   <mat-form-field appearance="outline">
     <mat-label>Date</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="date">
-    <span matTextPrefix (click)="picker.open()">
-          <mat-icon aria-hidden="false" aria-label="Open picker" fontIcon="event"></mat-icon>
-        </span>
+    <mat-datepicker-toggle matIconPrefix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
@@ -38,7 +36,7 @@
   <!--                        -->
   <!--         AMOUNT         -->
   <!--                        -->
-  <mat-form-field floatLabel="auto" appearance="outline">
+  <mat-form-field floatLabel="auto" appearance="outline" class="compact-field">
     <mat-label>Amount</mat-label>
     <input formControlName="amount"
            matInput type="number" class="right-align" placeholder="0.00"/>
@@ -82,9 +80,9 @@
     <mat-error *ngIf="txForm.get('price')?.hasError('notNegative')">
       Cannot be negative
     </mat-error>
-    <span matTextPrefix>
-          <mat-icon aria-hidden="false" aria-label="Dollar symbol" fontIcon="attach_money"></mat-icon>
-        </span>
+    <span matIconPrefix>
+      <mat-icon aria-hidden="false" aria-label="Dollar symbol" fontIcon="attach_money"></mat-icon>
+    </span>
   </mat-form-field>
 
 
