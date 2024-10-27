@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { MasterTransaction } from 'src/app/core/frontModel/MasterTransaction';
 import { ToastService } from "../../../core/services/toast.service";
 import { TxFilterComponent } from "../tx-filter/tx-filter.component";
+import { FilterService } from "../../../core/services/filter.service";
 
 @Component({
   selector: 'app-tx-list',
@@ -27,7 +28,8 @@ export class TxListComponent implements OnInit, OnDestroy {
     private transactionService: TransactionService, // Use TransactionService
     private dialog: MatDialog,
     private tokenService: TokenService,
-    private toast: ToastService
+    private toast: ToastService,
+    protected filterService: FilterService
   ) {
     this.subscriptions = new Subscription();
 

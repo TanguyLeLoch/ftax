@@ -92,7 +92,7 @@
         <mat-chip *ngFor="let token of tokens"
                   (removed)="removeToken(token)">
           {{ token.name }} ({{ token.ticker }})
-          <button matChipRemove [attr.aria-label]="'remove ' + token.name">
+          <button matChipRemove>
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip>

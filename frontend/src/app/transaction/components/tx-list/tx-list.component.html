@@ -15,13 +15,20 @@
 
   </div>
   <mat-progress-bar *ngIf="isLoading" mode="query"></mat-progress-bar>
+  <mat-chip-set *ngIf="filterService.filterUpdated$ | async as filters" class="filter-section">
+    <mat-chip *ngFor="let f of filters">
+      <span>{{ f.displayValue }}</span>
+      <button matChipRemove (click)="f.removeFunction()">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+  </mat-chip-set>
   <div *ngIf="!isLoading" class="tx-list">
     <div *ngFor="let mtx of mtxs" class="mtx-item">
       <mat-icon (click)="deleteMtx(mtx)">delete_outlined</mat-icon>
       <app-master-tx-entry [masterTransaction]="mtx" class="mtx-entry"></app-master-tx-entry>
     </div>
   </div>
-
 </div>
 
 

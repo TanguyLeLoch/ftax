@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn } fro
 import { Token } from "../../../core/model";
 import { TokenService } from "../../../core/services/token.service";
 import { startWith, tap } from "rxjs";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-tx-filter',
@@ -11,24 +12,23 @@ import { startWith, tap } from "rxjs";
   styleUrl: './tx-filter.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
-
-
 })
 export class TxFilterComponent implements OnInit {
 
   filterForm!: FormGroup;
-  tokens!: Token[];
+  tokens: Token[] = [];
   availableTokens!: Token[];
   tokenControl!: FormControl<Token | string | null>;
 
-  constructor(private filterService: FilterService,
-              private tokenService: TokenService,
-              private fb: FormBuilder) {
-
+  constructor(
+    public dialogRef: MatDialogRef<TxFilterComponent>,
+    private filterService: FilterService,
+    private tokenService: TokenService,
+    private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.tokens = [];
+    this.tokens = this.filterService.tokenFilter;
     this.availableTokens = this.tokenService.getTokens();
     this.tokenControl = new FormControl<Token | string | null>('');
     this.tokenControl.valueChanges.pipe(
@@ -40,22 +40,31 @@ export class TxFilterComponent implements OnInit {
     ).subscribe()
 
     this.filterForm = this.fb.group({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null),
-        date: new FormControl<Date | null>(null),
-        validity: new FormControl<string[]>([]),  // Array to hold multiple values
+        start: new FormControl<Date | null>(this.filterService.startDateFilter),
+        end: new FormControl<Date | null>(this.filterService.endDateFilter),
+        validity: new FormControl<string[]>(this.filterService.validityFilter),
         token: this.tokenControl,
       },
       {validators: this.dateRangeValidator});
   }
-
 
   private filterEmpty() {
     return this.getToken().filter(t => this.tokens.find(token => token.id === t.id) === undefined);
   }
 
   onSubmit() {
-    console.log('validity', this.filterForm.get('validity')?.value)
+    this.filterService.updateFilter(
+      this.filterForm.get('validity')?.value,
+      this.filterForm.get('start')?.value,
+      this.filterForm.get('end')?.value,
+      this.tokens
+    );
+
+    this.closeDialog();
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
   clear(formAttribute: string) {
