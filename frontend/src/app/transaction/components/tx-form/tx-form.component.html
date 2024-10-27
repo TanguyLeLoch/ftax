@@ -3,7 +3,7 @@
   <!--                        -->
   <!--         DATE           -->
   <!--                        -->
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" class="line-gap">
     <mat-label>Date</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="date">
     <mat-datepicker-toggle matIconPrefix [for]="picker"></mat-datepicker-toggle>
@@ -13,7 +13,7 @@
   <!--                        -->
   <!--         TIME           -->
   <!--                        -->
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" class="line-gap">
     <mat-label>Time</mat-label>
 
     <input formControlName="time" matInput id="settime" type="time" step="1" placeholder="start date"/>
@@ -23,7 +23,7 @@
   <!--                        -->
   <!--         ACTION         -->
   <!--                        -->
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" class="line-gap">
     <mat-label>Action</mat-label>
     <mat-select formControlName="type" id="">
       @for (action of actions; track action) {
@@ -36,7 +36,7 @@
   <!--                        -->
   <!--         AMOUNT         -->
   <!--                        -->
-  <mat-form-field floatLabel="auto" appearance="outline" class="compact-field">
+  <mat-form-field floatLabel="auto" appearance="outline" class="line-gap">
     <mat-label>Amount</mat-label>
     <input formControlName="amount"
            matInput type="number" class="right-align" placeholder="0.00"/>
@@ -48,7 +48,7 @@
   <!--                        -->
   <!--         TOKEN          -->
   <!--                        -->
-  <mat-form-field floatLabel="auto" appearance="outline">
+  <mat-form-field floatLabel="auto" appearance="outline" class="line-gap">
     <mat-label>Token</mat-label>
 
     <div class="input-container">
@@ -73,7 +73,7 @@
   <!--                        -->
   <!--      PRICE      -->
   <!--                        -->
-  <mat-form-field floatLabel="auto" class="form-field" appearance="outline">
+  <mat-form-field floatLabel="auto" appearance="outline" class="line-gap">
     <mat-label>Price</mat-label>
     <input formControlName="price"
            matInput type="number" class="right-align" placeholder="0.00"/>

@@ -14,6 +14,7 @@ import { LoginComponent } from "./core/components/login/login.component";
 import { AuthComponent } from "./core/components/auth/auth.component";
 import { AuthGuard } from "./auth.guard";
 import { ProfileComponent } from "./core/components/profile/profile.component";
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 
 
 const routes: Routes = [
@@ -39,7 +40,13 @@ const routes: Routes = [
   providers: [
     provideAnimationsAsync(),
     provideCharts(withDefaultRegisterables()),
-    basePathProvider
+    basePathProvider,
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        subscriptSizing: 'dynamic'
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

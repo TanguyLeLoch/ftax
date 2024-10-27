@@ -1,6 +1,117 @@
-<form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="filterForm" (ngSubmit)="onSubmit()" class="filter-form">
+  <mat-dialog-content class="mat-typography">
 
-  <mat-divider></mat-divider>
+    <!-- Validity Section -->
+    <section>
+      <h3 class="section-title">Validity</h3>
+      <mat-button-toggle-group
+        formControlName="validity"
+        name="filter valid / invalid transactions"
+        aria-label="filter valid and / or invalid transactions"
+        multiple
+        class="validity-field custom-toggle-group"
+      >
+        <mat-button-toggle value="valid">valid</mat-button-toggle>
+        <mat-button-toggle value="invalid">invalid</mat-button-toggle>
+      </mat-button-toggle-group>
+    </section>
+    <mat-divider></mat-divider>
 
+    <!-- Date Range Section -->
+    <section>
+      <h3 class="section-title">Date Range</h3>
+      <div class="date-range-container">
+        <!-- Start Date -->
+        <div class="date-field-wrapper">
+          <mat-form-field appearance="outline" class="date-form-field">
+            <mat-label>Start date</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="start">
+            <mat-datepicker-toggle matIconPrefix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+            <mat-hint>Format: MM/DD/YYYY</mat-hint>
+            <mat-error *ngIf="filterForm.get('start')?.hasError('matDatepickerParse')">
+              Invalid date format
+            </mat-error>
+            <mat-error *ngIf="filterForm.get('start')?.hasError('startAfterEnd')">
+              Start date must be before end date
+            </mat-error>
+          </mat-form-field>
+          <button type="button"
+                  mat-icon-button
+                  class="clear-button"
+                  (click)="clear('start')">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+
+        <!-- End Date -->
+        <div class="date-field-wrapper">
+          <mat-form-field appearance="outline" class="date-form-field">
+            <mat-label>End date</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="end">
+            <mat-datepicker-toggle matIconPrefix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+            <mat-hint>Format: MM/DD/YYYY</mat-hint>
+            <mat-error *ngIf="filterForm.get('end')?.hasError('matDatepickerParse')">
+              Invalid date format
+            </mat-error>
+            <mat-error *ngIf="filterForm.get('end')?.hasError('endBeforeStart')">
+              End date must be after start date
+            </mat-error>
+          </mat-form-field>
+          <button type="button"
+                  mat-icon-button
+                  class="clear-button"
+                  (click)="clear('end')"
+                  [attr.aria-label]="'Clear end date'">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <!-- Token Section -->
+    <section class="token-container">
+      <h3 class="section-title">Token</h3>
+
+      <mat-form-field floatLabel="auto" appearance="outline" class="token-field">
+        <mat-label>Token</mat-label>
+
+        <div class="input-container">
+          <input type="text" matInput formControlName="token" [matAutocomplete]="auto">
+        </div>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let token of availableTokens" [value]="token" (click)="addToFilter(token)">
+            {{ token.name }} ({{ token.ticker }})
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-chip-set class="chip-set">
+        <mat-chip *ngFor="let token of tokens"
+                  (removed)="removeToken(token)">
+          {{ token.name }} ({{ token.ticker }})
+          <button matChipRemove [attr.aria-label]="'remove ' + token.name">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+      </mat-chip-set>
+
+    </section>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+
+
+    <!-- Submit Button -->
+    <div class="submit-button-container">
+      <button mat-raised-button
+              color="primary"
+              aria-label="submit"
+              type="submit" [disabled]="filterForm.invalid">
+        <mat-icon>check_circle</mat-icon>
+        Apply
+      </button>
+    </div>
+  </mat-dialog-actions>
 </form>
-

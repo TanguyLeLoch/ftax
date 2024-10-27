@@ -11,7 +11,22 @@ $red-from-theme: mat.get-theme-color(theme.$light-theme, error, 50);
 $blue-from-theme: mat.get-theme-color(theme.$light-theme, primary, 35);
 
 
-$secondary-20: mat.get-theme-color(theme.$light-theme, secondary, 20);
+$primary-0: mat.get-theme-color(theme.$light-theme, primary, 0);
+$primary-10: mat.get-theme-color(theme.$light-theme, primary, 10);
+$primary-20: mat.get-theme-color(theme.$light-theme, primary, 20);
+$primary-25: mat.get-theme-color(theme.$light-theme, primary, 25);
+$primary-30: mat.get-theme-color(theme.$light-theme, primary, 30);
+$primary-35: mat.get-theme-color(theme.$light-theme, primary, 35);
+$primary-40: mat.get-theme-color(theme.$light-theme, primary, 40);
+$primary-50: mat.get-theme-color(theme.$light-theme, primary, 50);
+$primary-60: mat.get-theme-color(theme.$light-theme, primary, 60);
+$primary-70: mat.get-theme-color(theme.$light-theme, primary, 70);
+$primary-80: mat.get-theme-color(theme.$light-theme, primary, 80);
+$primary-90: mat.get-theme-color(theme.$light-theme, primary, 90);
+$primary-95: mat.get-theme-color(theme.$light-theme, primary, 95);
+$primary-98: mat.get-theme-color(theme.$light-theme, primary, 98);
+$primary-99: mat.get-theme-color(theme.$light-theme, primary, 99);
+$primary-100: mat.get-theme-color(theme.$light-theme, primary, 100);
 
 $secondary-0: mat.get-theme-color(theme.$light-theme, secondary, 0);
 $secondary-10: mat.get-theme-color(theme.$light-theme, secondary, 10);

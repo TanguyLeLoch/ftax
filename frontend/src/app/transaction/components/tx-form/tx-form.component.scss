@@ -1,7 +1,6 @@
 @import 'variables';
 
 .tx-entry {
-  margin-bottom: 4px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -25,6 +24,8 @@ mat-form-field {
 }
 
 .submit-button {
-  margin-bottom: 22px;
 }
 
+.line-gap {
+  margin-bottom: 5px;
+}

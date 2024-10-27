@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl} from "@angular/forms";
-import {map, Observable, startWith, tap} from "rxjs";
-import {Token, TokenControllerService} from "../../model";
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { map, Observable, startWith, tap } from "rxjs";
+import { Token, TokenControllerService } from "../../model";
 
 @Component({
   selector: 'app-token-selector',
@@ -31,10 +31,6 @@ export class TokenSelectorComponent  implements OnInit {
         return name ? this._filter(name as string) : this.options.slice();
       }),
     );
-  }
-
-  displayFn(token: Token): string {
-    return token && token.name ? token.name : '';
   }
 
   private _filter(name: string): Token[] {

@@ -58,10 +58,10 @@ mat-accordion {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 5px 0;
 
   mat-icon {
     cursor: pointer;
-    margin-bottom: 25px;
   }
 
   /* Add this rule */
