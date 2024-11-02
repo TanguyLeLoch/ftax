@@ -98,10 +98,17 @@ public class EthereumImporter implements OnChainImporter {
     }
 
     private List<Transaction> importOneTx(String address, Client client, EtherscanApi.EthTx tx) {
+        List<Transaction> txs = new ArrayList<>();
         var hash = tx.hash();
+
+        txs.add(processFee(address, client, tx, hash));
+
+        if (!etherscanApi.isStatusOk(tx)) {
+            return txs;
+        }
+
         var ldt = convertToLocalDateTime(tx.timeStamp());
 
-        List<Transaction> txs = new ArrayList<>();
 
         if (hasEthValue(tx)) {
             txs.add(createTxForEthValue(address, client, tx, ldt, hash));
@@ -122,12 +129,36 @@ public class EthereumImporter implements OnChainImporter {
             }
         }
 
+        //        var matchedTxs = masterTxService.createMasterTransactions(txs, "Ethereum");
 
-        var matchedTxs = masterTxService.createMasterTransactions(txs, "Ethereum");
+        matchPrices(txs, hash);
+        return txs;
 
-        matchPrices(matchedTxs, hash);
-        return matchedTxs;
+    }
 
+    private Transaction processFee(String address, Client client, EtherscanApi.EthTx tx, String hash) {
+        BigDecimal fee = getFee(tx);
+        return Transaction.builder()
+                .platform("Ethereum")
+                .id(idGenerator.generate())
+                .client(client)
+
+                .localDateTime(convertToLocalDateTime(tx.timeStamp()))
+                .type(Transaction.Type.SELL)
+
+                .amount(fee)
+                .token(getEthToken())
+                .price(BigDecimal.ZERO)
+
+                .externalId(hash)
+                .address(address)
+
+                .build();
+    }
+
+    private BigDecimal getFee(EtherscanApi.EthTx tx) {
+        var gasUsed = parseWei(tx.gasUsed());
+        return gasUsed.multiply(new BigDecimal(tx.gasPrice()));
     }
 
     private List<Transaction> createEthFromInternalTx(List<EtherscanApi.InternalTx> internalTxs, String address, Client client, EtherscanApi.EthTx tx) {

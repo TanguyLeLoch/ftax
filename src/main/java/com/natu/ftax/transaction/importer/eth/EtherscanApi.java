@@ -198,8 +198,26 @@ public class EtherscanApi {
         return usdtAmount.divide(wethAmount, MathContext.DECIMAL64);
     }
 
+    public boolean isStatusOk(EthTx tx) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
+                .queryParam("txhash", tx.hash());
+
+        URI uri = etherscanClient.buildUri("transaction", "getstatus", builder);
+
+        TypeReference<TxStatus> typeRef = new TypeReference<>() {
+        };
+
+        Optional<TxStatus> response = etherscanClient.getForEntity(uri, typeRef);
 
 
+        return response.map(resp -> "0".equals(resp.isError())).orElse(false);
+
+    }
+
+    public record TxStatus(
+            String isError,
+            String errDescription) {
+    }
 
     public record InternalTx(
             String blockNumber,

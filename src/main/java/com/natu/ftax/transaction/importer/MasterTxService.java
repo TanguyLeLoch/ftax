@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MasterTxService {
@@ -20,15 +19,15 @@ public class MasterTxService {
         this.idGenerator = idGenerator;
     }
 
-    public List<Transaction> createMasterTransactions(
-            List<Transaction> transactions, String platform) {
-        return transactions.stream()
-                .collect(Collectors.groupingBy(this::createGroupKey))
-                .values()
-                .stream()
-                .map(grp -> this.createMasterTransaction(grp, platform))
-                .collect(Collectors.toList());
-    }
+    //    public List<Transaction> createMasterTransactions(
+    //            List<Transaction> transactions, String platform) {
+    //        return transactions.stream()
+    //                .collect(Collectors.groupingBy(this::createGroupKey))
+    //                .values()
+    //                .stream()
+    //                .map(grp -> this.createMasterTransaction(grp, platform))
+    //                .collect(Collectors.toList());
+    //    }
 
     private String createGroupKey(Transaction tx) {
         return tx.getLocalDateTime().truncatedTo(ChronoUnit.SECONDS)

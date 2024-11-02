@@ -53,12 +53,12 @@ public class MexcImporter implements PlatformImporter {
         List<Transaction> transactions = new ArrayList<>();
         for (MexcData mexcData : mexcDatas) {
 
-            Transaction transaction = mexcData.toTransaction("TBD", client,
+            Transaction transaction = mexcData.toTransaction(idGenerator.generate(), client,
                 this::getOrCreateToken);
             transactions.add(transaction);
         }
-        var masterTx = masterTxService.createMasterTransactions(transactions, "Mexc");
-        transactionRepo.saveAll(masterTx);
+        //        var masterTx = masterTxService.createMasterTransactions(transactions, "Mexc");
+        transactionRepo.saveAll(transactions);
 
     }
 
