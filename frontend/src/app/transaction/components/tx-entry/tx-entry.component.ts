@@ -6,6 +6,8 @@ import { faArrowDown, faArrowUp, faWarning } from '@fortawesome/free-solid-svg-i
 import { TokenService } from '../../../core/services/token.service';
 import { TransactionService } from '../../../core/services/transaction.service';
 import { ToastService } from "../../../core/services/toast.service";
+import { Clipboard } from "@angular/cdk/clipboard";
+
 
 @Component({
   selector: 'app-tx-entry',
@@ -32,6 +34,7 @@ export class TxEntryComponent implements OnInit {
   protected readonly faWarning = faWarning;
 
   constructor(
+    private clipboard: Clipboard,
     private tokenService: TokenService,
     private transactionService: TransactionService,
     private toast: ToastService,
@@ -62,5 +65,9 @@ export class TxEntryComponent implements OnInit {
     this.transactionService.deleteById(this.transaction.id).subscribe(() => {
       this.toast.showSuccess('Transaction deleted');
     });
+  }
+
+  copyTxId() {
+    this.clipboard.copy(this.transaction.id);
   }
 }

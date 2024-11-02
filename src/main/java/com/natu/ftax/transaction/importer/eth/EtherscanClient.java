@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.natu.ftax.common.exception.FunctionalException;
+import com.natu.ftax.common.exception.TechnicalException;
 import io.github.bucket4j.Bucket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +103,7 @@ public class EtherscanClient {
             perSecondBucket.asBlocking().consume(1);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Thread was interrupted while waiting for rate limiter", e);
+            throw new TechnicalException("Thread was interrupted while waiting for rate limiter", e);
         }
     }
 

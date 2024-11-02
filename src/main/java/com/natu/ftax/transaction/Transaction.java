@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction {
+public class Transaction implements Comparable<Transaction> {
 
     @Id
     @NotNull
@@ -115,6 +115,11 @@ public class Transaction {
             errorMessage = pnl.getErrorMessage();
         }
         validationPerformed = true;
+    }
+
+    @Override
+    public int compareTo(Transaction o) {
+        return this.getLocalDateTime().compareTo(o.getLocalDateTime()); // by date asc
     }
 
 

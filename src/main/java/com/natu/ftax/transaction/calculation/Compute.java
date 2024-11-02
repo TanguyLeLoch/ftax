@@ -14,7 +14,7 @@ public class Compute {
     private final Map<Token, InventoryAcquisition> inventoryAcquisitions;
 
     public Compute(List<Transaction> txs) {
-        this.txs = txs;
+        this.txs = txs.stream().sorted().toList();
         this.inventoryAcquisitions = txs.stream()
                 .map(Transaction::getToken)
                 .distinct()

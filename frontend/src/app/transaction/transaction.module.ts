@@ -12,6 +12,7 @@ import { TokenDialogComponent } from "./components/token-dialog/token-dialog.com
 import { MasterTxEntryComponent } from "./components/master-tx-entry/master-tx-entry.component";
 import { TransactionInfoComponent } from "./components/tx-info/tx-info.component";
 import { TxFilterComponent } from "./components/tx-filter/tx-filter.component";
+import { ClipboardModule } from "@angular/cdk/clipboard";
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { TxFilterComponent } from "./components/tx-filter/tx-filter.component";
     FontAwesomeModule,
     ReactiveFormsModule,
     AsyncPipe,
-    MaterialModule
+    MaterialModule,
+    ClipboardModule,
   ]
 })
 export class TransactionModule {

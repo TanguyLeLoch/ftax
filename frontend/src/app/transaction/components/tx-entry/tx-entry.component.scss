@@ -73,3 +73,11 @@ mat-accordion {
 .tx-form {
   width: 100%;
 }
+
+.tx-atomic-line-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+

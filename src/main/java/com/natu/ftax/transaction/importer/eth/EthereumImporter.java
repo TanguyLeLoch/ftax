@@ -26,7 +26,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.natu.ftax.transaction.importer.eth.EtherscanApi.TRANSFER_TOPIC;
 import static com.natu.ftax.transaction.importer.eth.EtherscanApi.WITHDRAW_TOPIC;
@@ -65,18 +64,22 @@ public class EthereumImporter implements OnChainImporter {
     @Override
     public void importTransaction(String address, LocalDateTime from,
                                   LocalDateTime to, Client client) {
-        List<EtherscanApi.EthTx> ethTxes = getEthTxes(address, from, to);
 
-        List<Transaction> txToSave = ethTxes.parallelStream()
-                .flatMap(tx -> process1tx(address, client, tx))
+        List<String> existingHashs = transactionRepo.findAllByClient(client).stream()
+                .map(Transaction::getExternalId)
                 .toList();
 
-        transactionRepo.saveAll(txToSave);
+        List<EtherscanApi.EthTx> ethTxes = getEthTxes(address, from, to).stream()
+                .filter(tx -> !existingHashs.contains(tx.hash()))
+                .toList();
+
+        ethTxes.forEach(tx -> process1tx(address, client, tx));
     }
 
-    private Stream<Transaction> process1tx(String address, Client client, EtherscanApi.EthTx tx) {
+    private void process1tx(String address, Client client, EtherscanApi.EthTx tx) {
+        List<Transaction> txToSave = new ArrayList<>();
         try {
-            return importOneTx(address, client, tx).stream();
+            txToSave.addAll(importOneTx(address, client, tx));
         } catch (TxInterruptionNeeded e) {
             var hash = tx.hash();
             var ldt = convertToLocalDateTime(tx.timeStamp());
@@ -89,8 +92,9 @@ public class EthereumImporter implements OnChainImporter {
                     .externalId(hash)
                     .address(address)
                     .build();
-            return Stream.of(emptyTx);
+            txToSave.add(emptyTx);
         }
+        transactionRepo.saveAll(txToSave);
     }
 
     private List<Transaction> importOneTx(String address, Client client, EtherscanApi.EthTx tx) {
