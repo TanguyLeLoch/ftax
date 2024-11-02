@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { Token, Transaction } from '../../../core/model';
+import { Token, Transaction, TransactionRequest } from '../../../core/model';
 import { TokenService } from '../../../core/services/token.service';
 import { ToastService } from '../../../core/services/toast.service';
 
@@ -27,7 +27,8 @@ import { TransactionService } from "../../../core/services/transaction.service";
 })
 export class TxFormComponent implements OnInit {
   @Input() transaction!: Transaction;
-  @Output() formSubmit = new EventEmitter<Transaction>();
+  transactionRequest!: TransactionRequest;
+  @Output() formSubmit = new EventEmitter<TransactionRequest>();
 
   txForm!: FormGroup;
   tokenControl!: FormControl<string | Token | null>;
@@ -80,7 +81,7 @@ export class TxFormComponent implements OnInit {
 
   setupTokenAutocomplete() {
     this.tokenControl = new FormControl<string | Token | null>(
-      this.transaction.token ? this.transaction.token : '',
+      this.transaction.tokenId ? this.transaction.tokenId : '',
       [Validators.required, noStringValidator()]
     );
 
@@ -89,8 +90,15 @@ export class TxFormComponent implements OnInit {
       this.filteredOptions = this.tokenControl.valueChanges.pipe(
         startWith(this.tokenControl.value),
         map((value) => {
-          const name = typeof value === 'string' ? value : value?.name;
-          return name ? this._filter(name as string) : tokens.slice();
+          if (value instanceof Object && value.id !== undefined) {
+            // value is a token
+            return [value];
+          }
+          if (!value) {
+            return tokens.slice();
+          }
+          // value is a string
+          return this._filter(value as string)
         })
       );
     });
@@ -119,7 +127,10 @@ export class TxFormComponent implements OnInit {
 
   private _filter(name: string): Token[] {
     const filterValue = name.toLowerCase();
-    return this.getToken().filter((option) => option.name.toLowerCase().includes(filterValue));
+    return this.getToken().filter((option) => {
+      return option.name.toLowerCase().includes(filterValue)
+        || option.ticker.toLowerCase().includes(filterValue)
+    });
   }
 
   onSubmit(): void {
@@ -127,24 +138,26 @@ export class TxFormComponent implements OnInit {
     console.log('onSubmit');
     const date: Date = this.txForm.get('date')!.value;
     const dateStr = date.toISOString().slice(0, 10);
-    this.transaction.localDateTime = dateStr + ' ' + this.txForm.get('time')!.value;
-    this.transaction.type = this.txForm.get('type')!.value;
-    this.transaction.amount = this.txForm.get('amount')!.value;
-    this.transaction.token = this.txForm.get('token')!.value.id;
-    this.transaction.price = this.txForm.get('price')!.value;
+    this.transactionRequest = this.transaction || {};
+    this.transactionRequest.id = this.transaction.id;
+    this.transactionRequest.localDateTime = dateStr + ' ' + this.txForm.get('time')!.value;
+    this.transactionRequest.type = this.txForm.get('type')!.value;
+    this.transactionRequest.amount = this.txForm.get('amount')!.value;
+    this.transactionRequest.tokenId = this.txForm.get('token')!.value.id;
+    this.transactionRequest.price = this.txForm.get('price')!.value;
 
     // Update the transaction state using the service
-    console.log('addTransaction');
-    this.transactionService.updateTransaction(this.transaction);
+    console.log('upd');
+    this.transactionService.updateTransaction(this.transactionRequest);
 
     // Emit the transaction
-    this.formSubmit.emit(this.transaction);
+    this.formSubmit.emit(this.transactionRequest);
 
     // Optionally, handle validation or display messages
-    this.isValid = this.transaction.valid;
-    if (!this.transaction.valid) {
-      this.toast.showToast('error', this.transaction.error!);
-    }
+    // this.isValid = this.transaction.valid;
+    // if (!this.transaction.valid) {
+    //   this.toast.showToast('error', this.transaction.error!);
+    // }
     this.isExpanded = false;
   }
 

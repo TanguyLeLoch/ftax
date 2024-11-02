@@ -13,8 +13,8 @@
 
 export interface Pnl { 
     txId: string;
-    tokenId: string;
     value?: number;
     errorMessage?: string;
+    tokenId?: string;
 }
 

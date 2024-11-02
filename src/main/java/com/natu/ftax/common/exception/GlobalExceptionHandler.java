@@ -31,13 +31,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(NotFoundException exception) {
         ExceptionResponse response = new ExceptionResponse(exception.getMessage());
+        LOGGER.info(exception.getMessage(), exception);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(FunctionalException.class)
     public ResponseEntity<ExceptionResponse> handleFunctionalException(FunctionalException exception) {
         ExceptionResponse response = new ExceptionResponse(exception.getMessage());
-        LOGGER.error(exception.getMessage(), exception);
+        LOGGER.info(exception.getMessage(), exception);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -51,6 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
         ExceptionResponse response = new ExceptionResponse(exception.getMessage());
+        LOGGER.info(exception.getMessage(), exception);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

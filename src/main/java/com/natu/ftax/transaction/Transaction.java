@@ -1,9 +1,9 @@
 package com.natu.ftax.transaction;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.natu.ftax.client.Client;
+import com.natu.ftax.token.Token;
 import com.natu.ftax.transaction.calculation.Pnl;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,13 +34,21 @@ public class Transaction {
     private Client client;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime localDateTime;
     @NotNull
     private Type type;
     @Column(precision = 64, scale = 30)
     private BigDecimal amount;
-    private String token;
+
+    @ManyToOne
+    @JoinColumn(name = "token_id")
+    @JsonIgnore
+    private Token token;
+
+    public String getTokenId() {
+        return token != null ? token.getId() : null;
+    }
+
     @Column(precision = 64, scale = 30)
     private BigDecimal price;
 
@@ -62,6 +70,17 @@ public class Transaction {
     @Transient
     @JsonIgnore
     private boolean validationPerformed = false;
+
+    @JsonIgnore
+    @Column(name = "valid")
+    private boolean valid;
+
+    @PrePersist
+    @PreUpdate
+    private void updateValidFieldBeforeSave() {
+        this.valid = isValid();
+        this.validationPerformed = false;
+    }
 
     @JsonProperty("valid")
     @NotNull
@@ -103,11 +122,11 @@ public class Transaction {
         BUY, SELL
     }
 
-    public void attachPnl(String tokenId, BigDecimal value) {
-        this.pnl = new Pnl(this.id, tokenId, value);
+    public void attachErrorPnl(Token token, BigDecimal value) {
+        this.pnl = new Pnl(this.id, token, value);
     }
 
-    public void attachPnl(String tokenId, String errorMessage) {
-        this.pnl = new Pnl(this.id, tokenId, errorMessage);
+    public void attachErrorPnl(Token token, String errorMessage) {
+        this.pnl = new Pnl(this.id, token, errorMessage);
     }
 }

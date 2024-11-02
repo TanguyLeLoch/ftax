@@ -52,7 +52,7 @@ public class MexcData {
                 .localDateTime(localDateTime)
                 .type(Transaction.Type.valueOf(side))
                 .amount(executedAmount)
-                .token(token.getId())
+                .token(token)
                 .price(filledPrice)
                 .build();
     }

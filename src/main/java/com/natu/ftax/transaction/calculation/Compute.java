@@ -1,15 +1,17 @@
 package com.natu.ftax.transaction.calculation;
 
+import com.natu.ftax.token.Token;
 import com.natu.ftax.transaction.Transaction;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Compute {
 
     private final List<Transaction> txs;
-    private final Map<String, InventoryAcquisition> inventoryAcquisitions;
+    private final Map<Token, InventoryAcquisition> inventoryAcquisitions;
 
     public Compute(List<Transaction> txs) {
         this.txs = txs;
@@ -17,15 +19,14 @@ public class Compute {
                 .map(Transaction::getToken)
                 .distinct()
                 .collect(Collectors.toMap(
-                        token -> token,
-                        InventoryAcquisition::new
-                ));
+                        Function.identity(),
+                        InventoryAcquisition::new));
 
     }
 
     public List<Transaction> execute(String method) {
         for (var tx : txs) {
-            var invAcqui = inventoryAcquisitions.get(tx.getToken());
+            InventoryAcquisition invAcqui = inventoryAcquisitions.get(tx.getToken());
             if (invAcqui.isStopped()) {
                 continue;
             }

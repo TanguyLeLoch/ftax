@@ -1,11 +1,11 @@
 <div class="transaction-info">
   <div class="left">
-    <span class="token-value">{{ formatter.format(tx.amount!) }} {{ getToken(tx.token)?.ticker }}</span>
+    <span class="token-value">{{ formatter.format(tx.amount!) }} {{ getToken(tx.tokenId)?.ticker }}</span>
     <span class="fiat-value">{{ tx.price ? formatter.format(tx.price!) : '?' }}
-      &#36;/{{ getToken(tx.token)?.ticker }}</span>
+      &#36;/{{ getToken(tx.tokenId)?.ticker }}</span>
   </div>
   <div class="right">
-    <img class="token-icon" [src]="getTokenUrl()" alt="{{ getToken(tx.token)?.name }} icon">
+    <img class="token-icon" [src]="getTokenUrl()" alt="{{ getToken(tx.tokenId)?.name }} icon">
   </div>
 
 </div>

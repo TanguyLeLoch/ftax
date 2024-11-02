@@ -5,3 +5,4 @@ export * from './profile';
 export * from './successResponse';
 export * from './token';
 export * from './transaction';
+export * from './transactionRequest';

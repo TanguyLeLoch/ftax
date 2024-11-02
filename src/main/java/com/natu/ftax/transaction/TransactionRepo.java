@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepo
-        extends JpaRepository<Transaction, String> {
+        extends JpaRepository<Transaction, String>, TransactionRepositoryCustom {
 
     List<Transaction> findAllByClient(Client client);
 
@@ -17,4 +17,6 @@ public interface TransactionRepo
     int deleteByExternalIdAndClient(String externalId, Client client);
 
     int deleteByIdAndClient(String id, Client client);
+
+    boolean existsByIdAndClient(String id, Client client);
 }

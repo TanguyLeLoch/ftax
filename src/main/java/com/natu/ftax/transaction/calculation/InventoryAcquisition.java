@@ -1,5 +1,6 @@
 package com.natu.ftax.transaction.calculation;
 
+import com.natu.ftax.token.Token;
 import com.natu.ftax.transaction.Transaction;
 import lombok.Getter;
 
@@ -10,14 +11,14 @@ import java.util.LinkedList;
 import static java.math.BigDecimal.ZERO;
 
 public class InventoryAcquisition {
-    private final String tokenId;
+    private final Token token;
     private final LinkedList<CostQuantity> costQuantities;
 
     @Getter
     private boolean stopped = false;
 
-    public InventoryAcquisition(String tokenId) {
-        this.tokenId = tokenId;
+    public InventoryAcquisition(Token token) {
+        this.token = token;
         costQuantities = new LinkedList<>();
     }
 
@@ -44,7 +45,8 @@ public class InventoryAcquisition {
         while (remainingToSell.compareTo(ZERO) > 0) {
             if (costQuantities.isEmpty()) {
                 this.stopped = true;
-                tx.attachPnl(tokenId, "Your balance is insufficient");
+                tx.attachErrorPnl(token, "Your balance is insufficient");
+                return;
             }
 
             CostQuantity firstIn = costQuantities.getFirst();
@@ -61,7 +63,7 @@ public class InventoryAcquisition {
                 costQuantities.pollFirst();
             }
         }
-        tx.attachPnl(tokenId, pnl);
+        tx.attachErrorPnl(token, pnl);
     }
 
     private void buyFifo(Transaction tx) {
@@ -73,7 +75,8 @@ public class InventoryAcquisition {
         // For a sell transaction, calculate PnL based on average cost
         if (costQuantities.isEmpty()) {
             this.stopped = true;
-            tx.attachPnl(tokenId, "Your balance is empty");
+            tx.attachErrorPnl(token, "Your balance is empty");
+            return;
         }
 
         CostQuantity averageCostQuantity = costQuantities.getFirst();
@@ -87,7 +90,7 @@ public class InventoryAcquisition {
         BigDecimal remainingQuantity = averageCostQuantity.getQuantity().subtract(tx.getAmount());
         if (remainingQuantity.compareTo(ZERO) < 0) {
             this.stopped = true;
-            tx.attachPnl(tokenId, "Your balance is insufficient");
+            tx.attachErrorPnl(token, "Your balance is insufficient");
         }
 
         if (remainingQuantity.compareTo(ZERO) == 0) {
@@ -98,7 +101,7 @@ public class InventoryAcquisition {
                     new CostQuantity(averagePrice, remainingQuantity));
         }
 
-        tx.attachPnl(tokenId, pnl);
+        tx.attachErrorPnl(token, pnl);
     }
 
     private void buyAverage(Transaction tx) {

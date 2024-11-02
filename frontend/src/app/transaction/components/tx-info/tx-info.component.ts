@@ -30,7 +30,7 @@ export class TransactionInfoComponent {
   }
 
   getTokenUrl() {
-    const token = this.getToken(this.tx.token);
+    const token = this.getToken(this.tx.tokenId);
     let url: string;
     if (token && token.logoUrl) {
       url = this.basePath + '/img/' + token.logoUrl;

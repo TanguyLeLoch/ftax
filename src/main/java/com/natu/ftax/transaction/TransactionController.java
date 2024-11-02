@@ -32,18 +32,21 @@ public class TransactionController {
     private final TransactionService service;
     private final IdGenerator idGenerator;
     private final EthereumImporter ethereumImporter;
+    private final TransactionMapper mapper;
 
 
     public TransactionController(
             IdGenerator idGenerator,
             TransactionService service,
             TransactionRepo repository,
-            EthereumImporter ethereumImporter
+            EthereumImporter ethereumImporter,
+            TransactionMapper mapper
     ) {
         this.repository = repository;
         this.service = service;
         this.idGenerator = idGenerator;
         this.ethereumImporter = ethereumImporter;
+        this.mapper = mapper;
     }
 
 
@@ -51,9 +54,14 @@ public class TransactionController {
     @PreAuthorize("isConnected()")
     @Transactional
     public Transaction post(
-            @RequestBody Transaction transaction, Principal principal) {
-        defaultValue(transaction);
+            @RequestBody TransactionRequest request, Principal principal) {
         Client client = getClient(principal);
+        if (request.getId() != null &&
+                !repository.existsByIdAndClient(request.getId(), client)) {
+            throw new NotFoundException("Transaction with id: %s not found");
+        }
+        Transaction transaction = mapper.toTransaction(request, client);
+        defaultValue(transaction);
         transaction.setClient(client);
         return repository.save(transaction);
     }
@@ -73,7 +81,7 @@ public class TransactionController {
             transaction.setPlatform("Ftax");
         }
         if (transaction.getExternalId() == null) {
-            transaction.setExternalId("external- " + transaction.getId());
+            transaction.setExternalId("external-" + transaction.getId());
         }
     }
 
@@ -94,10 +102,21 @@ public class TransactionController {
 
     @PreAuthorize("isConnected()")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Transaction> getAll(Principal principal) {
-
+    public List<Transaction> getAll(
+            @RequestParam(value = "valid", required = false) Boolean valid,
+            @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(value = "tokens", required = false) List<String> tokens,
+            Principal principal
+    ) {
         Client client = getClient(principal);
-        return repository.findAllByClient(client);
+        Filter filter = Filter.builder()
+                .valid(valid)
+                .from(from)
+                .to(to)
+                .tokens(tokens)
+                .build();
+        return service.getAllByClient(client, filter);
     }
 
     private static Client getClient(Principal principal) {
@@ -109,7 +128,8 @@ public class TransactionController {
     @PostMapping(value = "computePnl",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Transaction> computePnl(@RequestParam("method") String method, Principal principal) {
-        var txs = getAll(principal);
+        Client client = getClient(principal);
+        var txs = repository.findAllByClient(client);
         txs.forEach(tx -> tx.setPnl(null));
         var compute = new Compute(txs);
         compute.execute(method);

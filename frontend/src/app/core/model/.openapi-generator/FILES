@@ -18,5 +18,6 @@ model/profile.ts
 model/successResponse.ts
 model/token.ts
 model/transaction.ts
+model/transactionRequest.ts
 param.ts
 variables.ts

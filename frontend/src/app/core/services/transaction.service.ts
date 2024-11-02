@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Transaction, TransactionControllerService } from '../model';
+import { Transaction, TransactionControllerService, TransactionRequest } from '../model';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -30,7 +30,8 @@ export class TransactionService {
    * Adds a new transaction by sending it to the backend and updating the state.
    * @param transaction The Transaction object to add.
    */
-  addTransaction(transaction: Transaction): Observable<Transaction> {
+  addTransaction(transaction: TransactionRequest): Observable<Transaction> {
+    console.log('add ?? ')
     return this.transactionControllerService.post(transaction).pipe(
       tap((newTransaction) => {
         const currentTransactions = this.transactionsSubject.value;
@@ -52,13 +53,16 @@ export class TransactionService {
    * Updates an existing transaction by sending it to the backend and updating the state.
    * @param updatedTransaction The Transaction object with updated data.
    */
-  updateTransaction(updatedTransaction: Transaction): Observable<Transaction> {
+  updateTransaction(updatedTransaction: TransactionRequest): Observable<Transaction> {
     return this.transactionControllerService.post(updatedTransaction).pipe(
       tap((transaction) => {
         const currentTransactions = this.transactionsSubject.value;
         const index = currentTransactions.findIndex((t) => t.id === transaction.id);
+
+        console.log('update transaction subject1');
         if (index !== -1) {
           currentTransactions[index] = transaction;
+          console.log('update transaction subject2');
           this.transactionsSubject.next([...currentTransactions]);
         }
       })

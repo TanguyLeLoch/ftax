@@ -1,7 +1,7 @@
 // tx-entry.component.ts
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Transaction } from '../../../core/model';
+import { Transaction, TransactionRequest } from '../../../core/model';
 import { faArrowDown, faArrowUp, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { TokenService } from '../../../core/services/token.service';
 import { TransactionService } from '../../../core/services/transaction.service';
@@ -48,7 +48,7 @@ export class TxEntryComponent implements OnInit {
   }
 
 
-  onFormSubmit(updatedTransaction: Transaction) {
+  onFormSubmit(updatedTransaction: TransactionRequest) {
     // Update the transaction state
     this.transactionService.updateTransaction(updatedTransaction).subscribe(
       (tx: Transaction) => {

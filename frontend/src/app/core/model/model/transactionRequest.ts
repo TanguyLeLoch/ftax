@@ -9,24 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Pnl } from './pnl';
 
 
-export interface Transaction { 
-    id: string;
-    localDateTime: string;
-    type: Transaction.TypeEnum;
+export interface TransactionRequest { 
+    id?: string;
+    localDateTime?: string;
+    type?: TransactionRequest.TypeEnum;
     amount?: number;
-    price?: number;
-    externalId: string;
-    platform: string;
-    address?: string;
-    pnl?: Pnl;
     tokenId?: string;
-    error?: string;
-    valid: boolean;
+    price?: number;
+    externalId?: string;
+    platform?: string;
+    address?: string;
 }
-export namespace Transaction {
+export namespace TransactionRequest {
     export type TypeEnum = 'BUY' | 'SELL';
     export const TypeEnum = {
         Buy: 'BUY' as TypeEnum,

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -15,14 +16,19 @@ public class TransactionService {
 
     private final Map<String, PlatformImporter> platformImporters;
     private final Map<String, OnChainImporter> onChainImporters;
+    private final TransactionRepo repo;
 
-    public TransactionService(Map<String, PlatformImporter> platformImporters,
-        Map<String, OnChainImporter> onChainImporters) {
+    public TransactionService(
+            Map<String, PlatformImporter> platformImporters,
+            Map<String, OnChainImporter> onChainImporters,
+            TransactionRepo repo) {
 
         this.platformImporters = platformImporters;
         this.onChainImporters = onChainImporters;
+        this.repo = repo;
 
     }
+
 
     public void importTransactions(String platform, MultipartFile file,
         Client client) {
@@ -44,5 +50,9 @@ public class TransactionService {
                 "Blockchain " + blockchain + " not supported");
         }
         importer.importTransaction(address, from, to, client);
+    }
+
+    public List<Transaction> getAllByClient(Client client, Filter filter) {
+        return repo.findAllByClientWithFilter(client, filter);
     }
 }
