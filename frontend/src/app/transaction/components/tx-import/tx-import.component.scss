@@ -33,9 +33,14 @@ mat-card-content {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   height: 100%;
 }
 
 mat-dialog-content > form {
   height: 100%;
+}
+
+.input-field-width {
+  width: 250px !important;
 }
