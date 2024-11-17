@@ -1,11 +1,10 @@
 package com.natu.ftax.transaction.importer;
 
+import java.time.LocalDate;
 import com.natu.ftax.client.Client;
-
-import java.time.LocalDateTime;
 
 public interface OnChainImporter {
 
-    void importTransaction(String address, LocalDateTime from, LocalDateTime to,
+    void importTransaction(String address, LocalDate from, LocalDate to,
         Client client);
 }

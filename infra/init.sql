@@ -1,1 +1,2 @@
--- Create a sample table
+-- insert into token (id, name, ticker)
+--     value ('ethId', 'ethereum', 'ETH');

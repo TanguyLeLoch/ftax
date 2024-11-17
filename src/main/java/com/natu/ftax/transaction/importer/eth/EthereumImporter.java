@@ -1,5 +1,22 @@
 package com.natu.ftax.transaction.importer.eth;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static com.natu.ftax.transaction.importer.eth.EtherscanApi.TRANSFER_TOPIC;
+import static com.natu.ftax.transaction.importer.eth.EtherscanApi.WITHDRAW_TOPIC;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import com.natu.ftax.IDgenerator.domain.IdGenerator;
 import com.natu.ftax.client.Client;
 import com.natu.ftax.common.exception.FunctionalException;
@@ -12,24 +29,6 @@ import com.natu.ftax.transaction.TransactionRepo;
 import com.natu.ftax.transaction.importer.MasterTxService;
 import com.natu.ftax.transaction.importer.OnChainImporter;
 import com.natu.ftax.transaction.importer.eth.model.EventLog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static com.natu.ftax.transaction.importer.eth.EtherscanApi.TRANSFER_TOPIC;
-import static com.natu.ftax.transaction.importer.eth.EtherscanApi.WITHDRAW_TOPIC;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Component("EthereumImporter")
 public class EthereumImporter implements OnChainImporter {
@@ -62,8 +61,8 @@ public class EthereumImporter implements OnChainImporter {
     }
 
     @Override
-    public void importTransaction(String address, LocalDateTime from,
-                                  LocalDateTime to, Client client) {
+    public void importTransaction(String address, LocalDate from,
+        LocalDate to, Client client) {
 
         List<String> existingHashs = transactionRepo.findAllByClient(client).stream()
                 .map(Transaction::getExternalId)
@@ -122,7 +121,7 @@ public class EthereumImporter implements OnChainImporter {
         List<EventLog> logs = etherscanApi.getLogsforTx(tx, address);
         for (var log : logs) {
 
-            if (iswithdrawal(log)) {
+            if (isWithdrawal(log)) {
                 txs.add(importTxFromWithdrawal(address, client, log, ldt, hash, tx));
             } else if (isTransfer(log)) {
                 txs.add(importTxFromTransfer(address, client, log, ldt, hash));
@@ -285,7 +284,7 @@ public class EthereumImporter implements OnChainImporter {
 
     public List<Transaction> refreshTx(Transaction oldTx, Client client) {
         String address = oldTx.getAddress();
-        var txs = getEthTxes(address, oldTx.getLocalDateTime(), oldTx.getLocalDateTime());
+        var txs = getEthTxes(address, oldTx.getLocalDateTime().toLocalDate(), oldTx.getLocalDateTime().toLocalDate());
         var ethTx = txs.stream().filter(t -> t.hash().equals(oldTx.getExternalId())).findFirst().orElseThrow(() -> new NotFoundException("Cant find Eth Tx"));
         var toSave = importOneTx(address, client, ethTx);
 
@@ -301,15 +300,10 @@ public class EthereumImporter implements OnChainImporter {
         return !"0".equals(tx.value());
     }
 
-    private List<EtherscanApi.EthTx> getEthTxes(String address, LocalDateTime from, LocalDateTime to) {
-        long fromTimestamp = from.toEpochSecond(ZoneOffset.UTC);
-        long toTimestamp = to.toEpochSecond(ZoneOffset.UTC);
+    private List<EtherscanApi.EthTx> getEthTxes(String address, LocalDate from, LocalDate to) {
 
-        Integer startBlock = etherscanApi.getBlockNumberByTimestamp(
-                fromTimestamp, "before");
-        if (toTimestamp > (LocalDateTime.now(ZoneId.of("UTC")).minusMinutes(1).toEpochSecond(ZoneOffset.UTC))) {
-            toTimestamp = LocalDateTime.now(ZoneId.of("UTC")).minusMinutes(1).toEpochSecond(ZoneOffset.UTC);
-        }
+        Integer startBlock = getStartBlock(from);
+        long toTimestamp = getEndBlock(to);
         Integer endBlock = etherscanApi.getBlockNumberByTimestamp(toTimestamp,
                 "after");
 
@@ -327,7 +321,24 @@ public class EthereumImporter implements OnChainImporter {
                 "asc");
     }
 
-    private boolean iswithdrawal(EventLog log) {
+    private static long getEndBlock(LocalDate to) {
+        if (to == null || to.atStartOfDay().minusNanos(1)
+                              .isAfter(LocalDate.now(ZoneOffset.UTC).atStartOfDay())) {
+            return LocalDateTime.now(ZoneOffset.UTC).minusMinutes(1).toEpochSecond(ZoneOffset.UTC);
+        }
+        return to.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC);
+    }
+
+    private Integer getStartBlock(LocalDate from) {
+        if (from == null || from.isBefore(LocalDate.of(2015, Month.JULY, 30))) {
+            return 1;
+        }
+        long fromTimestamp = from.atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        return etherscanApi.getBlockNumberByTimestamp(
+            fromTimestamp, "before");
+    }
+
+    private boolean isWithdrawal(EventLog log) {
         return log.topics().get(0).equals(WITHDRAW_TOPIC);
     }
 

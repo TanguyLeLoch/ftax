@@ -1,15 +1,14 @@
 package com.natu.ftax.transaction;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import com.natu.ftax.client.Client;
 import com.natu.ftax.common.exception.FunctionalException;
 import com.natu.ftax.transaction.importer.OnChainImporter;
 import com.natu.ftax.transaction.importer.PlatformImporter;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class TransactionService {
@@ -42,7 +41,7 @@ public class TransactionService {
     }
 
     public void importOnchainTransactions(String blockchain, String address,
-        LocalDateTime from, LocalDateTime to, Client client) {
+        LocalDate from, LocalDate to, Client client) {
         OnChainImporter importer = onChainImporters.get(
             blockchain + "Importer");
         if (importer == null) {

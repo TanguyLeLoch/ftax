@@ -457,21 +457,15 @@ export class TransactionControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public importOnchainTransactions(blockchain: string, address: string, from: string, to: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SuccessResponse>;
-    public importOnchainTransactions(blockchain: string, address: string, from: string, to: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SuccessResponse>>;
-    public importOnchainTransactions(blockchain: string, address: string, from: string, to: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SuccessResponse>>;
-    public importOnchainTransactions(blockchain: string, address: string, from: string, to: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public importOnchainTransactions(blockchain: string, address: string, from?: string, to?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SuccessResponse>;
+    public importOnchainTransactions(blockchain: string, address: string, from?: string, to?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SuccessResponse>>;
+    public importOnchainTransactions(blockchain: string, address: string, from?: string, to?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SuccessResponse>>;
+    public importOnchainTransactions(blockchain: string, address: string, from?: string, to?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (blockchain === null || blockchain === undefined) {
             throw new Error('Required parameter blockchain was null or undefined when calling importOnchainTransactions.');
         }
         if (address === null || address === undefined) {
             throw new Error('Required parameter address was null or undefined when calling importOnchainTransactions.');
-        }
-        if (from === null || from === undefined) {
-            throw new Error('Required parameter from was null or undefined when calling importOnchainTransactions.');
-        }
-        if (to === null || to === undefined) {
-            throw new Error('Required parameter to was null or undefined when calling importOnchainTransactions.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});

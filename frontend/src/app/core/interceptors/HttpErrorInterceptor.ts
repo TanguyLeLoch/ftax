@@ -12,6 +12,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          console.log("401, redirecting to login");
+          this.router.navigate(['/login']);
+        }
         if (error.status === 403) {
           console.log("403, redirecting to login");
           this.router.navigate(['/login']);
