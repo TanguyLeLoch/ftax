@@ -99,8 +99,10 @@ public class EthereumImporter implements OnChainImporter {
     private List<Transaction> importOneTx(String address, Client client, EtherscanApi.EthTx tx) {
         List<Transaction> txs = new ArrayList<>();
         var hash = tx.hash();
-
-        txs.add(processFee(address, client, tx, hash));
+        var feeTx = processFee(address, client, tx, hash);
+        if (feeTx != null) {
+            txs.add(feeTx);
+        }
 
         if (!etherscanApi.isStatusOk(tx)) {
             return txs;
@@ -136,6 +138,9 @@ public class EthereumImporter implements OnChainImporter {
     }
 
     private Transaction processFee(String address, Client client, EtherscanApi.EthTx tx, String hash) {
+        if (!address.equalsIgnoreCase(tx.from())) {
+            return null;
+        }
         BigDecimal fee = getFee(tx);
         return Transaction.builder()
                 .platform("Ethereum")
