@@ -13,6 +13,9 @@ import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,7 @@ import com.natu.ftax.transaction.importer.eth.model.EventLog;
 public class EthereumImporter implements OnChainImporter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EthereumImporter.class);
+    static final String WETH = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
 
     private final EtherscanApi etherscanApi;
     private final IdGenerator idGenerator;
@@ -72,7 +76,12 @@ public class EthereumImporter implements OnChainImporter {
                 .filter(tx -> !existingHashs.contains(tx.hash()))
                 .toList();
 
-        ethTxes.forEach(tx -> process1tx(address, client, tx));
+        int size = ethTxes.size();
+        int cpt = 1;
+        for (EtherscanApi.EthTx tx : ethTxes) {
+            LOGGER.info("Importing transaction {} ({}/{})", tx.hash(), cpt++, size);
+            process1tx(address, client, tx);
+        }
     }
 
     private void process1tx(String address, Client client, EtherscanApi.EthTx tx) {
@@ -148,7 +157,7 @@ public class EthereumImporter implements OnChainImporter {
                 .client(client)
 
                 .localDateTime(convertToLocalDateTime(tx.timeStamp()))
-                .type(Transaction.Type.SELL)
+                   .type(Transaction.Type.FEE)
 
                 .amount(fee)
                 .token(getEthToken())
@@ -254,8 +263,10 @@ public class EthereumImporter implements OnChainImporter {
             logoPath = "logo/ether/" + contractAddress + ".png";
             imgDownloader.downloadAndSaveImage(url, logoPath);
         }
+        String wethPair = extractWethPair(info);
 
-        Token token = new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals(), logoPath);
+        Token token =
+            new Token(tokenId, info.symbol(), info.name(), contractAddress, info.decimals(), logoPath, wethPair);
         return tokenRepo.save(token);
     }
 
@@ -347,26 +358,98 @@ public class EthereumImporter implements OnChainImporter {
         return log.topics().get(0).equals(WITHDRAW_TOPIC);
     }
 
-    private static void matchPrices(List<Transaction> txToSave, String hash) {
-        List<Transaction> txForHash = txToSave.stream().filter(t -> t.getExternalId().equals(hash)).toList();
+    private void matchPrices(List<Transaction> txToSave, String hash) {
+        List<Transaction> txForHash =
+            txToSave.stream()
+                .filter(t -> t.getExternalId().equals(hash))
+                .filter(t -> !Transaction.Type.FEE.equals(t.getType())).toList();
 
-        if (txForHash.size() != 2) {
-            return;
+        Map<Token, List<Transaction>> groupedByTokenTx = txForHash.stream()
+                                                             .collect(Collectors.groupingBy(Transaction::getToken));
+
+        averagePrices(groupedByTokenTx);
+
+        Set<Token> tokensWithPrice = groupedByTokenTx.entrySet().stream()
+                                         .filter(entry -> entry.getValue().stream().allMatch(Transaction::hasPrice))
+                                         .map(Map.Entry::getKey)
+                                         .collect(Collectors.toSet());
+
+        Set<Token> tokensWithoutPrice = groupedByTokenTx.entrySet().stream()
+                                            .filter(entry -> entry.getValue().stream().anyMatch(tx -> !tx.hasPrice()))
+                                            .map(Map.Entry::getKey)
+                                            .collect(Collectors.toSet());
+
+        if (tokensWithoutPrice.size() > 1 || tokensWithoutPrice.size() == 1 && tokensWithPrice.isEmpty()) {
+            for (Token token : tokensWithoutPrice) {
+                long timestamp = groupedByTokenTx.get(token).get(0).getLocalDateTime().toEpochSecond(ZoneOffset.UTC);
+                Integer blockNumber = etherscanApi.getBlockNumberByTimestamp(timestamp, "before");
+                BigDecimal price = getPrice(token, blockNumber.toString());
+                if (price != null) {
+                    groupedByTokenTx.get(token).forEach(t -> t.setPrice(price));
+                }
+            }
         }
-        boolean hasBuy = txForHash.stream().anyMatch(t -> t.getType() == Transaction.Type.BUY);
-        boolean hasSell = txForHash.stream().anyMatch(t -> t.getType() == Transaction.Type.SELL);
-        if (!hasBuy || !hasSell) {
-            return;
-        }
-        var nullPrice = txForHash.stream().filter(t -> t.getPrice().equals(BigDecimal.valueOf(-1))).findFirst();
-        var nonNullPrice = txForHash.stream().filter(t -> t.getPrice().compareTo(BigDecimal.valueOf(-1)) != 0).findFirst();
-        if (nullPrice.isEmpty() || nonNullPrice.isEmpty()) {
+        tokensWithPrice = groupedByTokenTx.entrySet().stream()
+                              .filter(entry -> entry.getValue().stream().allMatch(Transaction::hasPrice))
+                              .map(Map.Entry::getKey)
+                              .collect(Collectors.toSet());
+
+        tokensWithoutPrice = groupedByTokenTx.entrySet().stream()
+                                 .filter(entry -> entry.getValue().stream().anyMatch(tx -> !tx.hasPrice()))
+                                 .map(Map.Entry::getKey)
+                                 .collect(Collectors.toSet());
+
+        if (tokensWithoutPrice.size() != 1 || tokensWithPrice.isEmpty()) {
             return;
         }
 
-        // both price should be the same
-        BigDecimal totalCost = nonNullPrice.get().getPrice().multiply(nonNullPrice.get().getAmount());
-        nullPrice.get().setPrice(totalCost.divide(nullPrice.get().getAmount(), MathContext.DECIMAL64));
+        Token missingToken = tokensWithoutPrice.stream().findFirst().get();
+        BigDecimal totalAmount = groupedByTokenTx.get(missingToken).stream().reduce(
+            BigDecimal.ZERO,
+            (sum, tx) -> sum.add(tx.getAmount().multiply(tx.getType().getSign())),
+            BigDecimal::add);
+
+        BigDecimal totalValue = BigDecimal.ZERO;
+        for (var t : tokensWithPrice) {
+            var txs = groupedByTokenTx.get(t);
+            for (var tx : txs) {
+                totalValue = totalValue.add(tx.getAmount().multiply(tx.getPrice())).multiply(tx.getType().getSign());
+            }
+        }
+        Transaction.Type type = totalValue.compareTo(BigDecimal.ZERO) > 0
+                                    ? Transaction.Type.BUY
+                                    : Transaction.Type.SELL;
+
+        BigDecimal price = totalValue.abs().divide(totalAmount.abs(), MathContext.DECIMAL64);
+
+        groupedByTokenTx.get(missingToken).forEach(tx -> tx.setPrice(price));
+    }
+
+    private BigDecimal getPrice(Token token, String blockNumber) {
+        String wethPair = token.getWethPair();
+        return etherscanApi.getTokenPrice(token, blockNumber, wethPair);
+    }
+
+    private void averagePrices(Map<Token, List<Transaction>> groupedByTokenTx) {
+        for (List<Transaction> transactions : groupedByTokenTx.values()) {
+            // Calculate average price from valid prices in a single pass
+            long count = 0;
+            BigDecimal sum = BigDecimal.ZERO;
+            for (Transaction tx : transactions) {
+                if (tx.hasPrice()) {
+                    count++;
+                    sum = sum.add(tx.getPrice());
+                }
+            }
+
+            if (count > 0) {
+                // Calculate single price for all transactions of this token
+                BigDecimal tokenPrice = sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL64);
+
+                // Set this price for ALL transactions of this token
+                transactions.forEach(tx -> tx.setPrice(tokenPrice));
+            }
+        }
     }
 
     private BigDecimal parseWei(String weiStr) {
@@ -390,7 +473,18 @@ public class EthereumImporter implements OnChainImporter {
         return new BigDecimal(bigInt).divide(BigDecimal.TEN.pow(decimals), MathContext.DECIMAL64);
     }
 
+    private String extractWethPair(DextoolApi.TokenInfo info) {
+        if (info == null || info.reprPair() == null || info.reprPair().id() == null) {
+            return null;
+        }
 
+        String tokenRef = info.reprPair().id().tokenRef();
+        if (tokenRef == null) {
+            return null;
+        }
+
+        return WETH.equals(tokenRef) ? info.reprPair().id().pair() : null;
+    }
     static class TxInterruptionNeeded extends RuntimeException {
     }
 }

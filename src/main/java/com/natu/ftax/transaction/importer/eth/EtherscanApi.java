@@ -1,18 +1,18 @@
 package com.natu.ftax.transaction.importer.eth;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.natu.ftax.transaction.importer.eth.model.EventLog;
-import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
-
+import static java.util.Collections.emptyList;
+import static com.natu.ftax.transaction.importer.eth.EthereumImporter.WETH;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Collections.emptyList;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.natu.ftax.token.Token;
+import com.natu.ftax.transaction.importer.eth.model.EventLog;
 
 @Component
 public class EtherscanApi {
@@ -20,6 +20,7 @@ public class EtherscanApi {
     public static final String BASE_URL = "https://api.etherscan.io/api";
     public static final String WITHDRAW_TOPIC = "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65";
     public static final String TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
+    private static final String SWAP_TOPIC = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822";
     private final EtherscanClient etherscanClient;
 
     public EtherscanApi(EtherscanClient etherscanClient) {
@@ -120,11 +121,10 @@ public class EtherscanApi {
      */
     public BigDecimal getEtherPriceAt(String blockNumber) {
         String usdtWethPair = "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852";
-        String swapTopic = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822";
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("address", usdtWethPair)
-                .queryParam("topic0", swapTopic)
+                                           .queryParam("topic0", SWAP_TOPIC)
                 .queryParam("fromBlock", blockNumber)
                 .queryParam("page", "1")
                 .queryParam("offset", "20");
@@ -136,7 +136,7 @@ public class EtherscanApi {
         int priceCount = 0;
 
         for (EventLog log : logs) {
-            BigDecimal priceFromLog = convertSwapDataToEthPrice(log);
+            BigDecimal priceFromLog = convertSwapDataToEthPrice(log, 6);
             if (priceFromLog != null) {
                 totalPrice = totalPrice.add(priceFromLog);
                 priceCount++;
@@ -150,11 +150,52 @@ public class EtherscanApi {
         return totalPrice.divide(BigDecimal.valueOf(priceCount), MathContext.DECIMAL64);
     }
 
-    BigDecimal convertSwapDataToEthPrice(EventLog log) {
+    public BigDecimal getTokenPrice(Token token, String blockNumber, String wethPair) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
+                                           .queryParam("address", wethPair)
+                                           .queryParam("topic0", SWAP_TOPIC)
+                                           .queryParam("fromBlock", blockNumber)
+                                           .queryParam("page", "1")
+                                           .queryParam("offset", "5");
+
+        List<EventLog> logs = getLogsResponse(builder);
+
+        // average price
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        int priceCount = 0;
+
+        for (EventLog log : logs) {
+            BigDecimal priceFromLog = convertSwapDataToEthPrice(log, token.getDecimals());
+
+            if (priceFromLog != null) {
+                if (shouldReverse(token.getExternalId())) {
+                    priceFromLog = BigDecimal.ONE.divide(priceFromLog, MathContext.DECIMAL64);
+                }
+                totalPrice = totalPrice.add(priceFromLog);
+                priceCount++;
+            }
+        }
+
+        if (priceCount == 0) {
+            return null;
+        }
+
+        BigDecimal priceInEth = totalPrice.divide(BigDecimal.valueOf(priceCount), MathContext.DECIMAL64);
+        BigDecimal ethPrice = getEtherPriceAt(blockNumber);
+
+        return ethPrice.multiply(priceInEth);
+    }
+
+    private boolean shouldReverse(String externalId) {
+        return externalId.compareTo(WETH) > 0;
+    }
+
+    BigDecimal convertSwapDataToEthPrice(EventLog log, int nbDecimalToken) {
         var data = log.data();
         // Decimals for USDT and WETH
-        BigDecimal usdtDecimals = new BigDecimal("1000000"); // USDT has 6 decimals
-        BigDecimal wethDecimals = new BigDecimal("1000000000000000000"); // WETH has 18 decimals
+        BigDecimal usdtDecimals = new BigDecimal(BigInteger.TEN.pow(nbDecimalToken));
+        // USDT has 6 decimals
+        BigDecimal wethDecimals = new BigDecimal(BigInteger.TEN.pow(18)); // WETH has 18 decimals
 
         String dataHex = data.startsWith("0x") ? data.substring(2) : data; // Remove "0x" if present
 

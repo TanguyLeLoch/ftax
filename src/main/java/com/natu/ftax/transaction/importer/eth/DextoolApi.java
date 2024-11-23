@@ -1,5 +1,8 @@
 package com.natu.ftax.transaction.importer.eth;
 
+import java.net.URI;
+import java.time.Instant;
+import java.util.List;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -7,10 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
-import java.time.Instant;
-import java.util.List;
 
 @Component
 public class DextoolApi {
@@ -45,7 +44,7 @@ public class DextoolApi {
 
         if (response.getBody() == null) return null;
 
-        return response.getBody().results.stream().findFirst().orElse(null);
+        return response.getBody().results.stream().filter(r -> "ether".equals(r.id().chain())).findFirst().orElse(null);
     }
 
 
@@ -56,7 +55,30 @@ public class DextoolApi {
             String symbol,
             String name,
             int decimals,
-            String logo
+            String logo,
+            ResultId id,
+            ReprPair reprPair
+
     ) {
+    }
+
+    public record ResultId(String chain) {
+
+    }
+
+    public record ReprPair(
+        PairId id
+    ) {
+
+    }
+
+    public record PairId(
+        String chain,
+        String exchange,
+        String pair,
+        String token,
+        String tokenRef
+    ) {
+
     }
 }

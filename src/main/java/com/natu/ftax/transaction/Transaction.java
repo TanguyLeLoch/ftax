@@ -1,19 +1,31 @@
 package com.natu.ftax.transaction;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.natu.ftax.client.Client;
 import com.natu.ftax.token.Token;
 import com.natu.ftax.transaction.calculation.Pnl;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -122,9 +134,30 @@ public class Transaction implements Comparable<Transaction> {
         return this.getLocalDateTime().compareTo(o.getLocalDateTime()); // by date asc
     }
 
+    @JsonIgnore
+    public boolean hasPrice() {
+        return price != null && price.compareTo(BigDecimal.ZERO) >= 0;
+    }
 
+    @Getter
     public enum Type {
-        BUY, SELL
+        BUY(BigDecimal.ONE), SELL(BigDecimal.valueOf(-1)), FEE(BigDecimal.valueOf(-1));
+
+        final BigDecimal sign;
+
+        Type(BigDecimal sign) {
+            this.sign = sign;
+        }
+
+        @JsonValue
+        String getValue() {
+            return this.name();
+        }
+
+        @JsonCreator
+        public static Type fromValue(String value) {
+            return Type.valueOf(value);
+        }
     }
 
     public void attachErrorPnl(Token token, BigDecimal value) {

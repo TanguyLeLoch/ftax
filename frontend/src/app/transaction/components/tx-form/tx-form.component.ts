@@ -41,6 +41,7 @@ export class TxFormComponent implements OnInit {
   actions = [
     { value: 'BUY', text: 'Buy' },
     { value: 'SELL', text: 'Sell' },
+    {value: 'FEE', text: 'Fee'},
   ];
   formatter = new Intl.NumberFormat('en-US', {
     notation: 'compact',

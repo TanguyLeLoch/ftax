@@ -21,6 +21,9 @@ export class MasterTxEntryComponent implements OnInit {
   sellTxs: Transaction[] = [];
   buyTxs: Transaction[] = [];
 
+  summary: Map<string, number> = new Map<string, number>();
+
+
   constructor(private tokenService: TokenService,
               private transactionService: TransactionService) {
     this.formatter = new Intl.NumberFormat('en-US', {
@@ -32,6 +35,20 @@ export class MasterTxEntryComponent implements OnInit {
   ngOnInit(): void {
     this.sellTxs = this.masterTransaction.transactions.filter(tx => tx.type === 'SELL');
     this.buyTxs = this.masterTransaction.transactions.filter(tx => tx.type === 'BUY');
+
+    for (let tx of this.masterTransaction.transactions) {
+      const tokenId = tx.tokenId;
+      if (!tokenId) continue;
+
+      const amount = tx.amount || 0; // Default to 0 if amount is undefined
+      const currentAmount = this.summary.get(tokenId) || 0;
+
+      if (tx.type === 'SELL') {
+        this.summary.set(tokenId, currentAmount - amount);
+      } else if (tx.type === 'BUY') {
+        this.summary.set(tokenId, currentAmount + amount);
+      }
+    }
   }
 
   onExpandedChange(expanded: boolean) {

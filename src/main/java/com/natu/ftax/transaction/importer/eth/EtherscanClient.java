@@ -1,11 +1,13 @@
 package com.natu.ftax.transaction.importer.eth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.natu.ftax.common.exception.FunctionalException;
-import com.natu.ftax.common.exception.TechnicalException;
-import io.github.bucket4j.Bucket;
+import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,11 +19,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.Optional;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.natu.ftax.common.exception.FunctionalException;
+import com.natu.ftax.common.exception.TechnicalException;
+import io.github.bucket4j.Bucket;
 
 @Component
 public class EtherscanClient {
@@ -72,7 +75,7 @@ public class EtherscanClient {
                 return Optional.of(parsedResult);
             } else {
                 String body = resp.getBody().toString();
-                if (body.contains("No transactions found")) {
+                if (body.contains("No transactions found") || body.contains("No records found")) {
                     return Optional.empty();
                 }
                 LOGGER.error("Error code: {}, message: {}", resp.getStatusCode(), body);
