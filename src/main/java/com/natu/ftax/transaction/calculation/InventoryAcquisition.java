@@ -1,14 +1,12 @@
 package com.natu.ftax.transaction.calculation;
 
-import com.natu.ftax.token.Token;
-import com.natu.ftax.transaction.Transaction;
-import lombok.Getter;
-
+import static java.math.BigDecimal.ZERO;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.LinkedList;
-
-import static java.math.BigDecimal.ZERO;
+import com.natu.ftax.token.Token;
+import com.natu.ftax.transaction.Transaction;
+import lombok.Getter;
 
 public class InventoryAcquisition {
     private final Token token;
@@ -25,14 +23,14 @@ public class InventoryAcquisition {
     public void fifo(Transaction tx) {
         switch (tx.getType()) {
             case BUY -> buyFifo(tx);
-            case SELL -> sellFifo(tx);
+            case SELL, FEE -> sellFifo(tx);
         }
     }
 
     public void average(Transaction tx) {
         switch (tx.getType()) {
             case BUY -> buyAverage(tx);
-            case SELL -> sellAverage(tx);
+            case SELL, FEE -> sellAverage(tx);
         }
         ;
     }
