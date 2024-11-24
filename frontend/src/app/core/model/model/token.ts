@@ -18,5 +18,6 @@ export interface Token {
     externalId?: string;
     decimals?: number;
     logoUrl?: string;
+    wethPair?: string;
 }
 

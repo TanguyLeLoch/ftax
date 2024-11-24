@@ -14,11 +14,12 @@
 .transaction-item {
 }
 
-.Buy {
+.In {
   color: $green-from-theme;
 }
 
-.Sell {
+.Fee,
+.Out {
   color: $red-from-theme;
 }
 
@@ -37,6 +38,14 @@
   background-color: transparent;
   padding: 0 5px 0 0;
 
+}
+
+.positive {
+  color: $green-from-theme;
+}
+
+.negative {
+  color: $red-from-theme;
 }
 
 .icon-placeholder {
@@ -112,4 +121,11 @@ mat-expansion-panel-header {
 
 .for {
   font-size: min(calc(2px + 0.8vw), 12px);
+}
+
+.fee-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }

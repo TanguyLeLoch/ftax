@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { Token, Transaction } from "../../../core/model";
+import { Component, Input, OnInit } from '@angular/core';
+import { Token } from "../../../core/model";
 import { TokenService } from "../../../core/services/token.service";
 import { environment } from "../../../../environments/environment";
+import { TxInfo } from '../master-tx-entry/master-tx-entry.component';
 
 
 @Component({
@@ -9,11 +10,16 @@ import { environment } from "../../../../environments/environment";
   templateUrl: './tx-info.component.html',
   styleUrls: ['./tx-info.component.scss']
 })
-export class TransactionInfoComponent {
-  @Input() tx!: Transaction; // Input property to pass transaction data to the component
-  formatter ;
+export class TransactionInfoComponent implements OnInit {
+  amount!: number
+  price: number | undefined
+  tokenId!: string
 
+  @Input() txInfo!: TxInfo;
+
+  formatter ;
   private basePath = environment.basePath;
+  @Input() size!: number;
 
 
   constructor( private tokenService: TokenService ) {
@@ -22,6 +28,14 @@ export class TransactionInfoComponent {
       compactDisplay: 'short',
     });
   }
+
+  ngOnInit(): void {
+    this.amount = this.txInfo.amount;
+    this.price = this.txInfo.price;
+    this.tokenId = this.txInfo.tokenId;
+  }
+
+
   getToken(id: string | undefined): Token | undefined {
     if (!id) {
       return undefined;
@@ -30,7 +44,7 @@ export class TransactionInfoComponent {
   }
 
   getTokenUrl() {
-    const token = this.getToken(this.tx.tokenId);
+    const token = this.getToken(this.tokenId);
     let url: string;
     if (token && token.logoUrl) {
       url = this.basePath + '/img/' + token.logoUrl;

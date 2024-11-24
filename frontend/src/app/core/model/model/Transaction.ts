@@ -27,10 +27,11 @@ export interface Transaction {
     valid: boolean;
 }
 export namespace Transaction {
-    export type TypeEnum = 'BUY' | 'SELL';
+    export type TypeEnum = 'BUY' | 'SELL' | 'FEE';
     export const TypeEnum = {
         Buy: 'BUY' as TypeEnum,
-        Sell: 'SELL' as TypeEnum
+        Sell: 'SELL' as TypeEnum,
+        Fee: 'FEE' as TypeEnum
     };
 }
 

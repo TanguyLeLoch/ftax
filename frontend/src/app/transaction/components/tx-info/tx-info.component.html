@@ -1,11 +1,10 @@
 <div class="transaction-info">
   <div class="left">
-    <span class="token-value">{{ formatter.format(tx.amount!) }} {{ getToken(tx.tokenId)?.ticker }}</span>
-    <span class="fiat-value">{{ tx.price !== undefined ? formatter.format(tx.price!) : '?' }}
-      &#36;/{{ getToken(tx.tokenId)?.ticker }}</span>
+    <span class="token-value">{{ formatter.format(amount!) }} {{ getToken(tokenId)?.ticker }}</span>
+    <span *ngIf="price!==0" class="fiat-value">{{ price !== -1 ? formatter.format(price!) : '?' }}
+      &#36;/{{ getToken(tokenId)?.ticker }}</span>
   </div>
   <div class="right">
-    <img class="token-icon" [src]="getTokenUrl()" alt="{{ getToken(tx.tokenId)?.name }} icon">
+    <img class="token-icon" [src]="getTokenUrl()" alt="{{ getToken(tokenId)?.name }} icon">
   </div>
-
 </div>

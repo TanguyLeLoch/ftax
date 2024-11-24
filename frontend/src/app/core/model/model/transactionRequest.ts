@@ -23,10 +23,11 @@ export interface TransactionRequest {
     address?: string;
 }
 export namespace TransactionRequest {
-    export type TypeEnum = 'BUY' | 'SELL';
+    export type TypeEnum = 'BUY' | 'SELL' | 'FEE';
     export const TypeEnum = {
         Buy: 'BUY' as TypeEnum,
-        Sell: 'SELL' as TypeEnum
+        Sell: 'SELL' as TypeEnum,
+        Fee: 'FEE' as TypeEnum
     };
 }
 

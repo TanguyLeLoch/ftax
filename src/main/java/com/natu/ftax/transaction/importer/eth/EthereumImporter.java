@@ -427,6 +427,9 @@ public class EthereumImporter implements OnChainImporter {
 
     private BigDecimal getPrice(Token token, String blockNumber) {
         String wethPair = token.getWethPair();
+        if (wethPair == null) {
+            return null;
+        }
         return etherscanApi.getTokenPrice(token, blockNumber, wethPair);
     }
 

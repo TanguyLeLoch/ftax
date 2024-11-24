@@ -8,6 +8,7 @@ import java.math.MathContext;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -121,6 +122,7 @@ public class EtherscanApi {
      */
     public BigDecimal getEtherPriceAt(String blockNumber) {
         String usdtWethPair = "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852";
+        String usdtAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("address", usdtWethPair)
@@ -136,7 +138,7 @@ public class EtherscanApi {
         int priceCount = 0;
 
         for (EventLog log : logs) {
-            BigDecimal priceFromLog = convertSwapDataToEthPrice(log, 6);
+            BigDecimal priceFromLog = convertSwapDataToEthPrice(log, usdtAddress, 6);
             if (priceFromLog != null) {
                 totalPrice = totalPrice.add(priceFromLog);
                 priceCount++;
@@ -165,13 +167,12 @@ public class EtherscanApi {
         int priceCount = 0;
 
         for (EventLog log : logs) {
-            BigDecimal priceFromLog = convertSwapDataToEthPrice(log, token.getDecimals());
+            BigDecimal priceOfEthInTokenFromLog =
+                convertSwapDataToEthPrice(log, token.getExternalId(), token.getDecimals());
 
-            if (priceFromLog != null) {
-                if (shouldReverse(token.getExternalId())) {
-                    priceFromLog = BigDecimal.ONE.divide(priceFromLog, MathContext.DECIMAL64);
-                }
-                totalPrice = totalPrice.add(priceFromLog);
+            if (priceOfEthInTokenFromLog != null) {
+
+                totalPrice = totalPrice.add(priceOfEthInTokenFromLog);
                 priceCount++;
             }
         }
@@ -180,17 +181,17 @@ public class EtherscanApi {
             return null;
         }
 
-        BigDecimal priceInEth = totalPrice.divide(BigDecimal.valueOf(priceCount), MathContext.DECIMAL64);
+        BigDecimal priceOfTokenInEth = totalPrice.divide(BigDecimal.valueOf(priceCount), MathContext.DECIMAL64);
         BigDecimal ethPrice = getEtherPriceAt(blockNumber);
 
-        return ethPrice.multiply(priceInEth);
+        return ethPrice.divide(priceOfTokenInEth, MathContext.DECIMAL64);
     }
 
     private boolean shouldReverse(String externalId) {
         return externalId.compareTo(WETH) > 0;
     }
 
-    BigDecimal convertSwapDataToEthPrice(EventLog log, int nbDecimalToken) {
+    BigDecimal convertSwapDataToEthPrice(EventLog log, String tokenAddress, int nbDecimalToken) {
         var data = log.data();
         // Decimals for USDT and WETH
         BigDecimal usdtDecimals = new BigDecimal(BigInteger.TEN.pow(nbDecimalToken));
@@ -214,21 +215,22 @@ public class EtherscanApi {
         BigInteger amount0Out = new BigInteger(amount0OutHex, 16);
         BigInteger amount1Out = new BigInteger(amount1OutHex, 16);
 
-        BigDecimal usdtAmount;
-        BigDecimal wethAmount;
-
-        if (amount0In.compareTo(BigInteger.ZERO) > 0 && amount1Out.compareTo(BigInteger.ZERO) > 0) {
-            // WETH in, USDT out
-            usdtAmount = new BigDecimal(amount1Out).divide(usdtDecimals, MathContext.DECIMAL64);
-            wethAmount = new BigDecimal(amount0In).divide(wethDecimals, MathContext.DECIMAL64);
-        } else if (amount1In.compareTo(BigInteger.ZERO) > 0 && amount0Out.compareTo(BigInteger.ZERO) > 0) {
-            // USDT in, WETH out
-            usdtAmount = new BigDecimal(amount1In).divide(usdtDecimals, MathContext.DECIMAL64);
-            wethAmount = new BigDecimal(amount0Out).divide(wethDecimals, MathContext.DECIMAL64);
-        } else {
-            // No valid amounts, skip
+        if (lessThan2Is0(amount0In, amount1In, amount0Out, amount1Out)) {
             return null;
         }
+
+        BigDecimal usdtAmount;
+        BigDecimal wethAmount;
+        if (!shouldReverse(tokenAddress)) {
+            usdtAmount = new BigDecimal(amount0In.add(amount0Out));
+            wethAmount = new BigDecimal(amount1In.add(amount1Out));
+        } else {
+            usdtAmount = new BigDecimal(amount1In.add(amount1Out));
+            wethAmount = new BigDecimal(amount0In.add(amount0Out));
+        }
+
+        usdtAmount = usdtAmount.divide(usdtDecimals, MathContext.DECIMAL64);
+        wethAmount = wethAmount.divide(wethDecimals, MathContext.DECIMAL64);
 
         // Compute price
         if (wethAmount.compareTo(BigDecimal.ZERO) == 0) {
@@ -237,6 +239,12 @@ public class EtherscanApi {
         }
 
         return usdtAmount.divide(wethAmount, MathContext.DECIMAL64);
+    }
+
+    private boolean lessThan2Is0(BigInteger... amounts) {
+        return Stream.of(amounts)
+                   .filter(amount -> amount != null && !amount.equals(BigInteger.ZERO))
+                   .count() < 2;
     }
 
     public boolean isStatusOk(EthTx tx) {
