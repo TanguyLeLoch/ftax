@@ -87,8 +87,6 @@
   width: 100%;
 }
 
-mat-expansion-panel-header {
-}
 
 .expanded-panel-container {
   padding-top: 10px;
@@ -99,7 +97,7 @@ mat-expansion-panel-header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: min(calc(3px + 0.1vw), 10px);
 }
 
 .etherscan-icon {
@@ -128,4 +126,13 @@ mat-expansion-panel-header {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+}
+
+.mat-expansion-panel-header {
+  padding: min(calc(2px + 1vw), 24px)
+}
+
+.pnl-value {
+  padding-right: 10px;
+  font-size: min(calc(4px + 1vw), 12px)
 }

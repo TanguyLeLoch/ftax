@@ -23,7 +23,7 @@
             <div class="tx-description-center">
               <div class="fee-container">
                 <ng-container *ngFor="let info of feeSummary">
-                  <app-tx-info [txInfo]="info" [size]="10"></app-tx-info>
+                  <app-tx-info [txInfo]="info" [size]="'small'"></app-tx-info>
                 </ng-container>
               </div>
               <div class="swap-container">
@@ -31,7 +31,7 @@
                   <ng-container *ngFor="let info of outSummary">
                     <app-tx-info [txInfo]="info"></app-tx-info>
                   </ng-container>
-                  <span *ngIf="!outSummary">-</span>
+                  <span *ngIf="outSummary.length==0">-</span>
 
                 </div>
                 <span class="for">for</span>
@@ -40,7 +40,7 @@
                   <ng-container *ngFor="let info of inSummary">
                     <app-tx-info [txInfo]="info"></app-tx-info>
                   </ng-container>
-                  <span *ngIf="!inSummary">-</span>
+                  <span *ngIf="inSummary.length==0">-</span>
 
                 </div>
               </div>

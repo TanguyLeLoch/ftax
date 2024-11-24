@@ -1,9 +1,11 @@
+// tx-info.component.ts
 import { Component, Input, OnInit } from '@angular/core';
 import { Token } from "../../../core/model";
 import { TokenService } from "../../../core/services/token.service";
 import { environment } from "../../../../environments/environment";
 import { TxInfo } from '../master-tx-entry/master-tx-entry.component';
 
+export type TxSize = 'small' | 'normal' | 'large';
 
 @Component({
   selector: 'app-tx-info',
@@ -11,18 +13,17 @@ import { TxInfo } from '../master-tx-entry/master-tx-entry.component';
   styleUrls: ['./tx-info.component.scss']
 })
 export class TransactionInfoComponent implements OnInit {
-  amount!: number
-  price: number | undefined
-  tokenId!: string
-
   @Input() txInfo!: TxInfo;
+  @Input() size: TxSize = 'normal'; // default size
 
-  formatter ;
+  amount!: number;
+  price: number | undefined;
+  tokenId!: string;
+
+  formatter;
   private basePath = environment.basePath;
-  @Input() size!: number;
 
-
-  constructor( private tokenService: TokenService ) {
+  constructor(private tokenService: TokenService) {
     this.formatter = new Intl.NumberFormat('en-US', {
       notation: 'compact',
       compactDisplay: 'short',
@@ -34,7 +35,6 @@ export class TransactionInfoComponent implements OnInit {
     this.price = this.txInfo.price;
     this.tokenId = this.txInfo.tokenId;
   }
-
 
   getToken(id: string | undefined): Token | undefined {
     if (!id) {
